@@ -1,0 +1,253 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2004-2006 Open Source Development Labs, Inc.
+#               2004-2006 Jenny Zhang
+#               2014-2017 2ndQuadrant, Ltd.
+#               2004-2022 Mark Wong
+
+trap 'echo "Test was interrupted by Control-C."; \
+killall sar sadc pidstat dbt7-$DATABASE-dbstat > /dev/null 2>&1' INT
+trap 'echo "Test was interrupted. Got TERM signal."; \
+killall sar sadc pidstat dbt7-$DATABASE-dbstat > /dev/null 2>&1' TERM
+
+COMMENT=""
+FLAG_POWER_TEST=""
+FLAG_THROUGHPUT_TEST=""
+RUN_ALL_TESTS=1
+RUN_LOAD_TEST=0
+RUN_POWER_TEST=0
+RUN_THROUGHPUT_TEST=0
+OUTPUT_DIR=""
+SCALE=1
+SEED=0
+STREAMS=1
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 PostgreSQL workload script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTIONS]"
+	echo ""
+	echo "General options:"
+	echo "  -1               run load test"
+	echo "  -2               run performance test"
+	echo "  -a DBMS          dbms under test (pgsql)"
+	echo "  -d DIALECT       dialect override"
+	echo "  -c COMMENT       comment about the test"
+	echo "  -i INPUT         input override, default $INPUT"
+	echo "  -n STREAMS       number of throughput streams, default $STREAMS"
+	echo "  -o PATH          output directory"
+	echo "  -O               enable oprofile (Linux only)"
+	echo "  -P               enable linux perf (Linux only)"
+	echo "  -s SCALE         scale factor, default $SCALE"
+	echo ""
+	echo "PostgreSQL options (pgsql):"
+	echo "  -p PARAMETERS    database parameters for the load test"
+	echo "  -q PARAMETERS    database parameters for the performance test"
+}
+
+DATABASE=""
+if [ -n "$DEFAULT_LOAD_PARAMETERS" ]; then
+	LOAD_PARAMETERS="$DEFAULT_LOAD_PARAMETERS"
+fi
+if [ -n "$DEFAULT_PERF_PARAMETERS" ]; then
+	PERF_PARAMETERS="$DEFAULT_PERF_PARAMETERS"
+fi
+
+while getopts "123a:c:d:hi:n:Oo:p:Pq:s:S:u" OPT; do
+	case $OPT in
+	1)
+		RUN_LOAD_TEST=1
+		RUN_ALL_TESTS=0
+		;;
+	2)
+		RUN_POWER_TEST=1
+		FLAG_POWER_TEST="-2"
+		RUN_ALL_TESTS=0
+		;;
+	3)
+		RUN_THROUGHPUT_TEST=1
+		FLAG_THROUGHPUT_TEST="-3"
+		RUN_ALL_TESTS=0
+		;;
+	a)
+		DATABASE=${OPTARG}
+		;;
+	c)
+		COMMENT=${OPTARG}
+		;;
+	d)
+		DIALECT=$OPTARG
+		DIALECT_ARG="-d $DIALECT"
+		;;
+	h)
+		usage
+		exit 1
+		;;
+	i)
+		INPUT=$OPTARG
+		INPUT_ARG="-i $INPUT"
+		;;
+	n)
+		STREAMS=$OPTARG
+		;;
+	O)
+		OPROFILE_FLAG="-y"
+		;;
+	o)
+		OUTPUT_DIR="${OPTARG}"
+		if [ -d "$OUTPUT_DIR" ]; then
+			echo "Error, the directory \"$OUTPUT_DIR\" already exists."
+			exit 1
+		fi
+		mkdir -p $OUTPUT_DIR
+		;;
+	P)
+		LINUXPERF_FLAG="-Y"
+		;;
+	p)
+		# PostgreSQL only.
+		LOAD_PARAMETERS="$LOAD_PARAMETERS $OPTARG"
+		;;
+	q)
+		# PostgreSQL only.
+		PERF_PARAMETERS="$PERF_PARAMETERS $OPTARG"
+		;;
+	s)
+		SCALE=$OPTARG
+		;;
+	S)
+		SEED=$OPTARG
+		;;
+	\?)
+		usage
+		exit 1
+		;;
+	esac
+done
+
+if [ "x${DSTOOLS}" = "x" ]; then
+	>&2 echo "Error: DSTOOLS environment variable is not set"
+	exit 1
+fi
+if [ ! -d $DSTOOLS ]; then
+	>&2 echo "Error: DSTOOLS dir does not exist: $DSTOOLS"
+	exit 2
+fi
+
+if [ "x${OUTPUT_DIR}" = "x" ]; then
+	>&2 echo "Error: use -o to set output directory"
+	exit 1
+fi
+
+if [ -n "$LOAD_PARAMETERS" ]; then
+	LOAD_PARAMETERS_ARG="-p \"$LOAD_PARAMETERS\""
+fi
+if [ -n "$PERF_PARAMETERS" ]; then
+	PERF_PARAMETERS_ARG="-p \"$PERF_PARAMETERS\""
+fi
+
+# Reset the flags to make the logic later in the script easier.
+if [ $RUN_ALL_TESTS -eq 1 ]; then
+	RUN_LOAD_TEST=1
+	RUN_POWER_TEST=1
+	RUN_THROUGHPUT_TEST=1
+	FLAG_POWER_TEST="-2"
+	FLAG_THROUGHPUT_TEST="-3"
+fi
+
+if [ "x${COMMENT}" != "x" ]; then
+	echo "$COMMENT" > ${OUTPUT_DIR}/comment.txt
+fi
+
+# Save system details.
+dbt7-get-config -a $DATABASE -o $OUTPUT_DIR -s $SCALE -n $STREAMS \
+		-d $DIALECT -i $INPUT -p \"$LOAD_PARAMETERS\" -q \"$PERF_PARAMETERS\" 
+
+SEED_FILE=${OUTPUT_DIR}/seed
+if [ $SEED -ne 0 ]; then
+	echo $SEED > $SEED_FILE
+	echo "Using seed: `cat $SEED_FILE`"
+fi
+
+# Load Test
+if [ $RUN_LOAD_TEST -eq 1 ]; then
+	eval dbt7-load-test \
+			-a $DATABASE \
+			-o ${OUTPUT_DIR}/load \
+			-s $SCALE \
+			$LOAD_PARAMETERS_ARG \
+			$OPROFILE_FLAG \
+			$LINUXPERF_FLAG \
+			|| exit 1
+else
+	dbt7-${DATABASE}-start-db -o $OUTPUT_DIR
+fi
+
+if [ $SEED -eq 0 ]; then
+	# generate the initial seed according to Clause 4.3.1
+	# the initial seed is the time stamp of the end of the database load time
+	# expressed in the format mmddhhmmss.
+	date +%-m%d%H%M%S > $SEED_FILE
+fi
+
+if [ $RUN_POWER_TEST -eq 1 ] || [ $RUN_THROUGHPUT_TEST -eq 1 ]; then
+	# Start time of the Performance Test (Power and Throughput).
+	echo "**`date` performance test starting**"
+	S_TIME=`date +%s`
+fi
+
+if [ $RUN_POWER_TEST -eq 1 ]; then
+	eval dbt7-power-test \
+			-a $DATABASE \
+			-s $SCALE \
+			-o ${OUTPUT_DIR}/power \
+			$DIALECT_ARG \
+			$INPUT_ARG \
+			$PERF_PARAMETERS_ARG\
+			$OPROFILE_FLAG \
+			$LINUXPERF_FLAG \
+			|| exit 1
+	if [ $? -eq 1 ] ; then
+		2&> echo "Error: power test problem!"
+		exit 1
+	fi
+fi
+
+if [ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
+	eval dbt7-throughput-test \
+			-a $DATABASE \
+			-s $SCALE \
+			-n $STREAMS \
+			-o ${OUTPUT_DIR}/throughput \
+			$DIALECT_ARG \
+			$INPUT_ARG \
+			$THROUGHPUT_PARAMETERS_ARG \
+			$OPROFILE_FLAG \
+			$LINUXPERF_FLAG
+	if [ $? -eq 1 ] ; then
+		2&> echo "throughput test problem!"
+		exit 1
+	fi
+fi
+
+if [ $RUN_POWER_TEST -eq 1 ] || [ $RUN_THROUGHPUT_TEST -eq 1 ]; then
+	# End time of the Performance Test.
+	E_TIME=`date +%s`
+	DIFF_TIME=$(( $E_TIME - $S_TIME ))
+	echo "**`date` performance test completed ($DIFF_TIME seconds)**"
+fi
+
+# Stop the database at the end of the test.
+dbt7-${DATABASE}-stop-db
+
+echo "Generating report... "
+dbt7-generate-report -i $OUTPUT_DIR -o ${OUTPUT_DIR}/report
+
+echo ""
+head ${OUTPUT_DIR}/summary.rst
+echo "Full test summary in: ${OUTPUT_DIR}/summary.rst"

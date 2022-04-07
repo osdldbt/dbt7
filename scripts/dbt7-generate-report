@@ -1,0 +1,320 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2014-2015 2ndQuadrant, Ltd.
+#               2005-2022 Mark Wong
+#
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 report generator"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTIONS]"
+	echo ""
+	echo "General options:"
+	echo "  -i PATH     results directory"
+	echo "  -o PATH     output directory, default is to use results directory"
+}
+
+write_system_stats()
+{
+	REPORTFILE=$1
+	TEST=$2
+
+	cat << __EOF__ >> $REPORTFILE
+
+System Statistics
+=================
+
+Processor Statistics
+--------------------
+
+__EOF__
+
+	for PNGFILE in ${OUTDIR}/${TEST}/sar-cpu?*.png; do
+		cat << __EOF__ >> $REPORTFILE
+.. image:: ${TEST}/`basename $PNGFILE`
+   :width: 100%
+
+__EOF__
+	done
+
+	cat << __EOF__ >> $REPORTFILE
+
+Block Device Statistics
+-----------------------
+
+__EOF__
+
+	for PNGFILE in ${OUTDIR}/${TEST}/sar-blockdev-*-*.png; do
+		cat << __EOF__ >> $REPORTFILE
+.. image:: ${TEST}/`basename $PNGFILE`
+   :width: 100%
+
+__EOF__
+	done
+}
+
+while getopts hi:o: OPT; do
+	case $OPT in
+		h)
+			usage
+			exit 0
+			;;
+		i)
+			INDIR=$OPTARG
+			;;
+		o)
+			OUTDIR=$OPTARG
+			mkdir -p $OUTDIR
+			;;
+		\?)
+			usage
+			exit 1
+			;;
+	esac
+done
+
+if [ "x$INDIR" = "x" ]; then
+	echo "Error: Specify dbt7 results directory with -i"
+	exit 1
+fi
+
+if [ "x$OUTDIR" = "x" ]; then
+	OUTDIR=$INDIR
+fi
+
+REPORT="${OUTDIR}/report.rst"
+REPORTLOAD="${OUTDIR}/report-load.rst"
+REPORTPOWER="${OUTDIR}/report-power.rst"
+REPORTTHROUGHPUT="${OUTDIR}/report-throughput.rst"
+ERRLOG="${OUTDIR}/error.txt"
+
+DIRLOAD="${INDIR}/load"
+DIRPOWER="${INDIR}/power"
+DIRTHROUGHPUT="${INDIR}/throughput"
+
+CONFIGFILE="${INDIR}/config.txt"
+CPU_MODEL=`grep "^model" $CONFIGFILE | cut -d ":" -f2-`
+CPUS=`grep ^cpus $CONFIGFILE | cut -d ":" -f2-`
+KERNEL=`grep ^kernel $CONFIGFILE | cut -d ":" -f2-`
+OS=`grep ^distribution $CONFIGFILE | cut -d ":" -f2-`
+RAM=`grep ^memory $CONFIGFILE | cut -d ":" -f2-`
+SCALE=`grep ^scale $CONFIGFILE | cut -d ":" -f2-`
+
+dbt7-plot-results -i ${INDIR}/power/time_statistics.csv -o ${OUTDIR} 2> /dev/null
+for DIR in load power throughput; do
+	if [ ! -d "${INDIR}/${DIR}" ]; then
+		continue
+	fi
+	mkdir -p ${OUTDIR}/${DIR}
+	dbt-plot-sar-cpu ${INDIR}/${DIR}/sar-cpu.csv ${OUTDIR}/${DIR} 2> /dev/null
+	dbt-plot-sar-blockdev ${INDIR}/${DIR}/sar-blockdev.csv \
+			${OUTDIR}/${DIR} 2> /dev/null
+	dbt-plot-sar-mem ${INDIR}/${DIR}/sar-mem.csv ${OUTDIR}/${DIR} 2> /dev/null
+done
+
+SUMMARY="${INDIR}/summary.rst"
+if [ ! -f "$SUMMARY" ]; then
+	if [ -d "$DIRLOAD" ]; then
+		FLAGS="-1 $DIRLOAD"
+	fi
+	if [ -d "$DIRPOWER" ]; then
+		FLAGS="$FLAGS -2 $DIRPOWER"
+	fi
+	if [ -d "$DIRTHROUGHPUT" ]; then
+		FLAGS="$FLAGS -3 $DIRTHROUGHPUT"
+	fi
+	dbt7-post-process -s $SCALE $FLAGS -o $INDIR
+fi
+
+cp $SUMMARY $REPORT
+
+README="${DIRPOWER}/readme.txt"
+if [ -f "$README" ]; then
+	DBVER=`head -n 1 $README`
+fi
+if [ "x$DBVER" = "x" ]; then
+	README="${DIRTHROUGHPUT}/readme.txt"
+	DBVER=`head -n 1 $README`
+fi
+
+cat << __EOF__ >> $REPORT
+
+Power Test
+==========
+
+.. image:: power.png
+   :alt: Missing Power Test Query Times
+   :width: 100%
+
+System Configuration
+====================
+
+Hardware Information
+--------------------
+
+* CPU Type: $CPU_MODEL
+* Total Processors: $CPUS
+* Memory: $RAM KB RAM
+
+Software Information
+--------------------
+
+* Operating System: $OS $KERNEL
+* Database Server: $DBVER
+
+System Statistics
+=================
+
+Load Test
+---------
+
+.. image:: load/sar-cpu.png
+   :width: 100%
+
+.. image:: load/sar-mem-memused.png
+   :width: 100%
+
+.. image:: load/sar-blockdev-util.png
+   :width: 100%
+
+.. image:: load/sar-blockdev-tps.png
+   :width: 100%
+
+Power Test
+----------
+
+.. image:: power/sar-cpu.png
+   :width: 100%
+
+.. image:: power/sar-mem-memused.png
+   :width: 100%
+
+.. image:: power/sar-blockdev-util.png
+   :width: 100%
+
+.. image:: power/sar-blockdev-tps.png
+   :width: 100%
+
+Throughput Test
+---------------
+
+.. image:: throughput/sar-cpu.png
+   :width: 100%
+
+.. image:: throughput/sar-mem-memused.png
+   :width: 100%
+
+.. image:: throughput/sar-blockdev-util.png
+   :width: 100%
+
+.. image:: throughput/sar-blockdev-tps.png
+   :width: 100%
+
+__EOF__
+
+#
+# Generate Load Test Report
+#
+
+cat << __EOF__ > $REPORTLOAD
+=========================
+Database Test 7 Load Test
+=========================
+
+__EOF__
+
+R --slave --no-save << __EOF__ >> $REPORTLOAD
+df <- read.csv("${DIRLOAD}/time_statistics.csv", header=TRUE)
+df <- df[order(df\$e_time),]
+cat("================  ===================  ===================  ===============\n")
+cat("Phase             Start Timestamp      End Timestamp        Elapsed Time\n")
+cat("================  ===================  ===================  ===============\n")
+for (i in 1:nrow(df)) {
+  cat(sprintf("%16s  %s  %s  %s\n",
+      df[i,]\$template, df[i,]\$s_time, df[i,]\$e_time, df[i,]\$elapsed_time))
+}
+cat("================  ===================  ===================  ===============\n")
+__EOF__
+
+write_system_stats $REPORTLOAD load
+
+#
+# Generate Power Test Report
+#
+
+cat << __EOF__ > $REPORTPOWER
+==========================
+Database Test 7 Power Test
+==========================
+__EOF__
+
+write_system_stats $REPORTPOWER power
+
+#
+# Generate Throghput Test Report
+#
+
+cat << __EOF__ > $REPORTTHROUGHPUT
+===============================
+Database Test 7 Throughput Test
+===============================
+__EOF__
+
+write_system_stats $REPORTTHROUGHPUT throughput
+
+#
+# Convert reStructuredText files to HTML and PDF.
+#
+
+echo "Generated text file reports:"
+ls -1v ${OUTDIR}/*.rst
+echo ""
+
+which rst2html5.py > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	# pandoc can't properly convert multi-cell table headings from rst but
+	# Sphinx's rst2html can. Then pandoc can convert multi-cell table headings
+	# from html to pdf.
+	rst2html5.py ${OUTDIR}/report.rst ${OUTDIR}/report.html 2> /dev/null &
+	for TEST in load power throughput; do 
+		rst2html5.py ${OUTDIR}/report-${TEST}.rst \
+				${OUTDIR}/report-${TEST}.html 2> /dev/null &
+	done
+	wait
+
+	echo "Generated HTML reports:"
+	ls -1v ${OUTDIR}/*.html
+	echo ""
+
+	# A pdf could be produced other ways, but I believe pandoc produces the most
+	# minimally styled LaTeX looking document, as opposed to using rst2latex,
+	# with default settings.
+	which pandoc > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		(cd $OUTDIR && \
+				pandoc -s report.html -f html -t pdf \
+						-o report.pdf 2> /dev/null) &
+		for TEST in load power throughput; do 
+			(cd $OUTDIR && \
+					pandoc -s report-${TEST}.html -f html -t pdf \
+							-o report-${TEST}.pdf 2> /dev/null \
+			) &
+		done
+		wait
+
+		echo "Generated PDF reports:"
+		ls -1v ${OUTDIR}/*.pdf
+		echo ""
+	else
+		echo "pandoc required to generate pdf report"
+		exit 1
+	fi
+else
+	echo "rst2html5.py required to generate html report"
+	exit 1
+fi

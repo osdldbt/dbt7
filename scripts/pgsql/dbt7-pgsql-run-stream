@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2022 Mark Wong
+#
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 stream execution script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -o PATH          path to save results"
+	echo "  -s STREAM        stream to execute"
+}
+
+while getopts "ho:s:" OPT; do
+	case $OPT in
+	h)
+		usage
+		exit 0
+		;;
+	o)
+		OUTPUT_DIR=$OPTARG
+		;;
+	s)
+		STREAM=$OPTARG
+		;;
+	\?)
+		usage
+		exit 1
+	esac
+done
+
+if [ "x$STREAM" = "x" ]; then
+	echo "Specify the stream with -s flag"
+	usage
+	exit 1
+fi
+
+if [ "x$OUTPUT_DIR" = "x" ]; then
+	echo "Specify results directory with -o flag"
+	usage
+	exit 1
+fi
+
+if [ -z $DBT7DBNAME ]; then
+	echo "Error: DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+# Kind of matching naming convention of dsqgen...
+RESULTS="${OUTPUT_DIR}/results_${STREAM}.txt"
+
+# psql does not capture output from -a flag when using -o to specify output
+# file; use shell redirection instead.
+psql -X -a -d $DBT7DBNAME -f ${OUTPUT_DIR}/query_${STREAM}.sql > $RESULTS 2>&1

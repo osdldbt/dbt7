@@ -1,0 +1,162 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2006 Open Source Development Labs, Inc.
+#               2002-2006 Jenny Zhang
+#               2015      2ndQuadrant, Ltd.
+#               2005-2022 Mark Wong
+#
+
+SCALE=1
+USE_OPROFILE=0
+USE_LINUXPERF=0
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 Load Test"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -a DBMS          database management system: pgsql"
+	echo "  -o PATH          path to save results"
+	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -y               enable oprofile"
+	echo "  -Y               enable Linux perf"
+	echo ""
+	echo "PostgreSQL options (pgsql):"
+	echo "  -p PARAMETERS    PostgreSQL parameters"
+}
+
+while getopts "a:ho:p:s:yY" OPT; do
+	case $OPT in
+	a)
+		DATABASE=$OPTARG
+		;;
+	h)
+		usage
+		exit 0
+		;;
+	o)
+		OUTPUT_DIR=$OPTARG
+		mkdir -p $OUTPUT_DIR
+		;;
+	p)
+		PARAMETERS_ARG="-p \"$OPTARG\""
+		;;
+	s)
+		SCALE=$OPTARG
+		;;
+	y)
+		USE_OPROFILE=1
+		;;
+	Y)
+		USE_LINUXPERF=1
+		;;
+	\?)
+		usage
+		exit 1
+	esac
+done
+
+if [ "x$DATABASE" = "x" ]; then
+	2&> echo "Error: Specify database management system with -a flag"
+	usage
+	exit 1
+fi
+
+if [ "x$OUTPUT_DIR" = "x" ]; then
+	2&> echo "Error: Specify results directory with -o flag"
+	usage
+	exit 1
+fi
+
+echo "**`date` load test prep**"
+
+OUTPUTFILE="${OUTPUT_DIR}/output.txt"
+
+SEED_FILE="${OUTPUT_DIR}/../seed"
+if [ -f "$SEED_FILE" ]; then
+	echo "Using generated seed file..."
+	read SEED < $SEED_FILE
+	SEED_ARG="-S $SEED"
+fi
+
+# Save dsdgen info.
+(cd $DSTOOLS && \
+		./dsdgen \
+				-TABLE dbgen_version \
+				-DIR $OUTPUT_DIR \
+				-SCALE $SCALE \
+				$RNGSEED_ARG \
+				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
+) || exit 1
+
+# Start collecting system statistics.
+dbt7-sysstats -o $OUTPUT_DIR
+
+eval dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG \
+		>> ${OUTPUT_DIR}/output.txt 2>&1
+
+dbt7-${DATABASE}-drop-tables >> ${OUTPUT_DIR}/output.txt 2>&1 || exit 1
+dbt7-${DATABASE}-create-tables >> ${OUTPUT_DIR}/output.txt 2>&1 || exit 1
+
+# Collect database statistics
+dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
+
+# Initialize profile counters.
+if [ -f /proc/profile ]; then
+	clearprof
+fi
+
+if [ ${USE_OPROFILE} -eq 1 ]; then
+	clearoprof
+fi
+
+if [ $USE_LINUXPERF -eq 1 ]; then
+	PERFDIR=${OUTPUT_DIR}/perf
+	mkdir -p $PERFDIR
+	PERFCOMMAND="perf record -a -g -s -F 100 -o ${PERFDIR}/perf.data"
+fi
+
+echo "**`date` load test starting**"
+S_TIME=`date +%s`
+dbt7-${DATABASE}-time-statistics -s -n LOADTEST || exit 1
+
+eval $PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE $SEED_ARG \
+		>> $OUTPUTFILE 2>&1 || exit 1
+
+dbt7-${DATABASE}-time-statistics -e -n LOADTEST || exit 1
+E_TIME=`date +%s`
+DIFF_TIME=`expr $E_TIME - $S_TIME`
+echo "**`date` load test completed  ($DIFF_TIME seconds)**"
+
+dbt7-sysstats -o $OUTPUT_DIR -S
+dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
+
+dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
+
+# Collect profile data.
+if [ -f /proc/profile ]; then
+	profname='Load_Test'
+	getprof
+fi
+
+if [ $USE_OPROFILE -eq 1 ]; then
+	profname='Load_Test'
+	getoprof
+fi
+
+if [ $USE_LINUXPERF -eq 1 ]; then
+	# Sometimes perf segfaults if it's running more than once.
+	echo "Generating Linux perf reports for load test..."
+	perf report -i $PERFDIR/perf.data -n > $PERFDIR/perf-report.txt \
+			2>> $OUTPUT_DIR/perf/report-output.txt
+	perf annotate -l -P -i $PERFDIR/perf.data > $PERFDIR/perf-annotate.txt \
+			2>> $OUTPUT_DIR/perf/report-output.txt
+	perf script -L -i $PERFDIR/perf.data > $PERFDIR/perf-trace.txt \
+			2>> $OUTPUT_DIR/perf/report-output.txt
+fi

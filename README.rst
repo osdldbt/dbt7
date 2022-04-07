@@ -1,3 +1,11 @@
+Supported Database Management Systems
+=====================================
+
+Read specific README files for additional information on each suppported
+database.
+
+* PostgreSQL - README-POSTGRESQL.rst
+
 TPC Source Code
 ===============
 
@@ -11,6 +19,16 @@ current supplied for DSGen-software-code-3.2.0rc1 and can be applied with::
     patch -p1 < patches/dbt7-DSGen-software-code-3.2.0rc1.diff
     patch -p1 < patches/dbt7-DSGen-software-code-3.2.0rc1-filter.diff
     patch -p1 < patches/dbt7-DSGen-software-code-3.2.0rc1-postgresql-queries.diff
+
+The patch `dbt7-DSGen-software-code-3.2.0rc1` allows the code to build.
+
+The patch `dbt7-DSGen-software-code-3.2.0rc1-filter` fixes the `FILTER` so that
+data is written correctly to `stdout`.
+
+The patch `dbt7-DSGen-software-code-3.2.0rc1-postgresql-queries` applies minor
+query changes that allows the affect queries to be run by PostgreSQL.  It also
+adds additional templates that allows query plans to be captured instead of
+query results.
 
 To build the TPC source code::
 

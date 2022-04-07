@@ -1,0 +1,138 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2008 Open Source Development Labs, Inc.
+#               2014      2ndQuadrant, Ltd.
+#               2002-2022 Mark Wong
+
+SAMPLE_LENGTH=60
+
+usage()
+{
+	echo "Usage: `basename $0` is the DBT-7 system statistics collector"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -o PATH          path to save results"
+	echo "  -s               sample length, default $SAMPLE_LENGTH"
+	echo "  -S               stop any running stats collection"
+}
+
+post_process_sar()
+{
+	which sadf > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		SADF="sadf -d -U"
+		$SADF 1 1 > /dev/null 2>&1
+		RC=$?
+		if [ $RC -ne 0 ] && [ $RC -ne 2 ]; then
+			SADF="sadf -D"
+			RC=$?
+			$SADF 1 1 > /dev/null 2>&1
+			if [ $RC -ne 0 ] && [ $RC -ne 2 ]; then
+				echo "WARNING: Was not able to determine proper sadf flags"
+				SADF="true"
+			fi
+		fi
+	else
+		SADF=true
+	fi
+	$SADF -P ALL $SARDATAFILE > `dirname $SARDATAFILE`/sar-cpu.csv
+	$SADF $SARDATAFILE -- -B > `dirname $SARDATAFILE`/sar-paging.csv
+	$SADF $SARDATAFILE -- -d -p > `dirname $SARDATAFILE`/sar-blockdev.csv
+	$SADF 1 1 -- -R > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		$SADF $SARDATAFILE -- -R > `dirname $SARDATAFILE`/sar-mem1.csv
+		$SADF $SARDATAFILE -- -r > `dirname $SARDATAFILE`/sar-mem2.csv
+	else
+		$SADF $SARDATAFILE -- -r > `dirname $SARDATAFILE`/sar-mem.csv
+	fi
+	$SADF $SARDATAFILE -- -W > `dirname $SARDATAFILE`/sar-swap.csv
+	$SADF $SARDATAFILE -- -n DEV > `dirname $SARDATAFILE`/sar-net.csv
+}
+
+STOP=0
+while getopts "ho:s:S" OPT; do
+	case $OPT in
+	h)
+		usage
+		exit 0
+		;;
+	o)
+		OUTPUT_DIR=$OPTARG
+		;;
+	s)
+		SAMPLE_LENGTH=$OPTARG
+		;;
+	S)
+		STOP=1
+		;;
+	\?)
+		usage
+		exit 1
+	esac
+done
+
+if [ "x$OUTPUT_DIR" = "x" ]; then
+	echo "use -o flag"
+	exit 1
+fi
+mkdir -p $OUTPUT_DIR
+
+SARDATAFILE="${OUTPUT_DIR}/sar_raw.out"
+SARPIDFILE="${OUTPUT_DIR}/sar.pid"
+PIDSTATPIDFILE="${OUTPUT_DIR}/pidstat.pid"
+
+if [ $STOP -eq 1 ]; then
+	if [ -f "$SARPIDFILE" ]; then
+		read SARPID < $SARPIDFILE
+		kill $SARPID
+		post_process_sar
+	fi
+	if [ -f "$PIDSTATPIDFILE" ]; then
+		read PIDSTATPID < $PIDSTATPIDFILE
+		kill $PIDSTATPID
+	fi
+	exit 0
+fi
+
+which sysctl > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	SYSCTL=sysctl
+else
+	SYSCTL=true
+fi
+$SYSCTL -a > ${OUTPUT_DIR}/sysctl.txt 2> /dev/null
+
+which sar > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	SAR=sar
+else
+	SAR=true
+fi
+
+which pidstat > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	PIDSTAT="pidstat -h -l -d -r -s -u -w"
+	$PIDSTAT 1 1 > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		PIDSTAT="pidstat -h -l -d -r -u -w"
+		$PIDSTAT 1 1 > /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			echo "WARNING: Cannot determine propper pidstat flags"
+			PIDSTAT="true"
+		fi
+	fi
+else
+	PIDSTAT=true
+fi
+
+$SAR -o $SARDATAFILE $SAMPLE_LENGTH > $OUTPUT_DIR/sar.txt &
+echo "$!" > $SARPIDFILE
+
+$PIDSTAT $SAMPLE_LENGTH > $OUTPUT_DIR/pidstat.txt &
+echo "$!" > $PIDSTATPIDFILE

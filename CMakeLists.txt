@@ -8,6 +8,8 @@ set (PROJECT_VERSION_PATCH 0)
 set (PROJECT_VERSION
      ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 
+add_subdirectory (scripts)
+
 # CPack rules for creating distribution files.
 
 include (InstallRequiredSystemLibraries)

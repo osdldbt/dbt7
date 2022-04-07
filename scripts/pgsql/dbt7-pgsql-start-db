@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2008 Open Source Development Labs, Inc.
+#               2002-2008 Rod Taylor
+#               2015      Mark Wong
+#               2015      2ndQuadrant, Ltd.
+#
+
+LOGFILE="dbt7.log"
+OUTDIR="."
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 PostgreSQL database start script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -f               forcibly remove postmaster.pid"
+	echo "  -o PATH          path to save database log, default $OUTDIR"
+	echo "  -p PARAMETERS    PostgreSQL parameters"
+}
+
+while getopts "fo:p:" OPT; do
+	case $OPT in
+	f)
+		rm -f ${DBT7PGDATA}/postmaster.pid
+		;;
+	o)
+		OUTDIR=$OPTARG
+		;;
+	p)
+		PARAMETERS="$OPTARG"
+		;;
+	\?)
+		exit 1
+		;;
+	esac
+done
+
+if [ -z $DBT7PGDATA ]; then
+	echo "DBT7PGDATA not defined."
+	exit 1
+fi
+
+if [ -f "${DBT7PGDATA}/postmaster.pid" ]; then
+	echo "Database is already started: ${DBT7PGDATA}/postmaster.pid"
+	exit 0
+fi
+
+if [ "x${PGPORT}" != "x" ]; then
+	PARAMETERS="$PARAMETERS -p $PGPORT"
+fi
+
+if [ "x${PARAMETERS}" = "x" ]; then
+	pg_ctl start -w -D $DBT7PGDATA -l ${OUTDIR}/${LOGFILE}
+else
+	eval pg_ctl start -w -D $DBT7PGDATA -o \"$PARAMETERS\" -l ${OUTDIR}/${LOGFILE}
+fi
+
+if [ ! -f "${DBT7PGDATA}/postmaster.pid" ]; then
+	echo "database did not start correctly, check database log"
+	exit 1
+fi
+
+# Just in case PostgreSQL is not configured to give everyone read permissions to
+# its log file.
+chmod +r ${OUTDIR}/${LOGFILE}

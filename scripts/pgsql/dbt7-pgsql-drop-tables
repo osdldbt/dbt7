@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2008 Open Source Development Labs, Inc.
+#               2015      2ndQuadrant, Ltd.
+#               2002-2022 Mark Wong
+#
+
+if [ -z $DBT7DBNAME ]; then
+	echo "Error: DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+PSQL="psql -X -v ON_ERROR_STOP=1 -d $DBT7DBNAME"
+
+$PSQL << __EOF__
+DROP TABLE IF EXISTS store_sales CASCADE;
+DROP TABLE IF EXISTS store_returns CASCADE;
+DROP TABLE IF EXISTS catalog_sales CASCADE;
+DROP TABLE IF EXISTS catalog_returns CASCADE;
+DROP TABLE IF EXISTS web_sales CASCADE;
+DROP TABLE IF EXISTS web_returns CASCADE;
+DROP TABLE IF EXISTS inventory CASCADE;
+DROP TABLE IF EXISTS store CASCADE;
+DROP TABLE IF EXISTS call_center CASCADE;
+DROP TABLE IF EXISTS catalog_page CASCADE;
+DROP TABLE IF EXISTS web_site CASCADE;
+DROP TABLE IF EXISTS web_page CASCADE;
+DROP TABLE IF EXISTS warehouse CASCADE;
+DROP TABLE IF EXISTS customer CASCADE;
+DROP TABLE IF EXISTS customer_address CASCADE;
+DROP TABLE IF EXISTS customer_demographics CASCADE;
+DROP TABLE IF EXISTS date_dim CASCADE;
+DROP TABLE IF EXISTS household_demographics CASCADE;
+DROP TABLE IF EXISTS item CASCADE;
+DROP TABLE IF EXISTS income_band CASCADE;
+DROP TABLE IF EXISTS promotion CASCADE;
+DROP TABLE IF EXISTS reason CASCADE;
+DROP TABLE IF EXISTS ship_mode CASCADE;
+DROP TABLE IF EXISTS time_dim CASCADE;
+DROP TABLE IF EXISTS time_statistics;
+DROP SEQUENCE IF EXISTS dataset;
+__EOF__

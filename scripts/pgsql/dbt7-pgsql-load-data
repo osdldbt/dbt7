@@ -1,0 +1,148 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2008 Open Source Development Labs, Inc.
+#               2015      2ndQuadrant, Ltd.
+#               2002-2022 Mark Wong
+#
+
+usage()
+{
+	echo "Usage: `basename $0` is the DBT-7 PostgreSQL Data Loader"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -s SCALE   set the scale factor"
+	echo "  -S SEED    set the rngseed"
+}
+
+CPUS=1
+PSQL="psql -v ON_ERROR_STOP=1 -X -d $DBT7DBNAME"
+
+if [ "x$DSTOOLS" = "x" ]; then
+	echo "DSTOOLS env var is not set"
+	exit 1
+fi
+if [ ! -d $DSTOOLS ]; then
+	echo "DSTOOLS dir does not exist: $DSTOOLS"
+	exit 2
+fi
+
+load_table()
+{
+	TABLE=$1
+
+	$PSQL << __EOF__
+ALTER TABLE $TABLE
+SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+__EOF__
+
+	for I in `seq 1 $CPUS`; do
+		if [ $CPUS -gt 1 ]; then
+			PARALLEL_FLAG="-PARALLEL $CPUS -CHILD $I"
+		else
+			PARALLEL_FLAG=""
+		fi
+		FLAGS="-TERMINATE N -SCALE $SCALE -FILTER Y $PARALLEL_FLAG"
+		$PSQL << __EOF__ &
+BEGIN;
+COPY $TABLE
+FROM
+PROGRAM '(cd $DSTOOLS && ./dsdgen $FLAGS -TABLE $TABLE $RNGSEED_FLAG)'
+WITH (DELIMITER '|', NULL '');
+COMMIT;
+__EOF__
+	done
+
+	wait
+
+	$PSQL << __EOF__
+ALTER TABLE $TABLE
+SET (autovacuum_enabled = true, toast.autovacuum_enabled = true);
+__EOF__
+}
+
+while getopts "hs:S:" OPT; do
+	case $OPT in
+	h)
+		usage
+		exit 0
+		;;
+	s)
+		SCALE="$OPTARG"
+		;;
+	S)
+		RNGSEED_FLAG="-RNGSEED $OPTARG"
+		;;
+	\?) exit 1
+		;;
+	esac
+done
+
+if [ -z $DBT7DBNAME ]; then
+	echo "Error: DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+if [ "x$SCALE" = "x" ]; then
+	echo "SCALE must be set with -s"
+	exit 3
+fi
+
+# Determine number of processors for parallelism.
+if [ -f "/proc/stat" ]; then
+	CPUS=`grep cpu /proc/stat | wc -l`
+	CPUS=$(( $CPUS - 1 ))
+	echo "detected $CPUS processors for parallel data generation and loading"
+fi
+
+dbt7-pgsql-time-statistics -s -n TABLE
+for T in store_sales store_returns catalog_sales catalog_returns web_sales \
+		web_returns inventory store call_center catalog_page web_site web_page \
+		warehouse customer customer_address customer_demographics date_dim \
+		household_demographics item income_band promotion reason ship_mode \
+		time_dim; do
+	load_table $T
+done
+dbt7-pgsql-time-statistics -e -n TABLE
+dbt7-pgsql-time-statistics -s -n INDEX
+dbt7-pgsql-create-indexes
+dbt7-pgsql-time-statistics -e -n INDEX
+
+# Set the number of vacuumdb jobs to 1 (no parallelism) and let see
+# if the system can support a greater value.
+VACUUM_JOBS=1
+# Based on server version, enable vaccumdb parallelism if that version
+# is greater than or equal to 9.5.
+PG_VERSION_NUM=$(psql -At -d $DBT7DBNAME -c "SHOW server_version_num")
+PG_VERSION_NUM=$(( $PG_VERSION_NUM + 0 ))
+if [ $PG_VERSION_NUM -ge 95000 ]; then
+	# Set default vacuum jobs to 25 because this is the number of tables
+	# present in the database. Setting the number of job to a value
+	# greater than 25 won't bring any additional benefit.
+	VACUUM_JOBS=25
+	# If the number of CPUs is less than 25, then we set the vacuum job
+	# number to that number of CPUs.
+	if [ -f "/proc/stat" ]; then
+		CPUS=$(grep cpu /proc/stat | wc -l)
+		CPUS=$(( $CPUS - 1 ))
+		if [ $CPUS -lt $VACUUM_JOBS ]; then
+			VACUUM_JOBS=$CPUS
+		fi
+	fi
+fi
+
+VACUUM_OPTS="-z -F"
+
+# Use vacuumdb's -j option only if VACUUM_JOBS is greater than 1.
+if [ $VACUUM_JOBS -gt 1 ]; then
+	VACUUM_OPTS="$VACUUM_OPTS -j $VACUUM_JOBS"
+fi
+
+dbt7-pgsql-time-statistics -s -n VACUUM
+vacuumdb $VACUUM_OPTS -d $DBT7DBNAME || exit 1
+dbt7-pgsql-time-statistics -e -n VACUUM

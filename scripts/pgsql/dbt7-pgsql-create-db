@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2008 Open Source Development Labs, Inc.
+#               2015      2ndQuadrant, Ltd.
+#               2002-2012 Mark Wong
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 PostgreSQL createdb script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -a DBMS          database management system: pgsql"
+	echo "  -o PATH          path to save database log"
+	echo "  -p PARAMETERS    PostgreSQL parameters"
+	echo "  -x               patch to set for xlog"
+}
+
+XLOGPATH=""
+OUTPUT_DIR="."
+while getopts "ho:p:x:" OPT; do
+	case ${OPT} in
+	h)
+		usage
+		exit 0
+		;;
+	o)
+		OUTPUT_DIR=${OPTARG}
+		;;
+	p)
+		PARAMOPT="-p \"$OPTARG\""
+		;;
+	x)
+		XLOGPATH=${OPTARG}
+		;;
+	\?)
+		exit 1
+		;;
+	esac
+done
+
+if [ -z $DBT7PGDATA ]; then
+	echo "DBT7PGDATA not defined."
+	exit 1
+fi
+
+if [ -z $DBT7DBNAME ]; then
+	echo "DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+# Don't run script as root!
+id=`id | sed s/\(.*// | sed s/uid=//`
+if [ "$id" = "0" ]; then
+	echo "dont start script as root"
+	exit 1
+fi
+
+dbt7-pgsql-stop-db
+
+# Create database
+echo "Creating database..."
+if [ -d $DBT7PGDATA ]; then
+	echo "PGData directory '$DBT7GDATA' already exists, skipping initdb..."
+	# Clear time statistics on repeated run otherwise results are
+	# indecipherable.
+	dbt7-pgsql-time-statistics -c
+else
+	# initialize database cluster
+	echo "initializing database cluster..."
+	initdb -A trust -D $DBT7PGDATA --locale=C || exit 1
+
+	# Use alternative XLOG directory.
+	if [ ! "x${XLOGPATH}" = "x" ]; then
+		mkdir -p $XLOGPATH
+		rm -rf ${XLOGPATH}/pg_xlog
+		mv $DBT7PGDATA/pg_xlog ${XLOGPATH}/pg_xlog || exit 1
+		ln -s ${XLOGPATH}/pg_xlog ${DBT7PGDATA}/pg_xlog || exit 1
+	fi
+fi
+
+eval dbt7-pgsql-start-db -o $OUTPUT_DIR $PARAMOPT
+
+createdb $DBT7DBNAME || exit 1

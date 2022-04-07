@@ -1,0 +1,95 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.  Please see
+# the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2003-2006 Open Source Development Labs, Inc.
+#               2003-2006 Jenny Zhang
+#               2022      Mark Wong
+#
+# Author: Jenny Zhang
+# March 2003
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 PostgreSQL workload script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTIONS]"
+	echo ""
+	echo "General options:"
+	echo "  -a DBMS          dbms under test (pgsql)"
+	echo "  -d DIALECT       dialect override"
+	echo "  -i INPUT         input override, default $INPUT"
+	echo "  -n STREAMS       number of throughput streams"
+	echo "  -o PATH          output directory"
+	echo "  -p PARAMETERS    database parameters for the load test"
+	echo "  -q PARAMETERS    database parameters for the power test"
+	echo "  -s SCALE         scale factor, default $SCALE"
+}
+
+while getopts "a:d:hi:n:o:pq:s:" opt; do
+	case $opt in
+	a)
+		DBMS=${OPTARG}
+		;;
+	d)
+		DIALECT=$OPTARG
+		DIALECT_ARG="-d $DIALECT"
+		;;
+	h)
+		usage
+		exit 1
+		;;
+	i)
+		INPUT=$OPTARG
+		INPUT_ARG="-i $INPUT"
+		;;
+	n)
+		STREAMS=$OPTARG
+		;;
+	o)
+		OUTPUT_DIR="$OPTARG"
+		;;
+	p)
+		# PostgreSQL only.
+		LOAD_PARAM="$OPTARG"
+		;;
+	q)
+		# PostgreSQL only.
+		PERF_PARAM="$OPTARG"
+		;;
+	s)
+		export SCALE=$OPTARG
+		;;
+	\?)
+		usage
+		exit 1
+		;;
+	esac
+done
+
+CPUS=`grep -c '^processor' /proc/cpuinfo`
+DISTRO=`grep PRETTY_NAME /etc/os-release | cut -d "=" -f 2`
+KERNEL=`uname -s -r`
+MEMORY=`grep 'MemTotal' /proc/meminfo | awk -F: '{print $2 $3}'`
+MHZ=`grep 'cpu MHz' /proc/cpuinfo | head -n 1 | awk -F: '{print $2}'`
+MODEL=`grep 'model name' /proc/cpuinfo|head -n 1 | awk -F: '{print $2}'`
+NODE=`hostname`
+
+cat << EOF > $OUTPUT_DIR/config.txt
+node: $NODE
+kernel: $KERNEL
+distribution: $DISTRO
+dbms: $DBMS
+dialect: $DIALECT
+input: $INPUT
+cpus: $CPUS
+mhz: $MHZ
+model: $MODEL
+memory: $MEMORY
+scale: $SCALE
+streams: $STREAMS
+load_parameters: $LOAD_PARAM
+perf_parameters: $PERF_PARAM
+EOF

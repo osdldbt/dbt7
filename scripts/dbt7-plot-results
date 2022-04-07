@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2014      2ndQuadrant, Ltd.
+#               2022      Mark Wong
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 Power Test query plotter"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTIONS]"
+	echo ""
+	echo "General options:"
+	echo "  -i CSV     power test time statistics file"
+	echo "  -o PATH    output directory"
+}
+
+OUTDIR="."
+while getopts "hi:o:" OPT; do
+	case $OPT in
+	h)
+		usage
+		exit 0
+		;;
+	i)
+		INFILE=$OPTARG
+		;;
+	o)
+		OUTDIR=$OPTARG
+		;;
+	\?)
+		exit 1
+		;;
+	esac
+done
+
+which R > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo "R required to generate plots."
+	exit 1
+fi
+
+R --slave --no-save << __EOF__
+df <- read.csv("$INFILE", header=TRUE)
+
+# Queries are numbered by execution order, not by the actual query name.
+# Build a new column from the number embedded in the template name so we can
+# sort by query number, and also use it as the axis label.
+q <- as.numeric(gsub("[^[:digit:]]", "", df\$template))
+df\$q <- q
+df <- df[order(df\$q),]
+
+colors <- cm.colors(99)
+bitmap("${OUTDIR}/power.png", type="png16m", units="px",
+       width=1646, height=2664, res=150, taa=4, gaa=4)
+barplot(df[df\$stream == 0,]\$diff_time, names.arg=df[df\$stream == 0,]\$q,
+        col=colors, beside=T, horiz=T, las=1,
+        main="Power Test Query Execution Times",
+        xlab="Seconds", cex.names=0.6, ylab="Query")
+grid(col="gray")
+invisible(dev.off())
+__EOF__

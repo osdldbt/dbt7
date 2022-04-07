@@ -1,0 +1,12 @@
+export DSHOME="/home/mark.wong/src/dbt7/DSGen-software-code-3.2.0rc1"
+export DS_QUERY="${DSHOME}/query_templates"
+export DS_CONFIG="${DSHOME}/tools"
+
+export DBT7PGDATA="/tmp/pgdata"
+export DBT7DBNAME=dbt7
+
+# Set PGHOST to connect to a specific hostname or Unix-domain socket.
+# Set PGPORT to connect to a non-default TCP port.
+
+export DEFAULT_LOAD_PARAMETERS="-c unix_socket_directories='/tmp'"
+export DEFAULT_PERF_PARAMETERS="-c unix_socket_directories='/tmp'"

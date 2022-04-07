@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.  Please see
+# the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2003      Open Source Development Labs, Inc.
+#               2003      Jenny Zhang
+#               2015      2ndQuadrant, Ltd.
+#               2005-2022 Mark Wong
+#
+
+ARGS=
+while getopts "o:" OPT; do
+	case $OPT in
+		o)
+			ARGS="-o $OPTARG/time_statistics.csv"
+			;;
+	esac
+done
+
+if [ -z $DBT7DBNAME ]; then
+	echo "Error: DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+psql -X -A -F, -t -q -d $DBT7DBNAME $ARGS << __EOF__
+COPY (
+    SELECT stream, query, template,
+           to_char(s_time, 'YYYY-MM-DD HH24:MI:SS') AS s_time,
+           to_char(e_time, 'YYYY-MM-DD HH24:MI:SS') AS e_time,
+           e_time - s_time AS elapsed_time,
+           extract(EPOCH FROM (e_time - s_time)) AS diff_time
+    FROM time_statistics
+) TO STDOUT (FORMAT CSV, HEADER)
+__EOF__

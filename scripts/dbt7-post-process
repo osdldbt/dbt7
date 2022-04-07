@@ -1,0 +1,226 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2003-2006 Open Source Development Labs, Inc.
+#               2003-2006 Jenny Zhang
+#               2014      2ndQuadrant, Ltd.
+#               2005-2022 Mark Wong
+#
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 post processing script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTIONS]"
+	echo ""
+	echo "General options:"
+	echo "  -1 PATH          load test results directory"
+	echo "  -2 PATH          performance test results directory"
+	echo "  -3 PATH          throughput test results directory"
+	echo "  -n STREAMS       number of throughput streams"
+	echo "  -o PATH          output directory"
+	echo "  -s SCALE         scale factor"
+}
+
+get_time()
+{
+	NAME=$1
+	TIMEFILE=$2
+	FIELD=$3
+
+	if [ ! -f "$TIMEFILE" ]; then
+		return
+	fi
+	V=`grep "\<${NAME}\>" $TIMEFILE | cut -d "," -f $FIELD`
+	if [ "x${V}" = "x" ]; then
+		V="-1"
+	fi
+	echo $V
+}
+
+while getopts "1:2:3:o:s:" OPT; do
+	case $OPT in
+	1)
+		LOADDIR=$OPTARG
+		;;
+	2)
+		POWERDIR=$OPTARG
+		;;
+	3)
+		THROUGHPUTDIR=$OPTARG
+		;;
+	o)
+		OUTPUT_DIR=$OPTARG
+		;;
+	n)
+		STREAMS=$OPTARG
+		;;
+	s)
+		SCALE=$OPTARG
+		;;
+	\?)
+		exit 1
+		;;
+	esac
+done
+
+which R > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo "R is required to process results."
+	exit 1
+fi
+
+if [ -d "$LOADDIR" ]; then
+	TIMEFILE="${LOADDIR}/time_statistics.csv"
+	LOADTIME=`get_time LOADTEST $TIMEFILE 6`
+	LOADTIMEH=`get_time LOADTEST $TIMEFILE 7`
+	LOADSTART=`get_time LOADTEST $TIMEFILE 4`
+	LOADEND=`get_time LOADTEST $TIMEFILE 5`
+fi
+
+if [ -d "$POWERDIR" ]; then
+	TIMEFILE="${POWERDIR}/time_statistics.csv"
+	POWERTIME=`get_time POWER $TIMEFILE 6`
+	POWERTIMEH=`get_time POWER $TIMEFILE 7`
+	POWERSTART=`get_time POWER $TIMEFILE 4`
+	POWEREND=`get_time POWER $TIMEFILE 5`
+fi
+
+TIMEFILE="${THROUGHPUTDIR}/time_statistics.csv"
+if [ -d "$THROUGHPUTDIR" ]; then
+	STREAMS=`cat ${THROUGHPUTDIR}/streams`
+
+	THROUGHPUTTIME1=`get_time THROUGHPUT1 $TIMEFILE 6`
+	THROUGHPUTTIMEH1=`get_time THROUGHPUT1 $TIMEFILE 7`
+	THROUGHPUTSTART1=`get_time THROUGHPUT1 $TIMEFILE 4`
+	THROUGHPUTEND1=`get_time THROUGHPUT1 $TIMEFILE 5`
+
+	THROUGHPUTTIME2=`get_time THROUGHPUT2 $TIMEFILE 6`
+	THROUGHPUTTIMEH2=`get_time THROUGHPUT2 $TIMEFILE 7`
+	THROUGHPUTSTART2=`get_time THROUGHPUT2 $TIMEFILE 4`
+	THROUGHPUTEND2=`get_time THROUGHPUT2 $TIMEFILE 5`
+
+	DMTIME1=`get_time DATAMAINT1 $TIMEFILE 6`
+	DMTIMEH1=`get_time DATAMAINT1 $TIMEFILE 7`
+	DMSTART1=`get_time DATAMAINT1 $TIMEFILE 4`
+	DMEND1=`get_time DATAMAINT1 $TIMEFILE 5`
+
+	DMTIME2=`get_time DATAMAINT2 $TIMEFILE 6`
+	DMTIMEH2=`get_time DATAMAINT2 $TIMEFILE 7`
+	DMSTART2=`get_time DATAMAINT2 $TIMEFILE 4`
+	DMEND2=`get_time DATAMAINT2 $TIMEFILE 5`
+fi
+
+which R > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	HAVE_R=1
+else
+	HAVE_R=0
+fi
+
+if [ $HAVE_R -eq 1 ]; then
+	QPHFILE="${OUTPUT_DIR}/qph"
+	R --slave --no-save << __EOF__ > $QPHFILE
+SF <- $SCALE
+S_q <- $STREAMS
+Q <- S_q * 99
+T_POWER <- $POWERTIMEH
+T_PT <- T_POWER * S_q / 3600
+T_TT1 <- $THROUGHPUTTIMEH1
+T_TT2 <- $THROUGHPUTTIMEH2
+T_TT <- (T_TT1 + T_TT2) / 3600
+T_DM1 <- $DMTIMEH1
+T_DM2 <- $DMTIMEH2
+T_DM <- (T_DM1 + T_DM2) / 3600
+T_Load <- $LOADTIMEH
+T_LD <- 0.01 * S_q * T_Load / 3600
+
+Qph <- (SF * Q) / (T_PT * T_TT * T_DM * T_LD) ^ (1/4)
+cat(sprintf("%f\n", Qph))
+__EOF__
+	QPH=`cat $QPHFILE`
+else
+	QPH="R required for calculation..."
+fi
+
+SUMMARY="${OUTPUT_DIR}/summary.rst"
+cat << __EOF__ > $SUMMARY
+=======================
+Database Test 7 Results
+=======================
+
+* Queries per Hour: $QPH
+* Scale: $SCALE
+* Number of Query Streams: $STREAMS
+
+Start and End Times
+===================
+
+================  ===================  ===================  ===============
+Test              Start Timestamp      End Timestamp        Elapsed Time
+================  ===================  ===================  ===============
+Database Load     $LOADSTART  $LOADEND  $LOADTIME
+Power Test        $POWERSTART  $POWEREND  $POWERTIME
+Throughput Run 1  $THROUGHPUTSTART1  $THROUGHPUTEND1  $THROUGHPUTTIME1
+Refresh Run 1     $DMSTART1  $DMEND1  $DMTIME1
+Throughput Run 2  $THROUGHPUTSTART2  $THROUGHPUTEND2  $THROUGHPUTTIME2
+Refresh Run 2     $DMSTART2  $DMEND2  $DMTIME2
+================  ===================  ===================  ===============
+
+Timing Intervals (in seconds)
+=============================
+
+__EOF__
+
+if [ ! -f "$TIMEFILE" ]; then
+	echo "time statistics missing for throughput tests" >> $SUMMARY
+	exit 1
+fi
+
+if [ ! $HAVE_R -eq 1 ]; then
+	echo "R required to generate timing intervals table" >> $SUMMARY
+	exit 0
+fi
+
+R --slave --no-save << __EOF__ >> $SUMMARY
+df <- read.csv("$TIMEFILE", header=TRUE)
+
+# Queries are numbered by execution order, not by the actual query name.
+# Build a new column from the number embedded in the template name so we can
+# reference the query correctly by number.
+q <- as.numeric(gsub("[^[:digit:]]", "", df\$template))
+df\$q <- q
+
+cat("==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======\n")
+cat(" Q       Minimum       25th Percentile        Median        75th Percentile       Maximum\n")
+cat("--  ----------------  -----------------  ----------------  -----------------  ----------------\n")
+cat(" #   Run1     Run2     Run1      Run2     Run1     Run2     Run1      Run2     Run1     Run2\n")
+cat("==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======\n")
+for (i in 1:99) {
+  df1 <- df[df\$q == i & df\$stream >= 1 & df\$stream <= $STREAMS,]
+  df2 <- df[df\$q == i & df\$stream > $STREAMS,]
+
+  min1 <- min(df1\$diff_time)
+  min2 <- min(df2\$diff_time)
+
+  q25_1 <- quantile(df1\$diff_time, .25)
+  q25_2 <- quantile(df2\$diff_time, .25)
+
+  median1 <- median(df1\$diff_time)
+  median2 <- median(df2\$diff_time)
+
+  q75_1 <- quantile(df1\$diff_time, .75)
+  q75_2 <- quantile(df2\$diff_time, .75)
+
+  max1 <- max(df1\$diff_time)
+  max2 <- max(df2\$diff_time)
+
+
+  cat(sprintf("%2d  %7.1f  %7.1f  %7.1f   %7.1f  %7.1f  %7.1f  %7.1f   %7.1f  %7.1f  %7.1f\n",
+      i, min1, min2, q25_1, q25_2, median1, median2, q75_1, q75_2, max1, max2))
+}
+cat("==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======\n")
+__EOF__

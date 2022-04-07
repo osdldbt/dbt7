@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2002-2008 Open Source Development Labs, Inc.
+#               2002-2008 Rod Taylor
+#               2015      2ndQuadrant, Ltd.
+#               2015-2022 Mark Wong
+
+usage()
+{
+	echo "`basename $0` is the DBT-7 PostgreSQL database stop script"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0`"
+}
+
+while getopts "h:" OPT; do
+	case ${OPT} in
+	h)
+		usage
+		exit 0
+		;;
+	\?)
+		exit 1
+		;;
+	esac
+done
+
+if [ -z $DBT7PGDATA ]; then
+	echo "DBT7PGDATA not defined."
+	exit 1
+fi
+
+# Only try to stop the database if it's running.
+if [ -f "${DBT7PGDATA}/postmaster.pid" ]; then
+	pg_ctl stop -w -D $DBT7PGDATA $1
+fi

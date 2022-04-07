@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.  Please see
+# the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2006      Open Source Development Labs, Inc.
+#               2014      2ndQuadrant, Ltd.
+#               2006-2022 Mark Wong
+#
+
+CMD_CLEAR=0
+CMD_START=0
+CMD_END=0
+
+while getopts "cen:s" OPT; do
+	case $OPT in
+	c)
+		CMD_CLEAR=1
+		;;
+	e)
+		CMD_END=1
+		;;
+	n)
+		NAME=$OPTARG
+		;;
+	s)
+		CMD_START=1
+		;;
+	\?)
+		exit 1
+		;;
+	esac
+done
+
+if [ -z $DBT7DBNAME ]; then
+	echo "DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+PSQL="psql -v ON_ERROR_STOP=1 -X -q -d $DBT7DBNAME"
+
+if [ $CMD_CLEAR -eq 1 ]; then
+	SQL="TRUNCATE time_statistics"
+fi;
+
+if [ $CMD_START -eq 1 ]; then
+	SQL="INSERT INTO time_statistics (template, s_time, stream, query, seed)
+VALUES ('$NAME', clock_timestamp(), -1, -1, -1)"
+fi;
+
+if [ $CMD_END -eq 1 ]; then
+	SQL="UPDATE time_statistics
+SET e_time = clock_timestamp()
+WHERE template = '$NAME'"
+fi;
+
+$PSQL -X -c "$SQL"
+exit $?

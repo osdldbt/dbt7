@@ -1,0 +1,198 @@
+#!/bin/bash
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2003-2006 Open Source Development Labs, Inc.
+#               2003-2006 Jenny Zhang
+#               2014      2ndQuadrant, Ltd.
+#               2004-2022 Mark Wong
+
+INPUT="templates.lst"
+RESTART=0
+USE_OPROFILE=0
+USE_LINUXPERF=0
+
+usage()
+{
+	echo "Usage: `basename $0` is the DBT-7 Power Test"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -a DBMS          database management system: pgsql"
+	echo "  -d DIALECT       dialect override"
+	echo "  -o PATH          path to save results"
+	echo "  -i INPUT         input override, default $INPUT"
+	echo "  -r               restart database, if already running"
+	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -y               enable oprofile"
+	echo "  -Y               enable Linux perf"
+	echo ""
+	echo "PostgreSQL options (pgsql):"
+	echo "  -p PARAMETERS    PostgreSQL parameters"
+}
+
+while getopts "a:d:hi:p:o:rs:yY" OPT; do
+	case $OPT in
+	a)
+		DATABASE=$OPTARG
+		;;
+	d)
+		DIALECT=$OPTARG
+		;;
+	h)
+		usage
+		exit 0
+		;;
+	i)
+		INPUT=$OPTARG
+		;;
+	o)
+		OUTPUT_DIR=$OPTARG
+		mkdir -p $OUTPUT_DIR
+		;;
+	p)
+		PARAMETERS_ARG="-p \"$OPTARG\""
+		;;
+	r)
+		RESTART=1
+		;;
+	s)
+		SCALE=$OPTARG
+		;;
+	y)
+		USE_OPROFILE=1
+		;;
+	Y)
+		USE_LINUXPERF=1
+		;;
+	\?)
+		usage
+		exit 1
+		;;
+	esac
+done
+
+if [ "x${DATABASE}" = "x" ]; then
+	2&> echo "Error: Specify database management system with -a flag"
+	usage
+	exit 1
+fi
+
+if [ "x${DSTOOLS}" = "x" ]; then
+	>&2 echo "Error: DSTOOLS environment variable not set"
+	exit 1
+fi
+if [ ! -d $DSTOOLS ]; then
+	2&> echo "Error: DSTOOLS dir does not exist: $DSTOOLS"
+	exit 2
+fi
+
+if [ "x${DATABASE}" = "x" ]; then
+	DIALECT=$DATABASE
+fi
+
+echo "**`date` power test prep**"
+
+# If a seed file wasn't provided per spec, then don't specify one.
+SEED_FILE="${OUTPUT_DIR}/../seed"
+if [ -f "$SEED_FILE" ]; then
+	read SEED < $SEED_FILE
+	echo "Using generated seed file: $SEED"
+	RNGSEED_ARG="-RNGSEED $SEED"
+fi
+
+# Save dsdgen info.
+(cd $DSTOOLS && \
+		./dsdgen -TABLE dbgen_version \
+				-DIR $OUTPUT_DIR \
+				-SCALE $SCALE \
+				$RNGSEED_ARG \
+				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
+) || exit 1
+
+# Generate the queries.  Clause 4.3.2
+(cd $DSTOOLS && \
+		./dsqgen -DIALECT $DIALECT \
+				-OUTPUT_DIR $OUTPUT_DIR \
+				-SCALE $SCALE \
+				-DIRECTORY $DSQUERY \
+				-STREAMS 1 \
+				-INPUT ../query_templates/$INPUT \
+				$TEMPLATE_ARG \
+				$RNGSEED_ARG \
+				> ${OUTPUT_DIR}/dsqgen.txt 2>&1 \
+) || exit 1
+
+if [ $RESTART -eq 1 ]; then
+	dbt7-${DATABASE}-stop-db || exit 1
+fi
+eval dbt7-${DATABASE}-start-db -o $OUTPUT_DIR $PARAMETERS_ARG || exit 1
+
+dbt7-${DATABASE}-time-statistics -c
+
+# Start collecting system statistics.
+dbt7-sysstats -o $OUTPUT_DIR
+
+# Collect database statistics
+dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
+
+# Clear the read profile counters.
+if [ -f /proc/profile ]; then
+	clearprof
+fi
+
+# Clear the oprofile counters.
+if [ $USE_OPROFILE -eq 1 ]; then
+	clearoprof
+fi
+
+echo "**`date` power test starting**"
+
+# Execute the queries.
+S_TIME_POWER=`date +%s`
+dbt7-${DATABASE}-time-statistics -s -n POWER
+dbt7-${DATABASE}-run-stream -s 0 -o $OUTPUT_DIR
+dbt7-${DATABASE}-time-statistics -e -n POWER
+E_TIME_POWER=`date +%s`
+
+DIFF_TIME=$(( $E_TIME_POWER - $S_TIME_POWER ))
+echo "**`date` power test completed ($DIFF_TIME seconds)**"
+
+# Stop collecting system statistics.
+dbt7-sysstats -o $OUTPUT_DIR -S
+dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
+
+dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
+
+if [ $RESTART -eq 1 ]; then
+	dbt7-${DATABASE}-stop-db || exit 1
+fi
+
+if [ -f /proc/profile ]; then
+	profname="Power_Test"
+	getprof
+fi
+
+if [ $USE_OPROFILE -eq 1 ]; then
+	profname="Power_Test"
+	getoprof
+fi
+
+if [ $USE_LINUXPERF -eq 1 ]; then
+	echo "Generating Linux perf reports for power test..."
+	i=1
+	while [ $i -le 22 ]; do
+		PERFDIR=$OUTPUT_DIR/perf/$i
+		PERFPREFIX=q$i
+		perf report -i $PERFDIR/$PERFPREFIX-perf.data -n \
+				> $PERFDIR/$PERFPREFIX-perf-report.txt
+		perf annotate -l -P -i $PERFDIR/$PERFPREFIX-perf.data \
+				> $PERFDIR/$PERFPREFIX-perf-annotate.txt
+		perf script -L -i $PERFDIR/$PERFPREFIX-perf.data \
+				> $PERFDIR/$PERFPREFIX-perf-trace.txt
+		i=$(( $i + 1 ))
+	done > $OUTPUT_DIR/perf/report-output.txt 2>&1
+fi

@@ -1,0 +1,160 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2022 Mark Wong
+
+
+if [ -z $DBT7DBNAME ]; then
+	echo "Error: DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+PSQL="psql -v ON_ERROR_STOP=1 -X -A -t -d $DBT7DBNAME"
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_store_sales
+ON store_sales (ss_item_sk, ss_ticket_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_store_returns
+ON store_returns (sr_item_sk, sr_ticket_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_catalog_sales
+ON catalog_sales (cs_item_sk, cs_order_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_catalog_returns
+ON catalog_returns (cr_item_sk, cr_order_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_web_sales
+ON web_sales (ws_item_sk, ws_order_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_web_returns
+ON web_returns (wr_item_sk, wr_order_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_inventory
+ON inventory (inv_date_sk, inv_item_sk, inv_warehouse_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_store
+ON store (s_store_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_call_center
+ON call_center (cc_call_center_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_catalog_page
+ON catalog_page (cp_catalog_page_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_web_site
+ON web_site (web_site_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_web_page
+ON web_page (wp_web_page_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_warehouse
+ON warehouse (w_warehouse_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_customer
+ON customer (c_customer_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_customer_address
+ON customer_address (ca_address_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_customer_demographics
+ON customer_demographics (cd_demo_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_date_dim
+ON date_dim (d_date_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_household_demographics
+ON household_demographics (hd_demo_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_item
+ON item (i_item_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_income_band
+ON income_band (ib_income_band_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_promotion
+ON promotion (p_promo_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_reason
+ON reason (r_reason_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_ship_mode
+ON ship_mode (sm_ship_mode_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_time_dim
+ON time_dim (t_time_sk)
+WITH (fillfactor = 100)
+;" &
+
+wait

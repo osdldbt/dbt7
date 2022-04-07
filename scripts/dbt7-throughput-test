@@ -1,0 +1,254 @@
+#!/bin/sh
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2003-2006 Open Source Development Labs, Inc.
+#               2003-2006 Jenny Zhang
+#               2015-2017 2ndQuadrant, Ltd.
+#               2004-2022 Mark Wong
+#
+
+RESTART=0
+USE_OPROFILE=0
+USE_LINUXPERF=0
+
+usage()
+{
+	echo "Usage: `basename $0` is the DBT-7 Throughput Test"
+	echo ""
+	echo "Usage:"
+	echo "  `basename $0` [OPTION]"
+	echo ""
+	echo "Options:"
+	echo "  -a DBMS          database management system: pgsql"
+	echo "  -d DIALECT       dialect override"
+	echo "  -o PATH          path to save results"
+	echo "  -i INPUT         input override, default $INPUT"
+	echo "  -n STREAMS       number of streams"
+	echo "  -r               restart database, if already running"
+	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -y               enable oprofile"
+	echo "  -Y               enable Linux perf"
+	echo ""
+	echo "PostgreSQL options (pgsql):"
+	echo "  -p PARAMETERS    PostgreSQL parameters"
+}
+
+run_data_maintenance()
+{
+	NUM=$1
+
+	echo "**`date` data maintenance test $NUM starting**"
+	S_TIME_POWER=`date +%s`
+	dbt7-${DATABASE}-time-statistics -s -n DATAMAINT${I} || exit 1
+	dbt7-${DATABASE}-time-statistics -e -n DATAMAINT${I} || exit 1
+	E_TIME_POWER=`date +%s`
+	DIFF_TIME=$(( $E_TIME_POWER - $S_TIME_POWER ))
+	echo "**`date` data maintenance test $NUM completed ($DIFF_TIME seconds)**"
+}
+
+run_queries()
+{
+	NUM=$1
+
+	QFILE="${OUTPUT_FILE}/query_${NUM}.sql"
+	if [ -f "$QFILE" ]; then
+		echo "Error: query file $NUM is missing, aborting..."
+		exit 1
+	fi
+
+	STREAM_START=$(( 1 + ($STREAMS * ($NUM - 1)) ))
+	STREAM_END=$(( $STREAMS * $NUM ))
+
+	echo "**`date` throughput test $NUM starting**"
+	S_TIME_POWER=`date +%s`
+
+	dbt7-${DATABASE}-time-statistics -s -n THROUGHPUT${NUM} || exit 1
+	for STREAM in `seq $STREAM_START $STREAM_END`; do
+		dbt7-${DATABASE}-run-stream -s $STREAM -o $OUTPUT_DIR &
+	done
+	wait
+	dbt7-${DATABASE}-time-statistics -e -n THROUGHPUT${NUM} || exit 1
+	E_TIME_POWER=`date +%s`
+
+	DIFF_TIME=$(( $E_TIME_POWER - $S_TIME_POWER ))
+	echo "**`date` throughput test $NUM completed ($DIFF_TIME seconds)**"
+}
+
+while getopts "a:d:hi:n:o:p:r:s:S:yY" OPT; do
+	case $OPT in
+	a)
+		DATABASE=$OPTARG
+		;;
+	d)
+		DIALECT=$OPTARG
+		;;
+	h)
+		usage
+		exit 0
+		;;
+	n)
+		STREAMS=$OPTARG
+		;;
+	i)
+		INPUT=$OPTARG
+		;;
+	o)
+		OUTPUT_DIR=$OPTARG
+		mkdir -p $OUTPUT_DIR
+		;;
+	p)
+		PARAMETERS_ARG="-p \"$OPTARG\""
+		;;
+	r)
+		RESTART=1
+		;;
+	s)
+		SCALE=$OPTARG
+		;;
+	S)
+		SEED_FILE=$OPTARG
+		;;
+	y)
+		USE_OPROFILE=1
+		;;
+	Y)
+		USE_LINUXPERF=1
+		LINUXPERF_FLAG="-Y"
+		;;
+	\?) exit 1
+		;;
+	esac
+done
+
+if [ "x${DATABASE}" = "x" ]; then
+	>&2 echo "Error: Specify database management system with -a flag"
+	exit 1
+fi
+
+if [ "x${STREAMS}" = "x" ]; then
+	>&2 echo "Error: Specify the number of streams with -n flag"
+	exit 1
+fi
+
+if [ "x${DSTOOLS}" = "x" ]; then
+	>&2 echo "Error: DSTOOLS environment variable not set"
+	exit 1
+fi
+if [ ! -d $DSTOOLS ]; then
+	>&2 echo "Error: DSTOOLS dir does not exist: $DSTOOLS"
+	exit 2
+fi
+
+echo $STREAMS > ${OUTPUT_DIR}/streams
+
+# Clear the read profile counters.
+if [ -f /proc/profile ]; then
+	clearprof
+fi
+
+# Clear the oprofile counters.
+if [ $USE_OPROFILE -eq 1 ]; then
+	clearoprof
+fi
+
+echo "**`date` throughput tests prep**"
+
+# If a seed file wasn't provided per spec, then don't specify one.
+SEED_FILE="${OUTPUT_DIR}/../seed"
+if [ -f "$SEED_FILE" ]; then
+	read SEED < $SEED_FILE
+	echo "Using generated seed file: $SEED"
+	RNGSEED_ARG="-RNGSEED $SEED"
+fi
+
+# Save dsdgen info.
+(cd $DSTOOLS && \
+		./dsdgen -TABLE dbgen_version \
+				-DIR $OUTPUT_DIR \
+				-SCALE $SCALE \
+				$RNGSEED_ARG \
+				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
+) || exit 1
+
+# Generate the queries.  Clause 4.3.2
+TOTAL_STREAMS=$(( ($STREAMS * 2) + 1 ))
+(cd $DSTOOLS && \
+		./dsqgen -DIALECT $DIALECT \
+				-OUTPUT_DIR $OUTPUT_DIR \
+				-SCALE $SCALE \
+				-DIRECTORY $DSQUERY \
+				-STREAMS $TOTAL_STREAMS \
+				-INPUT ../query_templates/$INPUT \
+				$TEMPLATE_ARG \
+				$RNGSEED_ARG \
+				> ${OUTPUT_DIR}/dsqgen.txt 2>&1 \
+) || exit 1
+
+if [ $RESTART -eq 1 ]; then
+	dbt7-${DATABASE}-stop-db
+fi
+eval dbt7-${DATABASE}-start-db -o $OUTPUT_DIR $PARAMETERS_ARG || exit 1
+dbt7-${DATABASE}-time-statistics -c
+
+# Start collecting system statistics. 
+dbt7-sysstats -o $OUTPUT_DIR || exit 1
+
+# Start collecting database statistics.
+dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
+
+
+# Execute the throughput and data maintenance tests.
+for I in 1 2; do
+	run_queries $I
+	run_data_maintenance $I
+done
+
+# Stop collecting system statistics.
+dbt7-sysstats -o $OUTPUT_DIR -S
+dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
+
+dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
+
+# Stop the database after the test.
+if [ $RESTART -eq 1 ]; then
+	dbt7-${DATABASE}-stop-db || exit 1
+fi
+
+if [ -f /proc/profile ]; then
+	profname="Throughput_Test"
+	getprof
+fi
+
+if [ $USE_OPROFILE -eq 1 ]; then
+	profname="Throughput_Test"
+	getoprof
+fi
+
+if [ $USE_LINUXPERF -eq 1 ]; then
+	echo "Generating Linux perf reports for throughput test..."
+	perf report -i $PERFDIR/perf.data -n > $PERFDIR/perf-report.txt \
+			2>> $OUTPUT_DIR/perf/report-output.txt
+	perf annotate -l -P -i $PERFDIR/perf.data > $PERFDIR/perf-annotate.txt \
+			2>> $OUTPUT_DIR/perf/report-output.txt
+	perf script -L -i $PERFDIR/perf.data > $PERFDIR/perf-trace.txt \
+			2>> $OUTPUT_DIR/perf/report-output.txt
+
+	i=1
+	while [ $i -le $STREAMS ]; do
+		j=1
+		while [ $j -le 22 ]; do
+			PERFDIR=$OUTPUT_DIR/results/$i/perf/$j
+			PERFPREFIX=q$j
+			perf report -i $PERFDIR/$PERFPREFIX-perf.data -n \
+					> $PERFDIR/$PERFPREFIX-perf-report.txt
+			perf annotate -l -P -i $PERFDIR/$PERFPREFIX-perf.data \
+					> $PERFDIR/$PERFPREFIX-perf-annotate.txt
+			perf script -L -i $PERFDIR/$PERFPREFIX-perf.data \
+					> $PERFDIR/$PERFPREFIX-perf-trace.txt
+			j=$(( $j + 1 ))
+		done
+		i=$(( $i + 1 ))
+	done > $OUTPUT_DIR/perf/perf-output.txt 2>&1
+fi
