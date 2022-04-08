@@ -1,4 +1,4 @@
-vX.Y.Z
+v0.1.0
 
 - Fair use TPC Benchmark(TM) DS kit initially with PostgreSQL support, minus
   data maintenance tests and other auditing aspects
