@@ -9,6 +9,7 @@
 #               2005-2022 Mark Wong
 #
 
+GENERATE_DATA=0
 SCALE=1
 USE_OPROFILE=0
 USE_LINUXPERF=0
@@ -22,6 +23,7 @@ usage()
 	echo ""
 	echo "Options:"
 	echo "  -a DBMS          database management system: pgsql"
+	echo "  -g               generate data files, default no data generated"
 	echo "  -o PATH          path to save results"
 	echo "  -s SCALE         scale factor, default $SCALE"
 	echo "  -y               enable oprofile"
@@ -31,10 +33,13 @@ usage()
 	echo "  -p PARAMETERS    PostgreSQL parameters"
 }
 
-while getopts "a:ho:p:s:yY" OPT; do
+while getopts "a:gho:p:s:yY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
+		;;
+	g)
+		GENERATE_DATA=1
 		;;
 	h)
 		usage
@@ -94,6 +99,34 @@ fi
 				$RNGSEED_ARG \
 				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
 ) || exit 1
+
+# Generate database data
+if [ $GENERATE_DATA -eq 1 ]; then
+	# Determine number of processors for parallelism.
+	CPUS=1
+	if [ -f "/proc/stat" ]; then
+		CPUS=`grep cpu /proc/stat | wc -l`
+		CPUS=$(( $CPUS - 1 ))
+		echo "detected $CPUS processors for parallel data generation and loading"
+	fi
+
+	# Use a separate seed for generating data
+	DGENSEED=`date +%-m%d%H%M%S`
+	echo "data generation seed: $DGENSEED"
+	for I in `seq 1 $I`; do
+		(cd $DSTOOLS && \
+				./dsdgen \
+						-DIR $DS_DATA \
+						-SCALE $SCALE \
+						-TERMINATE N \
+						-PARALLEL $CPUS \
+						-CHILD $I \
+						-RNGSEED $DGENSEED \
+						2> /dev/null \
+		) &
+	done
+	wait
+fi
 
 # Start collecting system statistics.
 dbt7-sysstats -o $OUTPUT_DIR

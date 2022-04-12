@@ -38,6 +38,7 @@ usage()
 	echo "  -a DBMS          dbms under test (pgsql)"
 	echo "  -d DIALECT       dialect override"
 	echo "  -c COMMENT       comment about the test"
+	echo "  -g               generate data files, default no data generated"
 	echo "  -i INPUT         input override, default $INPUT"
 	echo "  -n STREAMS       number of throughput streams, default $STREAMS"
 	echo "  -o PATH          output directory"
@@ -58,7 +59,7 @@ if [ -n "$DEFAULT_PERF_PARAMETERS" ]; then
 	PERF_PARAMETERS="$DEFAULT_PERF_PARAMETERS"
 fi
 
-while getopts "123a:c:d:hi:n:Oo:p:Pq:s:S:u" OPT; do
+while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:u" OPT; do
 	case $OPT in
 	1)
 		RUN_LOAD_TEST=1
@@ -83,6 +84,9 @@ while getopts "123a:c:d:hi:n:Oo:p:Pq:s:S:u" OPT; do
 	d)
 		DIALECT=$OPTARG
 		DIALECT_ARG="-d $DIALECT"
+		;;
+	g)
+		GENERATE_DATA_FLAG="-g"
 		;;
 	h)
 		usage
@@ -180,6 +184,7 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			-a $DATABASE \
 			-o ${OUTPUT_DIR}/load \
 			-s $SCALE \
+			$GENERATE_DATA_FLAG \
 			$LOAD_PARAMETERS_ARG \
 			$OPROFILE_FLAG \
 			$LINUXPERF_FLAG \

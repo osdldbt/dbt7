@@ -1,3 +1,8 @@
+vX.Y.X
+
+- Remove dsdgen FILTER patch because it didn't fix data maintenance data
+  generation
+
 v0.1.0
 
 - Fair use TPC Benchmark(TM) DS kit initially with PostgreSQL support, minus
