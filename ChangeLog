@@ -4,6 +4,7 @@ vX.Y.X
   generation
 - Update numerical data types in the PostgreSQL scripts to meet minimal
   precision requirements
+- Add data maintenance test for PostgreSQL
 
 v0.1.0
 

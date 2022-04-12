@@ -41,5 +41,15 @@ DROP TABLE IF EXISTS reason CASCADE;
 DROP TABLE IF EXISTS ship_mode CASCADE;
 DROP TABLE IF EXISTS time_dim CASCADE;
 DROP TABLE IF EXISTS time_statistics;
+DROP TABLE IF EXISTS s_purchase_lineitem;
+DROP TABLE IF EXISTS s_purchase;
+DROP TABLE IF EXISTS s_catalog_order;
+DROP TABLE IF EXISTS s_web_order;
+DROP TABLE IF EXISTS s_catalog_order_lineitem;
+DROP TABLE IF EXISTS s_web_order_lineitem;
+DROP TABLE IF EXISTS s_store_returns;
+DROP TABLE IF EXISTS s_catalog_returns;
+DROP TABLE IF EXISTS s_web_returns;
+DROP TABLE IF EXISTS s_inventory;
 DROP SEQUENCE IF EXISTS dataset;
 __EOF__

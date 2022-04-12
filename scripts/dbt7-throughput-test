@@ -39,9 +39,16 @@ run_data_maintenance()
 {
 	NUM=$1
 
+	STREAM_START=$(( 1 + ($STREAMS * ($NUM - 1)) ))
+	STREAM_END=$(( $STREAMS * $NUM ))
+
 	echo "**`date` data maintenance test $NUM starting**"
 	S_TIME_POWER=`date +%s`
 	dbt7-${DATABASE}-time-statistics -s -n DATAMAINT${I} || exit 1
+	for I in `seq $STREAM_START $STREAM_END`; do
+		dbt7-${DATABASE}-data-maintenance -i ${OUTPUT_DIR}/.. -o ${OUTPUT_DIR} \
+				-n $I > ${OUTPUT_DIR}/dm_${I}.txt 2>&1
+	done
 	dbt7-${DATABASE}-time-statistics -e -n DATAMAINT${I} || exit 1
 	E_TIME_POWER=`date +%s`
 	DIFF_TIME=$(( $E_TIME_POWER - $S_TIME_POWER ))
@@ -185,6 +192,35 @@ TOTAL_STREAMS=$(( ($STREAMS * 2) + 1 ))
 				$RNGSEED_ARG \
 				> ${OUTPUT_DIR}/dsqgen.txt 2>&1 \
 ) || exit 1
+
+# Determine number of processors for parallelism.
+CPUS=1
+if [ -f "/proc/stat" ]; then
+	CPUS=`grep cpu /proc/stat | wc -l`
+	CPUS=$(( $CPUS - 1 ))
+	echo "detected $CPUS processors for parallel data generation and loading"
+fi
+
+# Generate refresh data
+for J in `seq 1 $(( $STREAMS * 2 ))`; do
+	for I in `seq 1 $CPUS`; do
+		DMDIR=${DS_DATA}/${J}
+		mkdir -p $DMDIR
+		(cd $DSTOOLS && \
+				./dsdgen \
+						-DIR $DMDIR \
+						-SCALE $SCALE \
+						-UPDATE $J \
+						-PARALLEL $CPUS \
+						-CHILD $I \
+						-TERMINATE N \
+						-FORCE Y \
+						$RNGSEED_ARG \
+						2> /dev/null \
+		) &
+	done
+done
+wait
 
 if [ $RESTART -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db

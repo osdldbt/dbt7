@@ -554,6 +554,159 @@ CREATE TABLE time_statistics (
     e_time TIMESTAMP
 );" || exit 1
 
+create_table "
+CREATE TABLE s_purchase_lineitem (
+    plin_purchase_id BIGINT NOT NULL,
+    plin_line_number INTEGER NOT NULL,
+    plin_item_id CHAR(16),
+    plin_promotion_id CHAR(16),
+    plin_quantity INTEGER,
+    plin_sale_price DOUBLE PRECISION,
+    plin_coupon_amt DOUBLE PRECISION,
+    plin_comment CHAR(100)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_purchase (
+    purc_purchase_id BIGINT NOT NULL,
+    purc_store_id CHAR(16),
+    purc_customer_id CHAR(16),
+    purc_purchase_date CHAR(10),
+    purc_purchase_time INTEGER,
+    purc_register_id INTEGER,
+    purc_clerk_id INTEGER,
+    purc_comment CHAR(100)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_catalog_order (
+    cord_order_id BIGINT NOT NULL,
+    cord_bill_customer_id CHAR(16),
+    cord_ship_customer_id CHAR(16),
+    cord_order_date CHAR(10),
+    cord_order_time INTEGER,
+    cord_ship_mode_id CHAR(16),
+    cord_call_center_id CHAR(16),
+    cord_order_comments VARCHAR(100)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_web_order (
+    word_order_id BIGINT NOT NULL,
+    word_bill_customer_id CHAR(16),
+    word_ship_customer_id CHAR(16),
+    word_order_date CHAR(10),
+    word_order_time INTEGER,
+    word_ship_mode_id CHAR(16),
+    word_web_site_id CHAR(16),
+    word_order_comments CHAR(100)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_catalog_order_lineitem (
+    clin_order_id BIGINT NOT NULL,
+    clin_line_number INTEGER,
+    clin_item_id CHAR(16),
+    clin_promotion_id CHAR(16),
+    clin_quantity INTEGER,
+    clin_sales_price DOUBLE PRECISION,
+    clin_coupon_amt DOUBLE PRECISION,
+    clin_warehouse_id CHAR(16),
+    clin_ship_date CHAR(10),
+    clin_catalog_number INTEGER,
+    clin_catalog_page_number INTEGER,
+    clin_ship_cost DOUBLE PRECISION
+);" || exit 1
+
+create_table "
+CREATE TABLE s_web_order_lineitem (
+    wlin_order_id BIGINT NOT NULL,
+    wlin_line_number INTEGER NOT NULL,
+    wlin_item_id CHAR(16),
+    wlin_promotion_id CHAR(16),
+    wlin_quantity INTEGER,
+    wlin_sales_price DOUBLE PRECISION,
+    wlin_coupon_amt DOUBLE PRECISION,
+    wlin_warehouse_id CHAR(16),
+    wlin_ship_date CHAR(10),
+    wlin_ship_cost DOUBLE PRECISION,
+    wlin_web_page_id CHAR(16)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_store_returns (
+    sret_store_id CHAR(16),
+    sret_purchase_id CHAR(16) NOT NULL,
+    sret_line_number INTEGER NOT NULL,
+    sret_item_id CHAR(16) NOT NULL,
+    sret_customer_id CHAR(16),
+    sret_return_date CHAR(10),
+    sret_return_time CHAR(10),
+    sret_ticket_number CHAR(20),
+    sret_return_qty INTEGER,
+    sret_return_amount DOUBLE PRECISION,
+    sret_return_tax DOUBLE PRECISION,
+    sret_return_fee DOUBLE PRECISION,
+    sret_return_ship_cost DOUBLE PRECISION,
+    sret_refunded_cash DOUBLE PRECISION,
+    sret_reversed_charge DOUBLE PRECISION,
+    sret_store_credit DOUBLE PRECISION,
+    sret_reason_id CHAR(16)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_catalog_returns (
+    cret_call_center_id CHAR(16),
+    cret_order_id INTEGER NOT NULL,
+    cret_line_number INTEGER NOT NULL,
+    cret_item_id CHAR(16) NOT NULL,
+    cret_return_customer_id CHAR(16),
+    cret_refund_customer_id CHAR(16),
+    cret_return_date CHAR(10),
+    cret_return_time CHAR(10),
+    cret_return_qty INTEGER,
+    cret_return_amt DOUBLE PRECISION,
+    cret_return_tax DOUBLE PRECISION,
+    cret_return_fee DOUBLE PRECISION,
+    cret_return_ship_cost DOUBLE PRECISION,
+    cret_refunded_cash DOUBLE PRECISION,
+    cret_reversed_charge DOUBLE PRECISION,
+    cret_merchant_credit DOUBLE PRECISION,
+    cret_reason_id CHAR(16),
+    cret_shipmode_id CHAR(16),
+    cret_catalog_page_id CHAR(16),
+    cret_warehouse_id CHAR(16)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_web_returns (
+    wret_web_page_id CHAR(16),
+    wret_order_id INTEGER NOT NULL,
+    wret_line_number INTEGER NOT NULL,
+    wret_item_id CHAR(16) NOT NULL,
+    wret_return_customer_id CHAR(16),
+    wret_refund_customer_id CHAR(16),
+    wret_return_date CHAR(10),
+    wret_return_time CHAR(10),
+    wret_return_qty INTEGER,
+    wret_return_amt DOUBLE PRECISION,
+    wret_return_tax DOUBLE PRECISION,
+    wret_return_fee DOUBLE PRECISION,
+    wret_return_ship_cost DOUBLE PRECISION,
+    wret_refunded_cash DOUBLE PRECISION,
+    wret_reversed_charge DOUBLE PRECISION,
+    wret_account_credit DOUBLE PRECISION,
+    wret_reason_id CHAR(16)
+);" || exit 1
+
+create_table "
+CREATE TABLE s_inventory (
+    invn_warehouse_id CHAR(16) NOT NULL,
+    invn_item_id CHAR(16) NOT NULL,
+    invn_date CHAR(10) NOT NULL,
+    invn_qty_on_hand INTEGER
+);" || exit 1
+
 $PSQL << __EOF__
 CREATE SEQUENCE dataset
 MINVALUE 1

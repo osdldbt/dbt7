@@ -5,6 +5,7 @@ install (
     ${CWD}/dbt7-pgsql-create-db
     ${CWD}/dbt7-pgsql-create-tables
     ${CWD}/dbt7-pgsql-create-indexes
+    ${CWD}/dbt7-pgsql-data-maintenance
     ${CWD}/dbt7-pgsql-dbstat
     ${CWD}/dbt7-pgsql-drop-tables
     ${CWD}/dbt7-pgsql-get-query-time
