@@ -152,6 +152,8 @@ cat << __EOF__ > $SUMMARY
 Database Test 7 Results
 =======================
 
+These results are not comparable to TPC Benchmark(TM) DS Results.
+
 * Queries per Hour: $QPH
 * Scale: $SCALE
 * Number of Query Streams: $STREAMS
