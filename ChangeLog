@@ -1,4 +1,4 @@
-vX.Y.X
+v0.2.0
 
 - Remove dsdgen FILTER patch because it didn't fix data maintenance data
   generation
