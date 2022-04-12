@@ -36,18 +36,18 @@ CREATE TABLE store_sales (
     ss_promo_sk BIGINT,
     ss_ticket_number BIGINT NOT NULL,
     ss_quantity INTEGER,
-    ss_wholesale_cost REAL,
-    ss_list_price REAL,
-	ss_sales_price NUMERIC(7, 2),
-    ss_ext_discount_amt REAL,
-	ss_ext_sales_price NUMERIC(7, 2),
-    ss_ext_wholesale_cost REAL,
-    ss_ext_list_price REAL,
-    ss_ext_tax REAL,
-    ss_coupon_amt REAL,
-    ss_net_paid REAL,
-    ss_net_paid_inc_tax REAL,
-    ss_net_profit REAL
+    ss_wholesale_cost DOUBLE PRECISION,
+    ss_list_price DOUBLE PRECISION,
+	ss_sales_price DOUBLE PRECISION,
+    ss_ext_discount_amt DOUBLE PRECISION,
+	ss_ext_sales_price DOUBLE PRECISION,
+    ss_ext_wholesale_cost DOUBLE PRECISION,
+    ss_ext_list_price DOUBLE PRECISION,
+    ss_ext_tax DOUBLE PRECISION,
+    ss_coupon_amt DOUBLE PRECISION,
+    ss_net_paid DOUBLE PRECISION,
+    ss_net_paid_inc_tax DOUBLE PRECISION,
+    ss_net_profit DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -63,15 +63,15 @@ CREATE TABLE store_returns (
     sr_reason_sk BIGINT,
     sr_ticket_number BIGINT NOT NULL,
     sr_return_quantity INTEGER,
-    sr_return_amt REAL,
-    sr_return_tax REAL,
-    sr_return_amt_inc_tax REAL,
-    sr_fee REAL,
-    sr_return_ship_cost REAL,
-    sr_refunded_cash REAL,
-    sr_reversed_charge REAL,
-    sr_store_credit REAL,
-    sr_net_loss REAL
+    sr_return_amt DOUBLE PRECISION,
+    sr_return_tax DOUBLE PRECISION,
+    sr_return_amt_inc_tax DOUBLE PRECISION,
+    sr_fee DOUBLE PRECISION,
+    sr_return_ship_cost DOUBLE PRECISION,
+    sr_refunded_cash DOUBLE PRECISION,
+    sr_reversed_charge DOUBLE PRECISION,
+    sr_store_credit DOUBLE PRECISION,
+    sr_net_loss DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -95,21 +95,21 @@ CREATE TABLE catalog_sales (
     cs_promo_sk BIGINT,
     cs_order_number BIGINT NOT NULL,
     cs_quantity INTEGER,
-    cs_wholesale_cost REAL,
-    cs_list_price REAL,
-	cs_sales_price NUMERIC(7, 2),
-    cs_ext_discount_amt REAL,
-	cs_ext_sales_price NUMERIC(7, 2),
-    cs_ext_wholesale_cost REAL,
-    cs_ext_list_price REAL,
-    cs_ext_tax REAL,
-    cs_coupon_amt REAL,
-    cs_ext_ship_cost REAL,
-    cs_net_paid REAL,
-    cs_net_paid_inc_tax REAL,
-    cs_net_paid_inc_ship REAL,
-    cs_net_paid_inc_ship_tax REAL,
-    cs_net_profit REAL
+    cs_wholesale_cost DOUBLE PRECISION,
+    cs_list_price DOUBLE PRECISION,
+	cs_sales_price DOUBLE PRECISION,
+    cs_ext_discount_amt DOUBLE PRECISION,
+	cs_ext_sales_price DOUBLE PRECISION,
+    cs_ext_wholesale_cost DOUBLE PRECISION,
+    cs_ext_list_price DOUBLE PRECISION,
+    cs_ext_tax DOUBLE PRECISION,
+    cs_coupon_amt DOUBLE PRECISION,
+    cs_ext_ship_cost DOUBLE PRECISION,
+    cs_net_paid DOUBLE PRECISION,
+    cs_net_paid_inc_tax DOUBLE PRECISION,
+    cs_net_paid_inc_ship DOUBLE PRECISION,
+    cs_net_paid_inc_ship_tax DOUBLE PRECISION,
+    cs_net_profit DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -132,15 +132,15 @@ CREATE TABLE catalog_returns (
     cr_reason_sk BIGINT,
     cr_order_number BIGINT NOT NULL,
     cr_return_quantity INTEGER,
-    cr_return_amount REAL,
-    cr_return_tax REAL,
-    cr_return_amt_inc_tax REAL,
-    cr_fee REAL,
-    cr_return_ship_cost REAL,
-    cr_refunded_cash REAL,
-    cr_reversed_charge REAL,
-    cr_store_credit REAL,
-    cr_net_loss REAL
+    cr_return_amount DOUBLE PRECISION,
+    cr_return_tax DOUBLE PRECISION,
+    cr_return_amt_inc_tax DOUBLE PRECISION,
+    cr_fee DOUBLE PRECISION,
+    cr_return_ship_cost DOUBLE PRECISION,
+    cr_refunded_cash DOUBLE PRECISION,
+    cr_reversed_charge DOUBLE PRECISION,
+    cr_store_credit DOUBLE PRECISION,
+    cr_net_loss DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -164,21 +164,21 @@ CREATE TABLE web_sales (
     ws_promo_sk BIGINT,
     ws_order_number BIGINT NOT NULL,
     ws_quantity INTEGER,
-    ws_wholesale_cost REAL,
-    ws_list_price REAL,
-	ws_sales_price NUMERIC(7, 2),
-    ws_ext_discount_amt REAL,
-	ws_ext_sales_price NUMERIC(7, 2),
-    ws_ext_wholesale_cost REAL,
-    ws_ext_list_price REAL,
-    ws_ext_tax REAL,
-    ws_coupon_amt REAL,
-    ws_ext_ship_cost REAL,
-    ws_net_paid REAL,
-    ws_net_paid_inc_tax REAL,
-    ws_net_paid_inc_ship REAL,
-    ws_net_paid_inc_ship_tax REAL,
-    ws_net_profit REAL
+    ws_wholesale_cost DOUBLE PRECISION,
+    ws_list_price DOUBLE PRECISION,
+	ws_sales_price DOUBLE PRECISION,
+    ws_ext_discount_amt DOUBLE PRECISION,
+	ws_ext_sales_price DOUBLE PRECISION,
+    ws_ext_wholesale_cost DOUBLE PRECISION,
+    ws_ext_list_price DOUBLE PRECISION,
+    ws_ext_tax DOUBLE PRECISION,
+    ws_coupon_amt DOUBLE PRECISION,
+    ws_ext_ship_cost DOUBLE PRECISION,
+    ws_net_paid DOUBLE PRECISION,
+    ws_net_paid_inc_tax DOUBLE PRECISION,
+    ws_net_paid_inc_ship DOUBLE PRECISION,
+    ws_net_paid_inc_ship_tax DOUBLE PRECISION,
+    ws_net_profit DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -198,15 +198,15 @@ CREATE TABLE web_returns (
     wr_reason_sk BIGINT,
     wr_order_number BIGINT NOT NULL,
     wr_return_quantity INTEGER,
-    wr_return_amt REAL,
-    wr_return_tax REAL,
-    wr_return_amt_inc_tax REAL,
-    wr_fee REAL,
-    wr_return_ship_cost REAL,
-    wr_refunded_cash REAL,
-    wr_reversed_charge REAL,
-    wr_account_credit REAL,
-    wr_net_loss REAL
+    wr_return_amt DOUBLE PRECISION,
+    wr_return_tax DOUBLE PRECISION,
+    wr_return_amt_inc_tax DOUBLE PRECISION,
+    wr_fee DOUBLE PRECISION,
+    wr_return_ship_cost DOUBLE PRECISION,
+    wr_refunded_cash DOUBLE PRECISION,
+    wr_reversed_charge DOUBLE PRECISION,
+    wr_account_credit DOUBLE PRECISION,
+    wr_net_loss DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -246,8 +246,8 @@ CREATE TABLE store (
     s_state CHAR(2),
     s_zip CHAR(10),
     s_country VARCHAR(20),
-    s_gmt_offset REAL,
-    s_tax_percentage REAL
+    s_gmt_offset DOUBLE PRECISION,
+    s_tax_percentage DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -281,8 +281,8 @@ CREATE TABLE call_center (
     cc_state CHAR(2),
     cc_zip CHAR(10),
     cc_country VARCHAR(20),
-    cc_gmt_offset REAL,
-    cc_tax_percentage REAL
+    cc_gmt_offset DOUBLE PRECISION,
+    cc_tax_percentage DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -324,8 +324,8 @@ CREATE TABLE web_site (
     web_state CHAR(2),
     web_zip CHAR(10),
     web_country VARCHAR(20),
-    web_gmt_offset REAL,
-    web_tax_percentage REAL
+    web_gmt_offset DOUBLE PRECISION,
+    web_tax_percentage DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -361,7 +361,7 @@ CREATE TABLE warehouse (
     w_state CHAR(2),
     w_zip CHAR(10),
     w_country VARCHAR(20),
-    w_gmt_offset REAL
+    w_gmt_offset DOUBLE PRECISION
 );" || exit 1
 
 create_table "
@@ -399,7 +399,7 @@ CREATE TABLE customer_address (
     ca_state CHAR(2),
     ca_zip CHAR(10),
     ca_country VARCHAR(20),
-    ca_gmt_offset REAL,
+    ca_gmt_offset DOUBLE PRECISION,
     ca_location_type CHAR(20)
 );" || exit 1
 
@@ -464,8 +464,8 @@ CREATE TABLE item (
     i_rec_start_date DATE,
     i_rec_end_date DATE,
     i_item_desc VARCHAR(200),
-    i_current_price REAL,
-    i_wholesale_cost REAL,
+    i_current_price DOUBLE PRECISION,
+    i_wholesale_cost DOUBLE PRECISION,
     i_brand_id INTEGER,
     i_brand CHAR(50),
     i_class_id INTEGER,
@@ -497,7 +497,7 @@ CREATE TABLE promotion (
     p_start_date_sk INTEGER,
     p_end_date_sk INTEGER,
     p_item_sk INTEGER,
-    p_cost REAL,
+    p_cost DOUBLE PRECISION,
     p_response_target INTEGER,
     p_promo_name CHAR(50),
     p_channel_dmail CHAR(1),

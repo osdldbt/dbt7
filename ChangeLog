@@ -2,6 +2,8 @@ vX.Y.X
 
 - Remove dsdgen FILTER patch because it didn't fix data maintenance data
   generation
+- Update numerical data types in the PostgreSQL scripts to meet minimal
+  precision requirements
 
 v0.1.0
 
