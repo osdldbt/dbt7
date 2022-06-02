@@ -3,6 +3,7 @@ vX.Y.X
 - Update example profile for PostgreSQL
 - Attempt to create the specified directory for data files
 - Assume dialect matches database if not specified
+- Add Docker files for testing with PostgtreSQL
 
 v0.2.0
 
