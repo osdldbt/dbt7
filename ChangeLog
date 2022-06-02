@@ -1,6 +1,7 @@
 vX.Y.X
 
 - Update example profile for PostgreSQL
+- Attempt to create the specified directory for data files
 
 v0.2.0
 

@@ -113,6 +113,7 @@ if [ $GENERATE_DATA -eq 1 ]; then
 	# Use a separate seed for generating data
 	DGENSEED=`date +%-m%d%H%M%S`
 	echo "data generation seed: $DGENSEED"
+	mkdir -p $DS_DATA
 	for I in `seq 1 $I`; do
 		(cd $DSTOOLS && \
 				./dsdgen \
