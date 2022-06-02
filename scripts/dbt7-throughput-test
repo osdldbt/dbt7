@@ -148,6 +148,10 @@ if [ ! -d $DSTOOLS ]; then
 	exit 2
 fi
 
+if [ "x${DIALECT}" = "x" ]; then
+	DIALECT=$DATABASE
+fi
+
 echo $STREAMS > ${OUTPUT_DIR}/streams
 
 # Clear the read profile counters.

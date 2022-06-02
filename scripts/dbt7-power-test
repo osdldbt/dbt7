@@ -90,7 +90,7 @@ if [ ! -d $DSTOOLS ]; then
 	exit 2
 fi
 
-if [ "x${DATABASE}" = "x" ]; then
+if [ "x${DIALECT}" = "x" ]; then
 	DIALECT=$DATABASE
 fi
 

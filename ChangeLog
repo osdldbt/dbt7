@@ -2,6 +2,7 @@ vX.Y.X
 
 - Update example profile for PostgreSQL
 - Attempt to create the specified directory for data files
+- Assume dialect matches database if not specified
 
 v0.2.0
 
