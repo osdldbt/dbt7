@@ -1,6 +1,6 @@
 export DSHOME="/home/mark.wong/src/dbt7/DSGen-software-code-3.2.0rc1"
-export DS_QUERY="${DSHOME}/query_templates"
-export DS_CONFIG="${DSHOME}/tools"
+export DSQUERY="${DSHOME}/query_templates"
+export DSTOOLS="${DSHOME}/tools"
 export DS_DATA="/tmp/dbt7data"
 
 export DBT7PGDATA="/tmp/pgdata"
