@@ -1,4 +1,4 @@
-vX.Y.X
+v0.3.0
 
 - Update example profile for PostgreSQL
 - Attempt to create the specified directory for data files
