@@ -78,6 +78,7 @@ MODEL=`grep 'model name' /proc/cpuinfo|head -n 1 | awk -F: '{print $2}'`
 NODE=`hostname`
 
 cat << EOF > $OUTPUT_DIR/config.txt
+date: $(date)
 node: $NODE
 kernel: $KERNEL
 distribution: $DISTRO
