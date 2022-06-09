@@ -131,8 +131,6 @@ if [ ! -f "$SUMMARY" ]; then
 	dbt7-post-process -s $SCALE $FLAGS -o $INDIR
 fi
 
-cp $SUMMARY $REPORT
-
 README="${DIRPOWER}/readme.txt"
 if [ -f "$README" ]; then
 	DBVER=`head -n 1 $README`
@@ -142,7 +140,8 @@ if [ "x$DBVER" = "x" ]; then
 	DBVER=`head -n 1 $README`
 fi
 
-cat << __EOF__ >> $REPORT
+cat << __EOF__ > $REPORT
+$(cat $SUMMARY)
 
 Power Test
 ==========
