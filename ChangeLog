@@ -2,6 +2,8 @@ vX.Y.Z
 
 - Refactor PostgreSQL scripts for handling EXPLAIN output
 - Use PostgreSQL INSERT ... ON CONFLICT DO NOTHING in data maintenance test
+- Create more PostgreSQL indexes for various queries and the data maintenance
+  test
 
 v0.3.0
 

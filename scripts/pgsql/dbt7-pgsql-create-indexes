@@ -20,8 +20,20 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_ss_sold_date_sk
+ON store_sales (ss_sold_date_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_store_returns
 ON store_returns (sr_item_sk, sr_ticket_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_sr_returned_date_sk
+ON store_returns (sr_returned_date_sk)
 WITH (fillfactor = 100)
 ;" &
 
@@ -32,8 +44,20 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_cs_sold_date_sk
+ON catalog_sales (cs_sold_date_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_catalog_returns
 ON catalog_returns (cr_item_sk, cr_order_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cr_returned_date_sk
+ON catalog_returns (cr_returned_date_sk)
 WITH (fillfactor = 100)
 ;" &
 
@@ -44,8 +68,20 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_ws_sold_date_sk
+ON web_sales (ws_sold_date_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_web_returns
 ON web_returns (wr_item_sk, wr_order_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wr_returned_date_sk
+ON web_returns (wr_returned_date_sk)
 WITH (fillfactor = 100)
 ;" &
 
@@ -62,14 +98,50 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_s_store_id
+ON store (s_store_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_call_center
 ON call_center (cc_call_center_sk)
 WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_cc_call_center_id
+ON call_center (cc_call_center_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cc_rec_end_date
+ON call_center (cc_rec_end_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_catalog_page
 ON catalog_page (cp_catalog_page_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cp_catalog_number
+ON catalog_page (cp_catalog_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cp_catalog_page_number
+ON catalog_page (cp_catalog_page_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cp_catalog_page_id
+ON catalog_page (cp_catalog_page_id)
 WITH (fillfactor = 100)
 ;" &
 
@@ -86,14 +158,32 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_wp_web_page_id
+ON web_page (wp_web_page_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_warehouse
 ON warehouse (w_warehouse_sk)
 WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_w_warehouse_id
+ON warehouse (w_warehouse_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_customer
 ON customer (c_customer_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_c_customer_id
+ON customer (c_customer_id)
 WITH (fillfactor = 100)
 ;" &
 
@@ -116,6 +206,12 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_d_date
+ON date_dim (d_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_household_demographics
 ON household_demographics (hd_demo_sk)
 WITH (fillfactor = 100)
@@ -124,6 +220,18 @@ WITH (fillfactor = 100)
 $PSQL -c "
 CREATE UNIQUE INDEX pk_item
 ON item (i_item_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_i_item_id
+ON item (i_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_i_rec_end_date
+ON item (i_rec_end_date)
 WITH (fillfactor = 100)
 ;" &
 
@@ -140,8 +248,20 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_p_promo_id
+ON promotion (p_promo_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_reason
 ON reason (r_reason_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_r_reason_id
+ON reason (r_reason_id)
 WITH (fillfactor = 100)
 ;" &
 
@@ -152,8 +272,260 @@ WITH (fillfactor = 100)
 ;" &
 
 $PSQL -c "
+CREATE INDEX i_sm_ship_mode_id
+ON ship_mode (sm_ship_mode_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
 CREATE UNIQUE INDEX pk_time_dim
 ON time_dim (t_time_sk)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_t_time
+ON time_dim (t_time)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_purchase
+ON s_purchase (purc_purchase_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_purc_customer_id
+ON s_purchase (purc_customer_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_purc_purchase_date
+ON s_purchase (purc_purchase_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_purc_purchase_time
+ON s_purchase (purc_purchase_time)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_purc_store_id
+ON s_purchase (purc_store_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_catalog_order
+ON s_catalog_order (cord_order_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cord_bill_customer_id
+ON s_catalog_order (cord_bill_customer_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cord_ship_customer_id
+ON s_catalog_order (cord_ship_customer_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cord_call_center_id
+ON s_catalog_order (cord_call_center_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cord_order_time
+ON s_catalog_order (cord_order_time)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_cord_ship_mode_id
+ON s_catalog_order (cord_ship_mode_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_web_order
+ON s_web_order (word_order_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_word_ship_customer_id
+ON s_web_order (word_ship_customer_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_word_ship_mode_id
+ON s_web_order (word_ship_mode_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_ship_date
+ON s_catalog_order_lineitem (clin_ship_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_item_id
+ON s_catalog_order_lineitem (clin_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_promotion_id
+ON s_catalog_order_lineitem (clin_promotion_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_order_id
+ON s_catalog_order_lineitem (clin_order_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_catalog_number
+ON s_catalog_order_lineitem (clin_catalog_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_warehouse_id
+ON s_catalog_order_lineitem (clin_warehouse_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_clin_catalog_page_number
+ON s_catalog_order_lineitem (clin_catalog_page_number)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_purchase_lineitem
+ON s_purchase_lineitem (plin_purchase_id, plin_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_plin_item_id
+ON s_purchase_lineitem (plin_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_plin_promotion_id
+ON s_purchase_lineitem (plin_promotion_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wlin_warehouse_id
+ON s_web_order_lineitem (wlin_warehouse_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wlin_promotion_id
+ON s_web_order_lineitem (wlin_promotion_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wlin_ship_date
+ON s_web_order_lineitem (wlin_ship_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wlin_order_id
+ON s_web_order_lineitem (wlin_order_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wlin_web_page_id
+ON s_web_order_lineitem (wlin_web_page_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_store_returns
+ON s_store_returns (sret_purchase_id, sret_line_number, sret_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_sret_store_id
+ON s_store_returns (sret_store_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_sret_return_date
+ON s_store_returns (sret_return_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_sret_customer_id
+ON s_store_returns (sret_customer_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_sret_reason_id
+ON s_store_returns (sret_reason_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_web_returns
+ON s_web_returns (wret_order_id, wret_line_number, wret_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wret_web_page_id
+ON s_web_returns (wret_web_page_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_wret_return_customer_id
+ON s_web_returns (wret_return_customer_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE UNIQUE INDEX pk_s_inventory
+ON s_inventory (invn_warehouse_id, invn_item_id, invn_date)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_invn_item_id
+ON s_inventory (invn_item_id)
+WITH (fillfactor = 100)
+;" &
+
+$PSQL -c "
+CREATE INDEX i_invn_date
+ON s_inventory (invn_date)
 WITH (fillfactor = 100)
 ;" &
 
