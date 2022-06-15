@@ -15,5 +15,5 @@ export DEFAULT_PERF_PARAMETERS="-c unix_socket_directories='/tmp'"
 # Uncomment one of the following to generate the desired EXPLAIN output with the
 # data maintenance test.  Otherwise the DELETE and INSERT statements will
 # execute without any EXPLAIN output.
-#export DBT7DMPREFIX="EXPLAIN"
-#export DBT7DMPREFIX="EXPLAIN (ANALYZE TRUE, BUFFERS TRUE)"
+#export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice;"
+#export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice;"

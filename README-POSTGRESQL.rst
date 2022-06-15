@@ -10,17 +10,17 @@ by default.
 
 Run a 1GB test with 3 streams (with DBT7DMPREFIX unset)::
 
-    dbt7-run-workload -a pgsql -s 1 -d pgsql -i templates-postgresql.lst \
+    dbt7-run-workload -a pgsql -s 1 -d postgresql -i templates-postgresql.lst \
             -n 3 -o /tmp/results
 
-Run a 1GB test with 3 streems and capturing EXPLAIN output query results (with
-DBT7DMPREFIX="EXPLAIN")::
+Run a 1GB test with 3 streems and capturing EXPLAIN output query results::
 
-    dbt7-run-workload -a pgsql -s 1 -d pgsqle -i templates-postgresqle.lst \
-            -n 3 -o /tmp/results
+    export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice;"
+    dbt7-run-workload -a pgsql -s 1 -d postgresqle \
+            -i templates-postgresqle.lst -n 3 -o /tmp/results
 
-Run a 1GB test with 3 streems and capturing EXPLAIN ANALYZE output query
-results (with DBT7DMPREFIX="EXPLAIN (ANALYZE TRUE, BUFFERS TRUE))::
+Run a 1GB test with 3 streems and capturing EXPLAIN ANALYZE output query::
 
-    dbt7-run-workload -a pgsql -s 1 -d pgsqlea -i templates-postgresqlea.lst \
-            -n 3 -o /tmp/results
+    export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice;"
+    dbt7-run-workload -a pgsql -s 1 -d postgresqlea \
+            -i templates-postgresqlea.lst -n 3 -o /tmp/results

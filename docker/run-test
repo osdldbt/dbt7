@@ -36,11 +36,9 @@ if [ $? -ne 0 ]; then
 	${DOCKERDIR}/build-${DBMS} || exit 1
 fi
 
-DBT3PATH="/usr/local/src/dbt3"
-
 docker run --rm --name $DOCKER_NAME --shm-size=128m $DOCKER_TAG \
-		dbt7-run-workload -g -a pgsql -s 1 -d pgsql -i templates-postgresql.lst \
-            -n 3 -o /tmp/results
+		dbt7-run-workload -g -a pgsql -s 1 -d postgresql \
+					-i templates-postgresql.lst -n 3 -o /tmp/results
 if [ $? -ne 0 ]; then
 	usage
 	exit 1
