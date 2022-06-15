@@ -4,6 +4,7 @@ vX.Y.Z
 - Use PostgreSQL INSERT ... ON CONFLICT DO NOTHING in data maintenance test
 - Create more PostgreSQL indexes for various queries and the data maintenance
   test
+- Add optional dsdgen patch for testing queries for PostgreSQL
 
 v0.3.0
 
