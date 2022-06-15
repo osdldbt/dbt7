@@ -33,6 +33,16 @@ usage()
 	echo "  -p PARAMETERS    PostgreSQL parameters"
 }
 
+bailout()
+{
+	echo ""
+	echo "***ERROR: $(date)***"
+	echo "see full output in: $OUTPUTFILE"
+	tail $OUTPUTFILE
+	echo ""
+	exit 1
+}
+
 while getopts "a:gho:p:s:yY" OPT; do
 	case $OPT in
 	a)
@@ -98,7 +108,7 @@ fi
 				-SCALE $SCALE \
 				$RNGSEED_ARG \
 				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
-) || exit 1
+) || bailout
 
 # Generate database data
 if [ $GENERATE_DATA -eq 1 ]; then
@@ -133,10 +143,10 @@ fi
 dbt7-sysstats -o $OUTPUT_DIR
 
 eval dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG \
-		>> ${OUTPUT_DIR}/output.txt 2>&1
+		>> $OUTPUTFILE 2>&1
 
-dbt7-${DATABASE}-drop-tables >> ${OUTPUT_DIR}/output.txt 2>&1 || exit 1
-dbt7-${DATABASE}-create-tables >> ${OUTPUT_DIR}/output.txt 2>&1 || exit 1
+dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
+dbt7-${DATABASE}-create-tables >> $OUTPUTFILE 2>&1 || bailout
 
 # Collect database statistics
 dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
@@ -158,12 +168,12 @@ fi
 
 echo "**`date` load test starting**"
 S_TIME=`date +%s`
-dbt7-${DATABASE}-time-statistics -s -n LOADTEST || exit 1
+dbt7-${DATABASE}-time-statistics -s -n LOADTEST || bailout
 
 eval $PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE $SEED_ARG \
-		>> $OUTPUTFILE 2>&1 || exit 1
+		>> $OUTPUTFILE 2>&1 || bailout
 
-dbt7-${DATABASE}-time-statistics -e -n LOADTEST || exit 1
+dbt7-${DATABASE}-time-statistics -e -n LOADTEST || bailout
 E_TIME=`date +%s`
 DIFF_TIME=`expr $E_TIME - $S_TIME`
 echo "**`date` load test completed  ($DIFF_TIME seconds)**"
