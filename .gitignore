@@ -23,6 +23,7 @@ builds/
 
 # quilt
 patches/*~
+patches/series
 .pc/
 
 # TPC
