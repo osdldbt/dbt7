@@ -65,7 +65,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query1.tpl
 -and ctr1.ctr_customer_sk = c_customer_sk
 -order by c_customer_id
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query10.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query10.tpl
@@ -169,7 +169,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query10.tpl
 - 
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query11.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query11.tpl
@@ -294,7 +294,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query11.tpl
 -         ,t_s_secyear.customer_last_name
 -         ,[SELECTONE]
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query12.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query12.tpl
@@ -372,7 +372,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query12.tpl
 -        ,revenueratio
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query13.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query13.tpl
@@ -467,7 +467,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query13.tpl
 -     ))
 -;
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
@@ -720,7 +720,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
 - order by this_year.channel, this_year.i_brand_id, this_year.i_class_id, this_year.i_category_id
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query15.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query15.tpl
@@ -782,7 +782,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query15.tpl
 - order by ca_zip
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query16postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query16postgresql.tpl
@@ -864,7 +864,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query16postgresql.tpl
 -[_LIMITC];
 -
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query17.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query17.tpl
@@ -950,7 +950,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query17.tpl
 -         ,s_state
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query18.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query18.tpl
@@ -1029,7 +1029,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query18.tpl
 -	i_item_id
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query19.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query19.tpl
@@ -1099,7 +1099,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query19.tpl
 -[_LIMITC] ;
 -
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query20.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query20.tpl
@@ -1172,7 +1172,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query20.tpl
 -         ,revenueratio
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query21.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query21.tpl
@@ -1243,7 +1243,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query21.tpl
 - order by w_warehouse_name
 -         ,i_item_id
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query22.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query22.tpl
@@ -1303,7 +1303,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query22.tpl
 -                       ,i_category)
 -order by qoh, i_product_name, i_brand, i_class, i_category
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query23postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query23postgresql.tpl
@@ -1453,7 +1453,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query23postgresql.tpl
 -       group by c_last_name,c_first_name) y 
 -     order by c_last_name,c_first_name,sales
 -  [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query24.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query24.tpl
@@ -1606,7 +1606,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query24.tpl
 -;
 -
 - 
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query25.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query25.tpl
@@ -1696,7 +1696,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query25.tpl
 - ,s_store_name
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query26.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query26.tpl
@@ -1763,7 +1763,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query26.tpl
 - 
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query27.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query27.tpl
@@ -1837,7 +1837,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query27.tpl
 -         ,s_state
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query28.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query28.tpl
@@ -1933,7 +1933,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query28.tpl
 -          or ss_coupon_amt between [COUPONAMT.6] and [COUPONAMT.6]+1000
 -          or ss_wholesale_cost between [WHOLESALECOST.6] and [WHOLESALECOST.6]+20)) B6
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query29.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query29.tpl
@@ -2024,7 +2024,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query29.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query2postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query2postgresql.tpl
@@ -2124,7 +2124,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query2postgresql.tpl
 -        d_year = [YEAR]+1) z
 - where d_week_seq1=d_week_seq2-53
 - order by d_week_seq1;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query3.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query3.tpl
@@ -2188,7 +2188,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query3.tpl
 -         ,brand_id
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query30.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query30.tpl
@@ -2260,7 +2260,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query30.tpl
 -                  ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
 -                  ,c_last_review_date_sk,ctr_total_return
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query31.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query31.tpl
@@ -2354,7 +2354,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query31.tpl
 -       > case when ss2.store_sales > 0 then ss3.store_sales/ss2.store_sales else null end
 - order by [AGG];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query32postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query32postgresql.tpl
@@ -2425,7 +2425,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query32postgresql.tpl
 -      ) 
 -[_LIMITC]; 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query33.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query33.tpl
@@ -2544,7 +2544,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query33.tpl
 - group by i_manufact_id
 - order by total_sales
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query34.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query34.tpl
@@ -2627,7 +2627,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query34.tpl
 -      and cnt between 15 and 20
 -    order by c_last_name,c_first_name,c_salutation,c_preferred_cust_flag desc, ss_ticket_number;
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query35.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query35.tpl
@@ -2731,7 +2731,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query35.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query36.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query36.tpl
@@ -2811,7 +2811,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query36.tpl
 -  ,rank_within_parent
 -  [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query37.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query37.tpl
@@ -2874,7 +2874,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query37.tpl
 - 
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query38.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query38.tpl
@@ -2938,7 +2938,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query38.tpl
 -) hot_cust
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query39.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query39.tpl
@@ -3037,7 +3037,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query39.tpl
 -order by inv1.w_warehouse_sk,inv1.i_item_sk,inv1.d_moy,inv1.mean,inv1.cov
 -        ,inv2.d_moy,inv2.mean, inv2.cov
 -;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query4.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query4.tpl
@@ -3197,7 +3197,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query4.tpl
 -         ,t_s_secyear.customer_last_name
 -         ,[SELECTONE]
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query40postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query40postgresql.tpl
@@ -3266,7 +3266,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query40postgresql.tpl
 -    w_state,i_item_id
 - order by w_state,i_item_id
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query41.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query41.tpl
@@ -3362,7 +3362,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query41.tpl
 - order by i_product_name
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query42.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query42.tpl
@@ -3432,7 +3432,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query42.tpl
 - 
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query43.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query43.tpl
@@ -3493,7 +3493,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query43.tpl
 - group by s_store_name, s_store_id
 - order by s_store_name, s_store_id,sun_sales,mon_sales,tue_sales,wed_sales,thu_sales,fri_sales,sat_sales
 - [_LIMITC]; 
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query44.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query44.tpl
@@ -3571,7 +3571,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query44.tpl
 -order by asceding.rnk
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query45.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query45.tpl
@@ -3633,7 +3633,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query45.tpl
 - group by ca_zip, [GBOBC]
 - order by ca_zip, [GBOBC]
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query46.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query46.tpl
@@ -3717,7 +3717,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query46.tpl
 -          ,ss_ticket_number
 -  [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query47.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query47.tpl
@@ -3812,7 +3812,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query47.tpl
 - order by sum_sales - avg_monthly_sales, [ORDERBY]
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query48.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query48.tpl
@@ -3922,7 +3922,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query48.tpl
 - )
 -;
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query49postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query49postgresql.tpl
@@ -4092,7 +4092,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query49postgresql.tpl
 - ) query49
 - order by 1,4,5,2
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query50.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query50.tpl
@@ -4194,7 +4194,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query50.tpl
 -        ,s_zip
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query51.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query51.tpl
@@ -4280,7 +4280,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query51.tpl
 -order by item_sk
 -        ,d_date
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query52.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query52.tpl
@@ -4345,7 +4345,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query52.tpl
 -[_LIMITC] ;
 -
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query53.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query53.tpl
@@ -4415,7 +4415,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query53.tpl
 -	 i_manufact_id
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query54.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query54.tpl
@@ -4516,7 +4516,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query54.tpl
 - order by segment, num_customers
 - [_LIMITC];
 - 
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query55.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query55.tpl
@@ -4574,7 +4574,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query55.tpl
 -[_LIMITC] ;
 -
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query56.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query56.tpl
@@ -4688,7 +4688,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query56.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query57.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query57.tpl
@@ -4781,7 +4781,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query57.tpl
 - order by sum_sales - avg_monthly_sales, [ORDERBY]
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query58.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query58.tpl
@@ -4888,7 +4888,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query58.tpl
 -         ,ss_item_rev
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query59.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query59.tpl
@@ -4973,7 +4973,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query59.tpl
 - order by s_store_name1,s_store_id1,d_week_seq1
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query5postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query5postgresql.tpl
@@ -5144,7 +5144,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query5postgresql.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query6.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query6.tpl
@@ -5212,7 +5212,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query6.tpl
 - order by cnt, a.ca_state 
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query60.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query60.tpl
@@ -5333,7 +5333,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query60.tpl
 - order by i_item_id
 -      ,total_sales
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query61.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query61.tpl
@@ -5422,7 +5422,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query61.tpl
 -order by promotions, total
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query62.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query62.tpl
@@ -5499,7 +5499,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query62.tpl
 -       ,web_name
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query63.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query63.tpl
@@ -5569,7 +5569,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query63.tpl
 -        ,sum_sales
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query64.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query64.tpl
@@ -5732,7 +5732,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query64.tpl
 -       ,cs2.cnt
 -       ,cs1.s1
 -       ,cs2.s1;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query65.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query65.tpl
@@ -5800,7 +5800,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query65.tpl
 -       i_item_sk = sc.ss_item_sk
 - order by s_store_name, i_item_desc
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query66.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query66.tpl
@@ -6067,7 +6067,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query66.tpl
 - order by w_warehouse_name
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query67.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query67.tpl
@@ -6154,7 +6154,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query67.tpl
 - 
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query68.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query68.tpl
@@ -6242,7 +6242,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query68.tpl
 -         ,ss_ticket_number
 - [_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query69.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query69.tpl
@@ -6333,7 +6333,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query69.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query7.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query7.tpl
@@ -6399,7 +6399,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query7.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query70postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query70postgresql.tpl
@@ -6482,7 +6482,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query70postgresql.tpl
 -  ,rank_within_parent
 - [_LIMITC];
 - 
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query71.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query71.tpl
@@ -6562,7 +6562,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query71.tpl
 - group by i_brand, i_brand_id,t_hour,t_minute
 - order by ext_price desc, i_brand_id
 - ;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query72.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query72.tpl
@@ -6635,7 +6635,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query72.tpl
 -order by total_cnt desc, i_item_desc, w_warehouse_name, d_week_seq
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query73.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query73.tpl
@@ -6710,7 +6710,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query73.tpl
 -      and cnt between 1 and 5
 -    order by cnt desc, c_last_name asc;
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query74.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query74.tpl
@@ -6815,7 +6815,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query74.tpl
 - order by [ORDERC.1],[ORDERC.2],[ORDERC.3]
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query75.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query75.tpl
@@ -6928,7 +6928,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query75.tpl
 -   AND CAST(curr_yr.sales_cnt AS DECIMAL(17,2))/CAST(prev_yr.sales_cnt AS DECIMAL(17,2))<0.9
 - ORDER BY sales_cnt_diff,sales_amt_diff
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query76.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query76.tpl
@@ -6998,7 +6998,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query76.tpl
 - 
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query77postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query77postgresql.tpl
@@ -7149,7 +7149,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query77postgresql.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query78.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query78.tpl
@@ -7249,7 +7249,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query78.tpl
 -  other_chan_sales_price,
 -  ratio
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query79.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query79.tpl
@@ -7315,7 +7315,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query79.tpl
 - order by c_last_name,c_first_name,substr(s_city,1,30), profit
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query8.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query8.tpl
@@ -7465,7 +7465,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query8.tpl
 - group by s_store_name
 - order by s_store_name
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query80postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query80postgresql.tpl
@@ -7602,7 +7602,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query80postgresql.tpl
 - order by channel
 -         ,id
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query81.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query81.tpl
@@ -7676,7 +7676,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query81.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
@@ -7738,7 +7738,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query83.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query83.tpl
@@ -7848,7 +7848,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query83.tpl
 - order by sr_items.item_id
 -         ,sr_item_qty
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query84.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query84.tpl
@@ -7912,7 +7912,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query84.tpl
 - [_LIMITC];
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query85.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query85.tpl
@@ -8039,7 +8039,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query85.tpl
 -        ,avg(wr_refunded_cash)
 -        ,avg(wr_fee)
 -[_LIMITC]; 
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query86postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query86postgresql.tpl
@@ -8114,7 +8114,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query86postgresql.tpl
 -   case when lochierarchy = 0 then i_category end,
 -   rank_within_parent 
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query87.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query87.tpl
@@ -8176,7 +8176,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query87.tpl
 -         and d_month_seq between [DMS] and [DMS]+11)
 -) cool_cust
 -;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query88.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query88.tpl
@@ -8310,7 +8310,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query88.tpl
 -          (household_demographics.hd_dep_count = [HOUR.3] and household_demographics.hd_vehicle_count<=[HOUR.3]+2))
 -     and store.s_store_name = 'ese') s8
 -;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query89.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query89.tpl
@@ -8391,7 +8391,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query89.tpl
 -where case when (avg_monthly_sales <> 0) then (abs(sum_sales - avg_monthly_sales) / avg_monthly_sales) else null end > 0.1
 -order by sum_sales - avg_monthly_sales, s_store_name
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query9.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query9.tpl
@@ -8485,7 +8485,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query9.tpl
 -;
 - 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query90.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query90.tpl
@@ -8549,7 +8549,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query90.tpl
 -         and web_page.wp_char_count between 5000 and 5200) pt
 - order by am_pm_ratio
 - [_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query91.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query91.tpl
@@ -8623,7 +8623,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query91.tpl
 -and     ca_gmt_offset           = [GMT]
 -group by cc_call_center_id,cc_name,cc_manager,cd_marital_status,cd_education_status
 -order by sum(cr_net_loss) desc;
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query92postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query92postgresql.tpl
@@ -8697,7 +8697,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query92postgresql.tpl
 -order by sum(ws_ext_discount_amt)
 -[_LIMITC]; 
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query93.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query93.tpl
@@ -8756,7 +8756,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query93.tpl
 -      group by ss_customer_sk
 -      order by sumsales, ss_customer_sk
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query94postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query94postgresql.tpl
@@ -8829,7 +8829,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query94postgresql.tpl
 -order by count(distinct ws_order_number)
 -[_LIMITC];
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query95postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query95postgresql.tpl
@@ -8906,7 +8906,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query95postgresql.tpl
 -[_LIMITC];
 -
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query96.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query96.tpl
@@ -8964,7 +8964,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query96.tpl
 -    and store.s_store_name = 'ese'
 -order by count(*)
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query97.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query97.tpl
@@ -9032,7 +9032,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query97.tpl
 -from ssci full outer join csci on (ssci.customer_sk=csci.customer_sk
 -                               and ssci.item_sk = csci.item_sk)
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query98postgresql.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query98postgresql.tpl
@@ -9108,7 +9108,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query98postgresql.tpl
 -        ,i_item_desc
 -        ,revenueratio;
 -
-+SELECT 1;
++select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query99.tpl
 ===================================================================
 --- dbt7.orig/DSGen-software-code-3.2.0rc1/query_templates/query99.tpl
@@ -9183,4 +9183,4 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query99.tpl
 -        ,sm_type
 -        ,cc_name
 -[_LIMITC];
-+SELECT 1;
++select pg_sleep(1);

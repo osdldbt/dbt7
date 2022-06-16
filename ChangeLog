@@ -2,6 +2,8 @@ vX.Y.Z
 
 - Check for rst2html5 in addition to rst2html5.py when generating reports
 - Add -U flag to run_workload for using unprivileged operating system users
+- Update dsdgen patch for testing queries for PostgreSQL to use pg_sleep(1)
+  instead of SELECT 1
 
 v0.4.0
 
