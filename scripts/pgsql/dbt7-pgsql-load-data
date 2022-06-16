@@ -18,10 +18,12 @@ usage()
 	echo "Options:"
 	echo "  -s SCALE   set the scale factor"
 	echo "  -S SEED    set the rngseed"
+	echo "  -U         run test as an unprivileged user"
 }
 
 CPUS=1
 PSQL="psql -v ON_ERROR_STOP=1 -X -d $DBT7DBNAME"
+PRIVILEGED=1
 
 if [ "x$DSTOOLS" = "x" ]; then
 	echo "DSTOOLS env var is not set"
@@ -48,8 +50,11 @@ __EOF__
 			# are available processors.
 			continue
 		fi
+		if [ $PRIVILEGED -ne 1 ]; then
+			COPYPREFIX="\\"
+		fi
 		$PSQL << __EOF__ &
-COPY $TABLE FROM '$FILENAME' WITH (DELIMITER '|', NULL '');
+${COPYPREFIX}COPY $TABLE FROM '$FILENAME' WITH (DELIMITER '|', NULL '');
 __EOF__
 	done
 
@@ -61,7 +66,7 @@ SET (autovacuum_enabled = true, toast.autovacuum_enabled = true);
 __EOF__
 }
 
-while getopts "hs:S:" OPT; do
+while getopts "hs:S:U" OPT; do
 	case $OPT in
 	h)
 		usage
@@ -73,7 +78,12 @@ while getopts "hs:S:" OPT; do
 	S)
 		RNGSEED_FLAG="-RNGSEED $OPTARG"
 		;;
-	\?) exit 1
+	U)
+		PRIVILEGED=0
+		;;
+	\?)
+		usage
+		exit 1
 		;;
 	esac
 done

@@ -13,6 +13,7 @@
 
 CPUS=1
 PSQL="psql -v ON_ERROR_STOP=1 -X -e -d $DBT7DBNAME"
+PRIVILEGED=1
 
 usage()
 {
@@ -26,6 +27,7 @@ usage()
 	echo "  -n STREAM    stream number"
 	echo "  -o PATH      path to save results"
 	echo "  -s SCALE     stream to execute, default extract from config.txt"
+	echo "  -U           run test as an unprivileged user"
 }
 
 delete_method3()
@@ -60,8 +62,10 @@ __EOF__
 			# are available processors.
 			continue
 		fi
+		if [ $PRIVILEGED -ne 1 ]; then
+			COPYPREFIX="\\"
 		$PSQL << __EOF__ &
-COPY $TABLE FROM '$FILENAME' WITH (DELIMITER '|', NULL '');
+${COPYPREFIX}COPY $TABLE FROM '$FILENAME' WITH (DELIMITER '|', NULL '');
 __EOF__
 	done
 
@@ -90,6 +94,9 @@ while getopts "hi:n:o:s:" OPT; do
 		;;
 	s)
 		SCALE=$OPTARG
+		;;
+	U)
+		PRIVILEGED=0
 		;;
 	\?)
 		usage

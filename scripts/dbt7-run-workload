@@ -16,6 +16,7 @@ killall sar sadc pidstat dbt7-$DATABASE-dbstat > /dev/null 2>&1' TERM
 COMMENT=""
 FLAG_POWER_TEST=""
 FLAG_THROUGHPUT_TEST=""
+PRIVILEGED=1
 RUN_ALL_TESTS=1
 RUN_LOAD_TEST=0
 RUN_POWER_TEST=0
@@ -45,6 +46,7 @@ usage()
 	echo "  -O               enable oprofile (Linux only)"
 	echo "  -P               enable linux perf (Linux only)"
 	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -U               run test as an unprivileged user"
 	echo ""
 	echo "PostgreSQL options (pgsql):"
 	echo "  -p PARAMETERS    database parameters for the load test"
@@ -59,7 +61,7 @@ if [ -n "$DEFAULT_PERF_PARAMETERS" ]; then
 	PERF_PARAMETERS="$DEFAULT_PERF_PARAMETERS"
 fi
 
-while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:u" OPT; do
+while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:U" OPT; do
 	case $OPT in
 	1)
 		RUN_LOAD_TEST=1
@@ -127,6 +129,10 @@ while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:u" OPT; do
 	S)
 		SEED=$OPTARG
 		;;
+	U)
+		PRIVILEGED=0
+		PRIVILEGED_ARG="-U"
+		;;
 	\?)
 		usage
 		exit 1
@@ -188,8 +194,9 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			$LOAD_PARAMETERS_ARG \
 			$OPROFILE_FLAG \
 			$LINUXPERF_FLAG \
+			$PRIVILEGED_ARG \
 			|| exit 1
-else
+elif [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-start-db -o $OUTPUT_DIR
 fi
 
@@ -216,7 +223,7 @@ if [ $RUN_POWER_TEST -eq 1 ]; then
 			$PERF_PARAMETERS_ARG\
 			$OPROFILE_FLAG \
 			$LINUXPERF_FLAG \
-			|| exit 1
+			$PRIVILEGED_ARG
 	if [ $? -eq 1 ] ; then
 		2&> echo "Error: power test problem!"
 		exit 1
@@ -233,6 +240,7 @@ if [ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
 			$INPUT_ARG \
 			$THROUGHPUT_PARAMETERS_ARG \
 			$OPROFILE_FLAG \
+			$PRIVILEGED_ARG \
 			$LINUXPERF_FLAG
 	if [ $? -eq 1 ] ; then
 		2&> echo "throughput test problem!"
@@ -248,7 +256,9 @@ if [ $RUN_POWER_TEST -eq 1 ] || [ $RUN_THROUGHPUT_TEST -eq 1 ]; then
 fi
 
 # Stop the database at the end of the test.
-dbt7-${DATABASE}-stop-db
+if [ $PRIVILEGED -eq 1 ]; then
+	dbt7-${DATABASE}-stop-db
+fi
 
 echo "Generating report... "
 dbt7-generate-report -i $OUTPUT_DIR -o ${OUTPUT_DIR}/report

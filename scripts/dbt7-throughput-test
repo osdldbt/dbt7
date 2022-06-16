@@ -9,6 +9,7 @@
 #               2004-2022 Mark Wong
 #
 
+PRIVILEGED=1
 RESTART=0
 USE_OPROFILE=0
 USE_LINUXPERF=0
@@ -28,6 +29,7 @@ usage()
 	echo "  -n STREAMS       number of streams"
 	echo "  -r               restart database, if already running"
 	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -U               run test as an unprivileged user"
 	echo "  -y               enable oprofile"
 	echo "  -Y               enable Linux perf"
 	echo ""
@@ -47,7 +49,7 @@ run_data_maintenance()
 	dbt7-${DATABASE}-time-statistics -s -n DATAMAINT${I} || exit 1
 	for I in `seq $STREAM_START $STREAM_END`; do
 		dbt7-${DATABASE}-data-maintenance -i ${OUTPUT_DIR}/.. -o ${OUTPUT_DIR} \
-				-n $I > ${OUTPUT_DIR}/dm_${I}.txt 2>&1
+				-n $I $PRIVILEGED_ARG > ${OUTPUT_DIR}/dm_${I}.txt 2>&1
 	done
 	dbt7-${DATABASE}-time-statistics -e -n DATAMAINT${I} || exit 1
 	E_TIME_POWER=`date +%s`
@@ -83,7 +85,7 @@ run_queries()
 	echo "**`date` throughput test $NUM completed ($DIFF_TIME seconds)**"
 }
 
-while getopts "a:d:hi:n:o:p:r:s:S:yY" OPT; do
+while getopts "a:d:hi:n:o:p:r:s:S:UyY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
@@ -116,6 +118,10 @@ while getopts "a:d:hi:n:o:p:r:s:S:yY" OPT; do
 		;;
 	S)
 		SEED_FILE=$OPTARG
+		;;
+	U)
+		PRIVILEGED=0
+		PRIVILEGED_ARG="-U"
 		;;
 	y)
 		USE_OPROFILE=1
@@ -226,10 +232,12 @@ for J in `seq 1 $(( $STREAMS * 2 ))`; do
 done
 wait
 
-if [ $RESTART -eq 1 ]; then
+if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db
 fi
-eval dbt7-${DATABASE}-start-db -o $OUTPUT_DIR $PARAMETERS_ARG || exit 1
+if [ $PRIVILEGED -eq 1 ]; then
+	eval dbt7-${DATABASE}-start-db -o $OUTPUT_DIR $PARAMETERS_ARG || exit 1
+fi
 dbt7-${DATABASE}-time-statistics -c
 
 # Start collecting system statistics. 
@@ -252,7 +260,7 @@ dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 
 # Stop the database after the test.
-if [ $RESTART -eq 1 ]; then
+if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1
 fi
 

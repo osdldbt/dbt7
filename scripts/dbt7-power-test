@@ -9,6 +9,7 @@
 #               2004-2022 Mark Wong
 
 INPUT="templates.lst"
+PRIVILEGED=1
 RESTART=0
 USE_OPROFILE=0
 USE_LINUXPERF=0
@@ -27,6 +28,7 @@ usage()
 	echo "  -i INPUT         input override, default $INPUT"
 	echo "  -r               restart database, if already running"
 	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -U               run test as an unprivileged user"
 	echo "  -y               enable oprofile"
 	echo "  -Y               enable Linux perf"
 	echo ""
@@ -34,7 +36,7 @@ usage()
 	echo "  -p PARAMETERS    PostgreSQL parameters"
 }
 
-while getopts "a:d:hi:p:o:rs:yY" OPT; do
+while getopts "a:d:hi:p:o:rs:UyY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
@@ -61,6 +63,9 @@ while getopts "a:d:hi:p:o:rs:yY" OPT; do
 		;;
 	s)
 		SCALE=$OPTARG
+		;;
+	U)
+		PRIVILEGED=0
 		;;
 	y)
 		USE_OPROFILE=1
@@ -126,10 +131,12 @@ fi
 				> ${OUTPUT_DIR}/dsqgen.txt 2>&1 \
 ) || exit 1
 
-if [ $RESTART -eq 1 ]; then
+if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1
 fi
-eval dbt7-${DATABASE}-start-db -o $OUTPUT_DIR $PARAMETERS_ARG || exit 1
+if [ $PRIVILEGED -eq 1 ]; then
+	eval dbt7-${DATABASE}-start-db -o $OUTPUT_DIR $PARAMETERS_ARG || exit 1
+fi
 
 dbt7-${DATABASE}-time-statistics -c
 
@@ -167,7 +174,7 @@ dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 
-if [ $RESTART -eq 1 ]; then
+if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1
 fi
 

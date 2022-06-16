@@ -26,6 +26,7 @@ usage()
 	echo "  -g               generate data files, default no data generated"
 	echo "  -o PATH          path to save results"
 	echo "  -s SCALE         scale factor, default $SCALE"
+	echo "  -U               run test as an unprivileged user"
 	echo "  -y               enable oprofile"
 	echo "  -Y               enable Linux perf"
 	echo ""
@@ -43,7 +44,7 @@ bailout()
 	exit 1
 }
 
-while getopts "a:gho:p:s:yY" OPT; do
+while getopts "a:gho:p:s:UyY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
@@ -64,6 +65,9 @@ while getopts "a:gho:p:s:yY" OPT; do
 		;;
 	s)
 		SCALE=$OPTARG
+		;;
+	U)
+		PRIVILEGED_ARG="-U"
 		;;
 	y)
 		USE_OPROFILE=1
@@ -142,7 +146,7 @@ fi
 # Start collecting system statistics.
 dbt7-sysstats -o $OUTPUT_DIR
 
-eval dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG \
+eval dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG $PRIVILEGED_ARG \
 		>> $OUTPUTFILE 2>&1
 
 dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
@@ -171,7 +175,7 @@ S_TIME=`date +%s`
 dbt7-${DATABASE}-time-statistics -s -n LOADTEST || bailout
 
 eval $PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE $SEED_ARG \
-		>> $OUTPUTFILE 2>&1 || bailout
+		$PRIVILEGED_ARG >> $OUTPUTFILE 2>&1 || bailout
 
 dbt7-${DATABASE}-time-statistics -e -n LOADTEST || bailout
 E_TIME=`date +%s`
