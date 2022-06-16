@@ -1,4 +1,4 @@
-vX.Y.Z
+v0.4.0
 
 - Refactor PostgreSQL scripts for handling EXPLAIN output
 - Use PostgreSQL INSERT ... ON CONFLICT DO NOTHING in data maintenance test
