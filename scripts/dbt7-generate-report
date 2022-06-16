@@ -266,22 +266,30 @@ __EOF__
 
 write_system_stats $REPORTTHROUGHPUT throughput
 
-#
-# Convert reStructuredText files to HTML and PDF.
-#
-
 echo "Generated text file reports:"
 ls -1v ${OUTDIR}/*.rst
 echo ""
 
-which rst2html5.py > /dev/null 2>&1
-if [ $? -eq 0 ]; then
+#
+# Convert reStructuredText files to HTML and PDF.
+#
+
+RST2HTML5=""
+for POSSIBILITY in rst2html5.py rst2html5; do
+	which $POSSIBILITY > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		RST2HTML5="$POSSIBILITY"
+		break
+	fi
+done
+
+if [ ! "x${RST2HTML5}" = "x" ]; then
 	# pandoc can't properly convert multi-cell table headings from rst but
 	# Sphinx's rst2html can. Then pandoc can convert multi-cell table headings
 	# from html to pdf.
-	rst2html5.py ${OUTDIR}/report.rst ${OUTDIR}/report.html 2> /dev/null &
+	$RST2HTML5 ${OUTDIR}/report.rst ${OUTDIR}/report.html 2> /dev/null &
 	for TEST in load power throughput; do 
-		rst2html5.py ${OUTDIR}/report-${TEST}.rst \
+		$RST2HTML5 ${OUTDIR}/report-${TEST}.rst \
 				${OUTDIR}/report-${TEST}.html 2> /dev/null &
 	done
 	wait
@@ -314,6 +322,6 @@ if [ $? -eq 0 ]; then
 		exit 1
 	fi
 else
-	echo "rst2html5.py required to generate html report"
+	echo "rst2html5 required to generate html report"
 	exit 1
 fi

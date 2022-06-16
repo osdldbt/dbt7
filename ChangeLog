@@ -1,3 +1,7 @@
+vX.Y.Z
+
+- Check for rst2html5 in addition to rst2html5.py when generating reports
+
 v0.4.0
 
 - Refactor PostgreSQL scripts for handling EXPLAIN output
