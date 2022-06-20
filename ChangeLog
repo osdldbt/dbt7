@@ -4,6 +4,7 @@ vX.Y.Z
 - Add -U flag to run_workload for using unprivileged operating system users
 - Update dsdgen patch for testing queries for PostgreSQL to use pg_sleep(1)
   instead of SELECT 1
+- Add PostgreSQL specific report
 
 v0.4.0
 

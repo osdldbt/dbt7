@@ -10,6 +10,7 @@ install (
     ${CWD}/dbt7-pgsql-drop-tables
     ${CWD}/dbt7-pgsql-get-query-time
     ${CWD}/dbt7-pgsql-load-data
+    ${CWD}/dbt7-pgsql-report
     ${CWD}/dbt7-pgsql-run-stream
     ${CWD}/dbt7-pgsql-start-db
     ${CWD}/dbt7-pgsql-stop-db

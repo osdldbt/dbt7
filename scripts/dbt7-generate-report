@@ -214,6 +214,7 @@ Throughput Test
 .. image:: throughput/sar-blockdev-tps.png
    :width: 100%
 
+$(dbt7-${DBMS}-report -i $INDIR 2> /dev/null)
 __EOF__
 
 #
