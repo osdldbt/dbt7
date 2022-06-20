@@ -16,15 +16,64 @@ usage()
 	echo ""
 	echo "General options:"
 	echo "  -i PATH     results directory"
-	echo "  -o PATH     output directory, default is to use results directory"
+}
+
+create_sar_page()
+{
+	local TITLE=$1
+	local TAG=$2
+	local DIR=$3
+	local ODIR=$4
+
+	mkdir -p $ODIR
+
+	cat > ${ODIR}/index.rst << __EOF__
+================================================================================
+Database Test 7 $TITLE $TAG Charts
+================================================================================
+
+$(show_images $DIR $TAG)
+__EOF__
+}
+
+sar_links() {
+	TESTDIR=$1
+
+	THISDIR="${INDIR}/${TESTDIR}"
+	if [ ! -f "${THISDIR}/sar_raw.out" ]; then
+		return
+	fi
+
+	cat << __EOF__
+\`CPU <${TESTDIR}/cpu/>\`__ \`Memory <${TESTDIR}/mem/>\`__ \`Blockdev <${TESTDIR}/blockdev/>\`__ \`Network <${TESTDIR}/net/>\`__ \`Swap <${TESTDIR}/swap/>\`__
+__EOF__
+
+	create_sar_page $TESTDIR cpu $THISDIR ${THISDIR}/cpu
+	create_sar_page $TESTDIR mem $THISDIR ${THISDIR}/mem
+	create_sar_page $TESTDIR blockdev $THISDIR ${THISDIR}/blockdev
+	create_sar_page $TESTDIR net $THISDIR ${THISDIR}/net
+	create_sar_page $TESTDIR swap $THISDIR ${THISDIR}/swap
+}
+
+show_images()
+{
+	DIR=$1
+	TAG=$2
+
+	CHARTS=$(cd $DIR && find */ -name "sar-${TAG}*.png")
+	for CHART in $CHARTS; do
+		echo ".. image:: ../${CHART}"
+		echo "   :target: ../${CHART}"
+		echo "   :width: 100%"
+		echo ""
+	done
 }
 
 write_system_stats()
 {
-	REPORTFILE=$1
-	TEST=$2
+	TEST=$1
 
-	cat << __EOF__ >> $REPORTFILE
+	cat << __EOF__
 
 System Statistics
 =================
@@ -34,31 +83,31 @@ Processor Statistics
 
 __EOF__
 
-	for PNGFILE in ${OUTDIR}/${TEST}/sar-cpu?*.png; do
-		cat << __EOF__ >> $REPORTFILE
-.. image:: ${TEST}/`basename $PNGFILE`
+	for PNGFILE in ${OUTDIR}/${TEST}/sar/sar-cpu?*.png; do
+		cat << __EOF__
+.. image:: ${TEST}/sar/`basename $PNGFILE`
    :width: 100%
 
 __EOF__
 	done
 
-	cat << __EOF__ >> $REPORTFILE
+	cat << __EOF__
 
 Block Device Statistics
 -----------------------
 
 __EOF__
 
-	for PNGFILE in ${OUTDIR}/${TEST}/sar-blockdev-*-*.png; do
-		cat << __EOF__ >> $REPORTFILE
-.. image:: ${TEST}/`basename $PNGFILE`
+	for PNGFILE in ${OUTDIR}/${TEST}/sar/sar-blockdev-*-*.png; do
+		cat << __EOF__
+.. image:: ${TEST}/sar/`basename $PNGFILE`
    :width: 100%
 
 __EOF__
 	done
 }
 
-while getopts hi:o: OPT; do
+while getopts hi: OPT; do
 	case $OPT in
 		h)
 			usage
@@ -66,10 +115,7 @@ while getopts hi:o: OPT; do
 			;;
 		i)
 			INDIR=$OPTARG
-			;;
-		o)
-			OUTDIR=$OPTARG
-			mkdir -p $OUTDIR
+			OUTDIR=$INDIR
 			;;
 		\?)
 			usage
@@ -100,22 +146,31 @@ DIRTHROUGHPUT="${INDIR}/throughput"
 CONFIGFILE="${INDIR}/config.txt"
 CPU_MODEL=`grep "^model" $CONFIGFILE | cut -d ":" -f2-`
 CPUS=`grep ^cpus $CONFIGFILE | cut -d ":" -f2-`
+DBMS=$(grep "^dbms" $CONFIGFILE | awk '{print $2}')
 KERNEL=`grep ^kernel $CONFIGFILE | cut -d ":" -f2-`
 OS=`grep ^distribution $CONFIGFILE | cut -d ":" -f2-`
 RAM=`grep ^memory $CONFIGFILE | cut -d ":" -f2-`
 SCALE=`grep ^scale $CONFIGFILE | cut -d ":" -f2-`
 
-dbt7-plot-results -i ${INDIR}/power/time_statistics.csv -o ${OUTDIR} 2> /dev/null
+dbt7-plot-results -i ${INDIR}/power/time_statistics.csv -o ${OUTDIR} \
+		2> /dev/null &
 for DIR in load power throughput; do
 	if [ ! -d "${INDIR}/${DIR}" ]; then
 		continue
 	fi
-	mkdir -p ${OUTDIR}/${DIR}
-	dbt-plot-sar-cpu ${INDIR}/${DIR}/sar-cpu.csv ${OUTDIR}/${DIR} 2> /dev/null
-	dbt-plot-sar-blockdev ${INDIR}/${DIR}/sar-blockdev.csv \
-			${OUTDIR}/${DIR} 2> /dev/null
-	dbt-plot-sar-mem ${INDIR}/${DIR}/sar-mem.csv ${OUTDIR}/${DIR} 2> /dev/null
+	SARDIR="${OUTDIR}/${DIR}/sar"
+	mkdir -p $SARDIR
+	dbt-plot-sar-cpu ${INDIR}/${DIR}/sar-cpu.csv $SARDIR 2> /dev/null &
+	dbt-plot-sar-blockdev ${INDIR}/${DIR}/sar-blockdev.csv $SARDIR 2> /dev/null &
+	dbt-plot-sar-mem -i ${INDIR}/${DIR}/sar-mem.csv -o $SARDIR 2> /dev/null &
+	dbt-plot-sar-swap ${INDIR}/${DIR}/sar-swap.csv $SARDIR 2> /dev/null &
 done
+for PIDSTATFILE in $(find $INDIR -name pidstat.txt); do
+	DIRNAME="$(dirname $PIDSTATFILE)"
+	(cd $DIRNAME && dbt-process-pidstat $PIDSTATFILE 2> /dev/null) &
+done
+
+wait
 
 SUMMARY="${INDIR}/summary.rst"
 if [ ! -f "$SUMMARY" ]; then
@@ -172,47 +227,17 @@ System Statistics
 Load Test
 ---------
 
-.. image:: load/sar-cpu.png
-   :width: 100%
-
-.. image:: load/sar-mem-memused.png
-   :width: 100%
-
-.. image:: load/sar-blockdev-util.png
-   :width: 100%
-
-.. image:: load/sar-blockdev-tps.png
-   :width: 100%
+* Charts: $(sar_links load)
 
 Power Test
 ----------
 
-.. image:: power/sar-cpu.png
-   :width: 100%
-
-.. image:: power/sar-mem-memused.png
-   :width: 100%
-
-.. image:: power/sar-blockdev-util.png
-   :width: 100%
-
-.. image:: power/sar-blockdev-tps.png
-   :width: 100%
+* Charts: $(sar_links power)
 
 Throughput Test
 ---------------
 
-.. image:: throughput/sar-cpu.png
-   :width: 100%
-
-.. image:: throughput/sar-mem-memused.png
-   :width: 100%
-
-.. image:: throughput/sar-blockdev-util.png
-   :width: 100%
-
-.. image:: throughput/sar-blockdev-tps.png
-   :width: 100%
+* Charts: $(sar_links throughput)
 
 $(dbt7-${DBMS}-report -i $INDIR 2> /dev/null)
 __EOF__
@@ -239,33 +264,33 @@ for (i in 1:nrow(df)) {
       df[i,]\$template, df[i,]\$s_time, df[i,]\$e_time, df[i,]\$elapsed_time))
 }
 cat("================  ===================  ===================  ===============\n")
-__EOF__
 
-write_system_stats $REPORTLOAD load
+$(write_system_stats load)
+__EOF__
 
 #
 # Generate Power Test Report
 #
 
-cat << __EOF__ > $REPORTPOWER
+R --slave --no-save << __EOF__ >> $REPORTPOWER
 ==========================
 Database Test 7 Power Test
 ==========================
-__EOF__
 
-write_system_stats $REPORTPOWER power
+$(write_system_stats power)
+__EOF__
 
 #
 # Generate Throghput Test Report
 #
 
-cat << __EOF__ > $REPORTTHROUGHPUT
+R --slave --no-save << __EOF__ >> $REPORTTHROUGHPUT
 ===============================
 Database Test 7 Throughput Test
 ===============================
-__EOF__
 
-write_system_stats $REPORTTHROUGHPUT throughput
+$(write_system_stats throughput)
+__EOF__
 
 echo "Generated text file reports:"
 ls -1v ${OUTDIR}/*.rst
@@ -289,9 +314,10 @@ if [ ! "x${RST2HTML5}" = "x" ]; then
 	# Sphinx's rst2html can. Then pandoc can convert multi-cell table headings
 	# from html to pdf.
 	$RST2HTML5 ${OUTDIR}/report.rst ${OUTDIR}/report.html 2> /dev/null &
-	for TEST in load power throughput; do 
-		$RST2HTML5 ${OUTDIR}/report-${TEST}.rst \
-				${OUTDIR}/report-${TEST}.html 2> /dev/null &
+	for RST in $(find $INDIR -name "*.rst"); do
+		NAME="${RST%.*}"
+		(cd $(dirname $RST) && \
+				$RST2HTML5 $(basename $RST) ${NAME}.html 2> /dev/null) &
 	done
 	wait
 
@@ -307,11 +333,11 @@ if [ ! "x${RST2HTML5}" = "x" ]; then
 		(cd $OUTDIR && \
 				pandoc -s report.html -f html -t pdf \
 						-o report.pdf 2> /dev/null) &
-		for TEST in load power throughput; do 
-			(cd $OUTDIR && \
-					pandoc -s report-${TEST}.html -f html -t pdf \
-							-o report-${TEST}.pdf 2> /dev/null \
-			) &
+		for HTML in $(find $INDIR -name "*.html"); do
+			NAME="${HTML%.*}"
+			(cd $(dirname $HTML) && \
+					pandoc -s $(basename $HTML) -f html -t pdf -o ${NAME}.pdf \
+							2> /dev/null) &
 		done
 		wait
 
