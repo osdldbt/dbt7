@@ -1,4 +1,4 @@
-vX.Y.Z
+v0.4.1
 
 - Check for rst2html5 in addition to rst2html5.py when generating reports
 - Add -U flag to run_workload for using unprivileged operating system users
