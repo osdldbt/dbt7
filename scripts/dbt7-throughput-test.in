@@ -43,8 +43,9 @@ run_data_maintenance()
 	S_TIME_POWER=`date +%s`
 	dbt7-${DATABASE}-time-statistics -s -n DATAMAINT${I} || exit 1
 	for I in `seq $STREAM_START $STREAM_END`; do
-		dbt7-${DATABASE}-data-maintenance -i ${OUTPUT_DIR}/.. -o ${OUTPUT_DIR} \
-				-n $I $PRIVILEGED_ARG > ${OUTPUT_DIR}/dm_${I}.txt 2>&1
+	   eval "dbt7-${DATABASE}-data-maintenance -i ${OUTPUT_DIR}/.. \
+				-o ${OUTPUT_DIR} -n $I ${PRIVILEGED_ARG}" \
+				> ${OUTPUT_DIR}/dm_${I}.txt 2>&1
 	done
 	dbt7-${DATABASE}-time-statistics -e -n DATAMAINT${I} || exit 1
 	E_TIME_POWER=`date +%s`

@@ -14,7 +14,8 @@ killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' TERM
 COMMENT=""
 FLAG_POWER_TEST=""
 FLAG_THROUGHPUT_TEST=""
-PRIVILEGED=1
+PRIVILEGED=0
+PRIVILEGED_ARG="-U"
 RUN_ALL_TESTS=1
 RUN_LOAD_TEST=0
 RUN_POWER_TEST=0
@@ -43,7 +44,7 @@ usage()
 	echo "  -o PATH          output directory"
 	echo "  -P               enable profiling (Linux only)"
 	echo "  -s SCALE         scale factor, default $SCALE"
-	echo "  -U               run test as an unprivileged user"
+	echo "  -U               run test as a privileged user"
 	echo ""
 	echo "PostgreSQL options (pgsql):"
 	echo "  -p PARAMETERS    database parameters for the load test"
@@ -124,8 +125,8 @@ while getopts "123a:c:d:ghi:n:o:p:Pq:s:S:U" OPT; do
 		SEED=$OPTARG
 		;;
 	U)
-		PRIVILEGED=0
-		PRIVILEGED_ARG="-U"
+		PRIVILEGED=1
+		PRIVILEGED_ARG=""
 		;;
 	\?)
 		usage

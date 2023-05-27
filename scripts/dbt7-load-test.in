@@ -7,8 +7,9 @@
 # Copyright The DBT-7 Authors
 
 GENERATE_DATA=0
-SCALE=1
+PRIVILEGED=1
 PROFILE=0
+SCALE=1
 
 usage()
 {
@@ -62,6 +63,7 @@ while getopts "a:gho:p:s:UY" OPT; do
 		SCALE=$OPTARG
 		;;
 	U)
+		PRIVILEGED=0
 		PRIVILEGED_ARG="-U"
 		;;
 	Y)
@@ -138,8 +140,10 @@ fi
 # Start collecting system statistics.
 ts-sysstat -o "${OUTPUT_DIR}/sysstat"
 
-eval dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG $PRIVILEGED_ARG \
-		>> $OUTPUTFILE 2>&1
+if [ "${PRIVILEGED}" -eq 1 ]; then
+	eval "dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG \
+			${PRIVILEGED_ARG}" >> $OUTPUTFILE 2>&1
+fi
 
 dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
 dbt7-${DATABASE}-create-tables >> $OUTPUTFILE 2>&1 || bailout
