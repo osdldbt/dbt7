@@ -3,11 +3,7 @@
 # This file is released under the terms of the Artistic License.
 # Please see the file LICENSE, included in this package, for details.
 #
-# Copyright (C) 2002-2006 Open Source Development Labs, Inc.
-#               2002-2006 Jenny Zhang
-#               2015      2ndQuadrant, Ltd.
-#               2005-2022 Mark Wong
-#
+# Copyright The DBT-7 Authors
 
 GENERATE_DATA=0
 SCALE=1
