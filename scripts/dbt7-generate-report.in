@@ -40,18 +40,19 @@ sar_links() {
 	TESTDIR=$1
 
 	THISDIR="${INDIR}/${TESTDIR}"
-	if [ ! -f "${THISDIR}/sar_raw.out" ]; then
+	if [ ! -f "${THISDIR}/sysstat/sar.datafile" ]; then
 		return
 	fi
 
 	cat << __EOF__
-\`CPU <${TESTDIR}/cpu/>\`__ \`Memory <${TESTDIR}/mem/>\`__ \`Blockdev <${TESTDIR}/blockdev/>\`__ \`Network <${TESTDIR}/net/>\`__ \`Swap <${TESTDIR}/swap/>\`__
+\`CPU <${TESTDIR}/cpu/>\`__ \`Memory <${TESTDIR}/mem/>\`__ \`Blockdev <${TESTDIR}/blockdev/>\`__ \`Network <${TESTDIR}/net/>\`__ \`Paging <${TESTDIR}/paging/>\`__ \`Swap <${TESTDIR}/swap/>\`__
 __EOF__
 
 	create_sar_page $TESTDIR cpu $THISDIR ${THISDIR}/cpu
 	create_sar_page $TESTDIR mem $THISDIR ${THISDIR}/mem
 	create_sar_page $TESTDIR blockdev $THISDIR ${THISDIR}/blockdev
 	create_sar_page $TESTDIR net $THISDIR ${THISDIR}/net
+	create_sar_page $TESTDIR paging $THISDIR ${THISDIR}/paging
 	create_sar_page $TESTDIR swap $THISDIR ${THISDIR}/swap
 }
 
@@ -60,10 +61,11 @@ show_images()
 	DIR=$1
 	TAG=$2
 
-	CHARTS=$(cd $DIR && find */ -name "sar-${TAG}*.png")
-	for CHART in $CHARTS; do
-		echo ".. image:: ../${CHART}"
-		echo "   :target: ../${CHART}"
+	find "${DIR}" -name "sar-${TAG}*.png" | sort -n | while IFS= read -r CHART
+	do
+		FNAME=$(basename "${CHART}")
+		echo ".. image:: ../sysstat/sar/${TAG}/${FNAME}"
+		echo "   :target: ../sysstat/sar/${TAG}/${FNAME}"
 		echo "   :width: 100%"
 		echo ""
 	done
@@ -74,7 +76,6 @@ write_system_stats()
 	TEST=$1
 
 	cat << __EOF__
-
 System Statistics
 =================
 
@@ -83,25 +84,26 @@ Processor Statistics
 
 __EOF__
 
-	for PNGFILE in ${OUTDIR}/${TEST}/sar/sar-cpu?*.png; do
-		cat << __EOF__
-.. image:: ${TEST}/sar/`basename $PNGFILE`
-   :width: 100%
+	find "${OUTDIR}/${TEST}/sar" -name "sar-cpu?*.png" | \
+			while IFS= read -r PNGFILE; do
+		cat <<- __EOF__
+			.. image:: ${TEST}/sar/$(basename "${PNGFILE}")
+			   :width: 100%
 
 __EOF__
 	done
 
 	cat << __EOF__
-
 Block Device Statistics
 -----------------------
 
 __EOF__
 
-	for PNGFILE in ${OUTDIR}/${TEST}/sar/sar-blockdev-*-*.png; do
-		cat << __EOF__
-.. image:: ${TEST}/sar/`basename $PNGFILE`
-   :width: 100%
+	find "${OUTDIR}/${TEST}/sar" -name "sar-blockdev-*-*.png" | \
+			while IFS= read -r PNGFILE; do
+		cat <<- __EOF__
+			.. image:: ${TEST}/sar/$(basename "${PNGFILE}")
+			   :width: 100%
 
 __EOF__
 	done
@@ -121,17 +123,17 @@ while getopts hi: OPT; do
 			usage
 			exit 1
 			;;
-	esac
 done
 
-if [ "x$INDIR" = "x" ]; then
-	echo "Error: Specify dbt7 results directory with -i"
+if [ "${#}" -eq 0 ]; then
+	printf "Specify dbt7 results directory, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
 	exit 1
 fi
 
-if [ "x$OUTDIR" = "x" ]; then
-	OUTDIR=$INDIR
-fi
+INDIR="${1}"
+OUTDIR="${INDIR}"
 
 REPORT="${OUTDIR}/report.rst"
 REPORTLOAD="${OUTDIR}/report-load.rst"
@@ -153,24 +155,29 @@ RAM=`grep ^memory $CONFIGFILE | cut -d ":" -f2-`
 SCALE=`grep ^scale $CONFIGFILE | cut -d ":" -f2-`
 
 dbt7-plot-results -i ${INDIR}/power/time_statistics.csv -o ${OUTDIR} \
-		2> /dev/null &
+		2> /dev/null
+
 for DIR in load power throughput; do
-	if [ ! -d "${INDIR}/${DIR}" ]; then
-		continue
+	SARDIR="${OUTDIR}/${DIR}/sysstat/sar"
+	if [ -d "${SARDIR}" ]; then
+		ts plot-sar -i "${SARDIR}"
 	fi
-	SARDIR="${OUTDIR}/${DIR}/sar"
-	mkdir -p $SARDIR
-	dbt-plot-sar-cpu ${INDIR}/${DIR}/sar-cpu.csv $SARDIR 2> /dev/null &
-	dbt-plot-sar-blockdev ${INDIR}/${DIR}/sar-blockdev.csv $SARDIR 2> /dev/null &
-	dbt-plot-sar-mem -i ${INDIR}/${DIR}/sar-mem.csv -o $SARDIR 2> /dev/null &
-	dbt-plot-sar-swap ${INDIR}/${DIR}/sar-swap.csv $SARDIR 2> /dev/null &
-done
-for PIDSTATFILE in $(find $INDIR -name pidstat.txt); do
-	DIRNAME="$(dirname $PIDSTATFILE)"
-	(cd $DIRNAME && dbt-process-pidstat $PIDSTATFILE 2> /dev/null) &
 done
 
-wait
+for DIR in load power throughput; do
+	PIDSTATFILE="${OUTDIR}/${DIR}/sysstat/pidstat.txt"
+	if [ -f "${PIDSTATFILE}" ]; then
+		ts process-pidstat -i "${PIDSTATFILE}"
+	fi
+done
+
+for DIR in load power throughput; do
+	PIDSTATFILE="${OUTDIR}/${DIR}/sysstat/pidstat.csv"
+	if [ -f "${PIDSTATFILE}" ]; then
+		ts plot-pidstat -i "${PIDSTATFILE}" \
+				-o "${OUTDIR}/${DIR}/sysstat/pidstat"
+	fi
+done
 
 SUMMARY="${INDIR}/summary.rst"
 if [ ! -f "$SUMMARY" ]; then
@@ -186,13 +193,15 @@ if [ ! -f "$SUMMARY" ]; then
 	dbt7-post-process -s $SCALE $FLAGS -o $INDIR
 fi
 
-README="${DIRPOWER}/readme.txt"
+README="${DIRPOWER}/dbstat/readme-${DBMS}.txt"
 if [ -f "$README" ]; then
 	DBVER=`head -n 1 $README`
 fi
 if [ "x$DBVER" = "x" ]; then
 	README="${DIRTHROUGHPUT}/readme.txt"
-	DBVER=`head -n 1 $README`
+	if [ -f "${README}" ]; then
+		DBVER=$(head -n 1 "${README}")
+	fi
 fi
 
 cat << __EOF__ > $REPORT
@@ -251,19 +260,23 @@ cat << __EOF__ > $REPORTLOAD
 Database Test 7 Load Test
 =========================
 
+================  ===================  ===================  ===============
+Phase             Start Timestamp      End Timestamp        Elapsed Time
+================  ===================  ===================  ===============
 __EOF__
 
-R --slave --no-save << __EOF__ >> $REPORTLOAD
-df <- read.csv("${DIRLOAD}/time_statistics.csv", header=TRUE)
-df <- df[order(df\$e_time),]
-cat("================  ===================  ===================  ===============\n")
-cat("Phase             Start Timestamp      End Timestamp        Elapsed Time\n")
-cat("================  ===================  ===================  ===============\n")
-for (i in 1:nrow(df)) {
-  cat(sprintf("%16s  %s  %s  %s\n",
-      df[i,]\$template, df[i,]\$s_time, df[i,]\$e_time, df[i,]\$elapsed_time))
-}
-cat("================  ===================  ===================  ===============\n")
+grep -v "^stream" "${DIRLOAD}/time_statistics.csv" | while IFS= read -r LINE
+do
+	printf "%16s  %s  %s  %s\n" \
+			"$(echo "${LINE}" | cut -d "," -f 3)" \
+			"$(echo "${LINE}" | cut -d "," -f 4)" \
+			"$(echo "${LINE}" | cut -d "," -f 5)" \
+			"$(echo "${LINE}" | cut -d "," -f 6)" \
+			>> "${REPORTLOAD}"
+done
+
+cat << __EOF__ >> $REPORTLOAD
+================  ===================  ===================  ===============
 
 $(write_system_stats load)
 __EOF__
@@ -272,7 +285,7 @@ __EOF__
 # Generate Power Test Report
 #
 
-R --slave --no-save << __EOF__ >> $REPORTPOWER
+cat << __EOF__ > "${REPORTPOWER}"
 ==========================
 Database Test 7 Power Test
 ==========================
@@ -284,7 +297,7 @@ __EOF__
 # Generate Throghput Test Report
 #
 
-R --slave --no-save << __EOF__ >> $REPORTTHROUGHPUT
+cat << __EOF__ > "${REPORTTHROUGHPUT}"
 ===============================
 Database Test 7 Throughput Test
 ===============================
@@ -313,13 +326,12 @@ if [ ! "x${RST2HTML5}" = "x" ]; then
 	# pandoc can't properly convert multi-cell table headings from rst but
 	# Sphinx's rst2html can. Then pandoc can convert multi-cell table headings
 	# from html to pdf.
-	$RST2HTML5 ${OUTDIR}/report.rst ${OUTDIR}/report.html 2> /dev/null &
+	$RST2HTML5 ${OUTDIR}/report.rst ${OUTDIR}/report.html 2> /dev/null
 	for RST in $(find $INDIR -name "*.rst"); do
 		NAME="${RST%.*}"
 		(cd $(dirname $RST) && \
-				$RST2HTML5 $(basename $RST) ${NAME}.html 2> /dev/null) &
+				$RST2HTML5 $(basename $RST) ${NAME}.html 2> /dev/null)
 	done
-	wait
 
 	echo "Generated HTML reports:"
 	ls -1v ${OUTDIR}/*.html
@@ -327,19 +339,18 @@ if [ ! "x${RST2HTML5}" = "x" ]; then
 
 	# A pdf could be produced other ways, but I believe pandoc produces the most
 	# minimally styled LaTeX looking document, as opposed to using rst2latex,
-	# with default settings.
+    # with default settings.
 	which pandoc > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		(cd $OUTDIR && \
 				pandoc -s report.html -f html -t pdf \
-						-o report.pdf 2> /dev/null) &
+						-o report.pdf 2> /dev/null)
 		for HTML in $(find $INDIR -name "*.html"); do
 			NAME="${HTML%.*}"
 			(cd $(dirname $HTML) && \
-					pandoc -s $(basename $HTML) -f html -t pdf -o ${NAME}.pdf \
-							2> /dev/null) &
+					pandoc -s $(basename $HTML) -f html -t pdf \
+							-o ${NAME}.pdf 2> /dev/null)
 		done
-		wait
 
 		echo "Generated PDF reports:"
 		ls -1v ${OUTDIR}/*.pdf

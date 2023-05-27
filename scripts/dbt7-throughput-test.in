@@ -8,8 +8,7 @@
 
 PRIVILEGED=1
 RESTART=0
-USE_OPROFILE=0
-USE_LINUXPERF=0
+PROFILE=0
 
 usage()
 {
@@ -27,8 +26,7 @@ usage()
 	echo "  -r               restart database, if already running"
 	echo "  -s SCALE         scale factor, default $SCALE"
 	echo "  -U               run test as an unprivileged user"
-	echo "  -y               enable oprofile"
-	echo "  -Y               enable Linux perf"
+	echo "  -Y               enable profiling"
 	echo ""
 	echo "PostgreSQL options (pgsql):"
 	echo "  -p PARAMETERS    PostgreSQL parameters"
@@ -82,7 +80,7 @@ run_queries()
 	echo "**`date` throughput test $NUM completed ($DIFF_TIME seconds)**"
 }
 
-while getopts "a:d:hi:n:o:p:r:s:S:UyY" OPT; do
+while getopts "a:d:hi:n:o:p:r:s:S:UY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
@@ -120,11 +118,8 @@ while getopts "a:d:hi:n:o:p:r:s:S:UyY" OPT; do
 		PRIVILEGED=0
 		PRIVILEGED_ARG="-U"
 		;;
-	y)
-		USE_OPROFILE=1
-		;;
 	Y)
-		USE_LINUXPERF=1
+		PROFILE=1
 		LINUXPERF_FLAG="-Y"
 		;;
 	\?) exit 1
@@ -156,16 +151,6 @@ if [ "x${DIALECT}" = "x" ]; then
 fi
 
 echo $STREAMS > ${OUTPUT_DIR}/streams
-
-# Clear the read profile counters.
-if [ -f /proc/profile ]; then
-	clearprof
-fi
-
-# Clear the oprofile counters.
-if [ $USE_OPROFILE -eq 1 ]; then
-	clearoprof
-fi
 
 echo "**`date` throughput tests prep**"
 
@@ -238,11 +223,14 @@ fi
 dbt7-${DATABASE}-time-statistics -c
 
 # Start collecting system statistics. 
-dbt7-sysstats -o $OUTPUT_DIR || exit 1
+ts-sysstat -o "${OUTPUT_DIR}/sysstat"
 
 # Start collecting database statistics.
-dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
+eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
 
+if [ $PROFILE -eq 1 ]; then
+	ts-profile -o "${OUTPUT_DIR}/profile" sleep 1
+fi
 
 # Execute the throughput and data maintenance tests.
 for I in 1 2; do
@@ -251,8 +239,8 @@ for I in 1 2; do
 done
 
 # Stop collecting system statistics.
-dbt7-sysstats -o $OUTPUT_DIR -S
-dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
+ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
+eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 
@@ -261,39 +249,7 @@ if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1
 fi
 
-if [ -f /proc/profile ]; then
-	profname="Throughput_Test"
-	getprof
-fi
-
-if [ $USE_OPROFILE -eq 1 ]; then
-	profname="Throughput_Test"
-	getoprof
-fi
-
-if [ $USE_LINUXPERF -eq 1 ]; then
+if [ $PROFILE -eq 1 ]; then
 	echo "Generating Linux perf reports for throughput test..."
-	perf report -i $PERFDIR/perf.data -n > $PERFDIR/perf-report.txt \
-			2>> $OUTPUT_DIR/perf/report-output.txt
-	perf annotate -l -P -i $PERFDIR/perf.data > $PERFDIR/perf-annotate.txt \
-			2>> $OUTPUT_DIR/perf/report-output.txt
-	perf script -L -i $PERFDIR/perf.data > $PERFDIR/perf-trace.txt \
-			2>> $OUTPUT_DIR/perf/report-output.txt
-
-	i=1
-	while [ $i -le $STREAMS ]; do
-		j=1
-		while [ $j -le 22 ]; do
-			PERFDIR=$OUTPUT_DIR/results/$i/perf/$j
-			PERFPREFIX=q$j
-			perf report -i $PERFDIR/$PERFPREFIX-perf.data -n \
-					> $PERFDIR/$PERFPREFIX-perf-report.txt
-			perf annotate -l -P -i $PERFDIR/$PERFPREFIX-perf.data \
-					> $PERFDIR/$PERFPREFIX-perf-annotate.txt
-			perf script -L -i $PERFDIR/$PERFPREFIX-perf.data \
-					> $PERFDIR/$PERFPREFIX-perf-trace.txt
-			j=$(( $j + 1 ))
-		done
-		i=$(( $i + 1 ))
-	done > $OUTPUT_DIR/perf/perf-output.txt 2>&1
+	ts-profile -o "${OUTPUT_DIR}/profile" -p
 fi

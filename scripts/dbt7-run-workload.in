@@ -7,9 +7,9 @@
 # Copyright The DBT-7 Authors
 
 trap 'echo "Test was interrupted by Control-C."; \
-killall sar sadc pidstat dbt7-$DATABASE-dbstat > /dev/null 2>&1' INT
+killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' INT
 trap 'echo "Test was interrupted. Got TERM signal."; \
-killall sar sadc pidstat dbt7-$DATABASE-dbstat > /dev/null 2>&1' TERM
+killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' TERM
 
 COMMENT=""
 FLAG_POWER_TEST=""
@@ -41,8 +41,7 @@ usage()
 	echo "  -i INPUT         input override, default $INPUT"
 	echo "  -n STREAMS       number of throughput streams, default $STREAMS"
 	echo "  -o PATH          output directory"
-	echo "  -O               enable oprofile (Linux only)"
-	echo "  -P               enable linux perf (Linux only)"
+	echo "  -P               enable profiling (Linux only)"
 	echo "  -s SCALE         scale factor, default $SCALE"
 	echo "  -U               run test as an unprivileged user"
 	echo ""
@@ -59,7 +58,7 @@ if [ -n "$DEFAULT_PERF_PARAMETERS" ]; then
 	PERF_PARAMETERS="$DEFAULT_PERF_PARAMETERS"
 fi
 
-while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:U" OPT; do
+while getopts "123a:c:d:ghi:n:o:p:Pq:s:S:U" OPT; do
 	case $OPT in
 	1)
 		RUN_LOAD_TEST=1
@@ -99,9 +98,6 @@ while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:U" OPT; do
 	n)
 		STREAMS=$OPTARG
 		;;
-	O)
-		OPROFILE_FLAG="-y"
-		;;
 	o)
 		OUTPUT_DIR="${OPTARG}"
 		if [ -d "$OUTPUT_DIR" ]; then
@@ -111,7 +107,7 @@ while getopts "123a:c:d:ghi:n:Oo:p:Pq:s:S:U" OPT; do
 		mkdir -p $OUTPUT_DIR
 		;;
 	P)
-		LINUXPERF_FLAG="-Y"
+		PROFILE_FLAG="-Y"
 		;;
 	p)
 		# PostgreSQL only.
@@ -190,8 +186,7 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			-s $SCALE \
 			$GENERATE_DATA_FLAG \
 			$LOAD_PARAMETERS_ARG \
-			$OPROFILE_FLAG \
-			$LINUXPERF_FLAG \
+			$PROFILE_FLAG \
 			$PRIVILEGED_ARG \
 			|| exit 1
 elif [ $PRIVILEGED -eq 1 ]; then
@@ -219,8 +214,7 @@ if [ $RUN_POWER_TEST -eq 1 ]; then
 			$DIALECT_ARG \
 			$INPUT_ARG \
 			$PERF_PARAMETERS_ARG\
-			$OPROFILE_FLAG \
-			$LINUXPERF_FLAG \
+			$PROFILE_FLAG \
 			$PRIVILEGED_ARG
 	if [ $? -eq 1 ] ; then
 		2&> echo "Error: power test problem!"
@@ -237,9 +231,8 @@ if [ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
 			$DIALECT_ARG \
 			$INPUT_ARG \
 			$THROUGHPUT_PARAMETERS_ARG \
-			$OPROFILE_FLAG \
 			$PRIVILEGED_ARG \
-			$LINUXPERF_FLAG
+			$PROFILE_FLAG
 	if [ $? -eq 1 ] ; then
 		2&> echo "throughput test problem!"
 		exit 1

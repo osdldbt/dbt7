@@ -9,8 +9,6 @@
 INPUT="templates.lst"
 PRIVILEGED=1
 RESTART=0
-USE_OPROFILE=0
-USE_LINUXPERF=0
 
 usage()
 {
@@ -27,14 +25,13 @@ usage()
 	echo "  -r               restart database, if already running"
 	echo "  -s SCALE         scale factor, default $SCALE"
 	echo "  -U               run test as an unprivileged user"
-	echo "  -y               enable oprofile"
-	echo "  -Y               enable Linux perf"
+	echo "  -Y               enable profiling"
 	echo ""
 	echo "PostgreSQL options (pgsql):"
 	echo "  -p PARAMETERS    PostgreSQL parameters"
 }
 
-while getopts "a:d:hi:p:o:rs:UyY" OPT; do
+while getopts "a:d:hi:p:o:rs:UY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
@@ -65,11 +62,8 @@ while getopts "a:d:hi:p:o:rs:UyY" OPT; do
 	U)
 		PRIVILEGED=0
 		;;
-	y)
-		USE_OPROFILE=1
-		;;
 	Y)
-		USE_LINUXPERF=1
+		# TODO: Current implementation doesn't allow profiling by query, no-op.
 		;;
 	\?)
 		usage
@@ -139,20 +133,10 @@ fi
 dbt7-${DATABASE}-time-statistics -c
 
 # Start collecting system statistics.
-dbt7-sysstats -o $OUTPUT_DIR
+ts-sysstat -o "${OUTPUT_DIR}/sysstat"
 
 # Collect database statistics
-dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
-
-# Clear the read profile counters.
-if [ -f /proc/profile ]; then
-	clearprof
-fi
-
-# Clear the oprofile counters.
-if [ $USE_OPROFILE -eq 1 ]; then
-	clearoprof
-fi
+eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
 
 echo "**`date` power test starting**"
 
@@ -167,37 +151,11 @@ DIFF_TIME=$(( $E_TIME_POWER - $S_TIME_POWER ))
 echo "**`date` power test completed ($DIFF_TIME seconds)**"
 
 # Stop collecting system statistics.
-dbt7-sysstats -o $OUTPUT_DIR -S
-dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
+ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
+eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 
 if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1
-fi
-
-if [ -f /proc/profile ]; then
-	profname="Power_Test"
-	getprof
-fi
-
-if [ $USE_OPROFILE -eq 1 ]; then
-	profname="Power_Test"
-	getoprof
-fi
-
-if [ $USE_LINUXPERF -eq 1 ]; then
-	echo "Generating Linux perf reports for power test..."
-	i=1
-	while [ $i -le 22 ]; do
-		PERFDIR=$OUTPUT_DIR/perf/$i
-		PERFPREFIX=q$i
-		perf report -i $PERFDIR/$PERFPREFIX-perf.data -n \
-				> $PERFDIR/$PERFPREFIX-perf-report.txt
-		perf annotate -l -P -i $PERFDIR/$PERFPREFIX-perf.data \
-				> $PERFDIR/$PERFPREFIX-perf-annotate.txt
-		perf script -L -i $PERFDIR/$PERFPREFIX-perf.data \
-				> $PERFDIR/$PERFPREFIX-perf-trace.txt
-		i=$(( $i + 1 ))
-	done > $OUTPUT_DIR/perf/report-output.txt 2>&1
 fi

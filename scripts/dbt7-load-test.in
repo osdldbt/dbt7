@@ -8,8 +8,7 @@
 
 GENERATE_DATA=0
 SCALE=1
-USE_OPROFILE=0
-USE_LINUXPERF=0
+PROFILE=0
 
 usage()
 {
@@ -24,8 +23,7 @@ usage()
 	echo "  -o PATH          path to save results"
 	echo "  -s SCALE         scale factor, default $SCALE"
 	echo "  -U               run test as an unprivileged user"
-	echo "  -y               enable oprofile"
-	echo "  -Y               enable Linux perf"
+	echo "  -Y               enable profiling"
 	echo ""
 	echo "PostgreSQL options (pgsql):"
 	echo "  -p PARAMETERS    PostgreSQL parameters"
@@ -41,7 +39,7 @@ bailout()
 	exit 1
 }
 
-while getopts "a:gho:p:s:UyY" OPT; do
+while getopts "a:gho:p:s:UY" OPT; do
 	case $OPT in
 	a)
 		DATABASE=$OPTARG
@@ -66,11 +64,8 @@ while getopts "a:gho:p:s:UyY" OPT; do
 	U)
 		PRIVILEGED_ARG="-U"
 		;;
-	y)
-		USE_OPROFILE=1
-		;;
 	Y)
-		USE_LINUXPERF=1
+		PROFILE=1
 		;;
 	\?)
 		usage
@@ -141,7 +136,7 @@ if [ $GENERATE_DATA -eq 1 ]; then
 fi
 
 # Start collecting system statistics.
-dbt7-sysstats -o $OUTPUT_DIR
+ts-sysstat -o "${OUTPUT_DIR}/sysstat"
 
 eval dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG $PRIVILEGED_ARG \
 		>> $OUTPUTFILE 2>&1
@@ -150,21 +145,10 @@ dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
 dbt7-${DATABASE}-create-tables >> $OUTPUTFILE 2>&1 || bailout
 
 # Collect database statistics
-dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR
+eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
 
-# Initialize profile counters.
-if [ -f /proc/profile ]; then
-	clearprof
-fi
-
-if [ ${USE_OPROFILE} -eq 1 ]; then
-	clearoprof
-fi
-
-if [ $USE_LINUXPERF -eq 1 ]; then
-	PERFDIR=${OUTPUT_DIR}/perf
-	mkdir -p $PERFDIR
-	PERFCOMMAND="perf record -a -g -s -F 100 -o ${PERFDIR}/perf.data"
+if [ $PROFILE -eq 1 ]; then
+	ts-profile -o "${OUTPUT_DIR}/profile" sleep 1
 fi
 
 echo "**`date` load test starting**"
@@ -179,29 +163,11 @@ E_TIME=`date +%s`
 DIFF_TIME=`expr $E_TIME - $S_TIME`
 echo "**`date` load test completed  ($DIFF_TIME seconds)**"
 
-dbt7-sysstats -o $OUTPUT_DIR -S
-dbt7-${DATABASE}-dbstat -o $OUTPUT_DIR -S
+ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
+eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 
-# Collect profile data.
-if [ -f /proc/profile ]; then
-	profname='Load_Test'
-	getprof
-fi
-
-if [ $USE_OPROFILE -eq 1 ]; then
-	profname='Load_Test'
-	getoprof
-fi
-
-if [ $USE_LINUXPERF -eq 1 ]; then
-	# Sometimes perf segfaults if it's running more than once.
-	echo "Generating Linux perf reports for load test..."
-	perf report -i $PERFDIR/perf.data -n > $PERFDIR/perf-report.txt \
-			2>> $OUTPUT_DIR/perf/report-output.txt
-	perf annotate -l -P -i $PERFDIR/perf.data > $PERFDIR/perf-annotate.txt \
-			2>> $OUTPUT_DIR/perf/report-output.txt
-	perf script -L -i $PERFDIR/perf.data > $PERFDIR/perf-trace.txt \
-			2>> $OUTPUT_DIR/perf/report-output.txt
+if [ $PROFILE -eq 1 ]; then
+	ts-profile -o "${OUTPUT_DIR}/profile" -p
 fi
