@@ -1,4 +1,4 @@
-v0.4.1
+v0.4.1 (2022-06-20)
 
 - Check for rst2html5 in addition to rst2html5.py when generating reports
 - Add -U flag to run_workload for using unprivileged operating system users
@@ -6,7 +6,7 @@ v0.4.1
   instead of SELECT 1
 - Add PostgreSQL specific report
 
-v0.4.0
+v0.4.0 (2022-06-15)
 
 - Refactor PostgreSQL scripts for handling EXPLAIN output
 - Use PostgreSQL INSERT ... ON CONFLICT DO NOTHING in data maintenance test
@@ -14,7 +14,7 @@ v0.4.0
   test
 - Add optional dsdgen patch for testing queries for PostgreSQL
 
-v0.3.0
+v0.3.0 (2022-06-09)
 
 - Update example profile for PostgreSQL
 - Attempt to create the specified directory for data files
@@ -22,7 +22,7 @@ v0.3.0
 - Add Docker files for testing with PostgtreSQL
 - Capture time stamp of when the test was started
 
-v0.2.0
+v0.2.0 (2022-04-12)
 
 - Remove dsdgen FILTER patch because it didn't fix data maintenance data
   generation
@@ -30,7 +30,7 @@ v0.2.0
   precision requirements
 - Add data maintenance test for PostgreSQL
 
-v0.1.0
+v0.1.0 (2022-04-07)
 
 - Fair use TPC Benchmark(TM) DS kit initially with PostgreSQL support, minus
   data maintenance tests and other auditing aspects
