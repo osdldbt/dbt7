@@ -1,0 +1,43 @@
+======
+ dbt7
+======
+
+---------------
+Database Test 7
+---------------
+
+:Date: @MANDATE@
+:Manual section: 1
+:Manual group: Database Test 7 @PROJECT_VERSION@ Documentation
+:Version: Database Test 7 @PROJECT_VERSION@
+
+SYNOPSIS
+========
+
+**dbt7** [option...] [command [args...]]
+
+DESCRIPTION
+===========
+
+**dbt7** is a script that helps execute all the tools provided by the Database
+Test 7 (DBT-7) test kit, a fair-use implementation of the TPC Benchmark(TM) DS.
+
+COMMANDS
+========
+
+The available commands are determined by what is installed by the kit.  Run
+**dbt7** without any command line arguments to see available commands.
+
+OPTIONS
+=======
+
+--verbose  Output versions of additional programs used by DBT-3 when used with
+        -V or --version OPTION
+-V, --version  Output version information, then exit.
+--help  This usage message.  Or **-?**.
+
+ENVIRONMENT
+===========
+
+**PATCHDIR** can be set to specify the series of patches to apply to TPC-DS
+Tools when running **build-dsgen**.

@@ -1,6 +1,7 @@
 add_subdirectory (pgsql)
 
-foreach (SCRIPT dbt7-generate-report
+foreach (SCRIPT dbt7
+                dbt7-generate-report
                 dbt7-get-config
                 dbt7-load-test
                 dbt7-plot-results
@@ -14,7 +15,8 @@ foreach (SCRIPT dbt7-generate-report
 endforeach (SCRIPT)
 
 install (
-    PROGRAMS ${CMAKE_BINARY_DIR}/dbt7-generate-report
+    PROGRAMS ${CMAKE_BINARY_DIR}/dbt7
+             ${CMAKE_BINARY_DIR}/dbt7-generate-report
              ${CMAKE_BINARY_DIR}/dbt7-get-config
              ${CMAKE_BINARY_DIR}/dbt7-load-test
              ${CMAKE_BINARY_DIR}/dbt7-plot-results

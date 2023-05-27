@@ -17,6 +17,7 @@ set (
     "Database Test 7 (DBT-7) project page: https://github.com/osdldbt/dbt7"
 )
 
+add_subdirectory (man)
 add_subdirectory (scripts)
 
 # CPack rules for creating distribution files.
