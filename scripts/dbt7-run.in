@@ -27,28 +27,34 @@ STREAMS=1
 
 usage()
 {
-	echo "`basename $0` is the DBT-7 PostgreSQL workload script"
-	echo ""
-	echo "Usage:"
-	echo "  `basename $0` [OPTIONS]"
-	echo ""
-	echo "General options:"
-	echo "  -1               run load test"
-	echo "  -2               run performance test"
-	echo "  -a DBMS          dbms under test (pgsql)"
-	echo "  -d DIALECT       dialect override"
-	echo "  -c COMMENT       comment about the test"
-	echo "  -g               generate data files, default no data generated"
-	echo "  -i INPUT         input override, default $INPUT"
-	echo "  -n STREAMS       number of throughput streams, default $STREAMS"
-	echo "  -o PATH          output directory"
-	echo "  -P               enable profiling (Linux only)"
-	echo "  -s SCALE         scale factor, default $SCALE"
-	echo "  -U               run test as a privileged user"
-	echo ""
-	echo "PostgreSQL options (pgsql):"
-	echo "  -p PARAMETERS    database parameters for the load test"
-	echo "  -q PARAMETERS    database parameters for the performance test"
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) workload runner
+
+Usage:
+  $(basename "${0}") [OPTION] DIRECTORY
+
+Options:
+  -1               run load test
+  -2               run performance test
+  -a DBMS          dbms under test (pgsql)
+  -d DIALECT       dialect override
+  -c COMMENT       comment about the test
+  -g               generate data files, default no data generated
+  -i INPUT         input override, default $INPUT
+  -n STREAMS       number of throughput streams, default $STREAMS
+  -o PATH          output directory
+  -P               enable profiling (Linux only)
+  -s SCALE         scale factor, default $SCALE
+  -U               run test as a privileged user
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+PostgreSQL options (pgsql):
+  -p PARAMETERS    database parameters for the load test
+  -q PARAMETERS    database parameters for the performance test
+
+@HOMEPAGE@
+EOF
 }
 
 DATABASE=""
@@ -59,47 +65,49 @@ if [ -n "$DEFAULT_PERF_PARAMETERS" ]; then
 	PERF_PARAMETERS="$DEFAULT_PERF_PARAMETERS"
 fi
 
-while getopts "123a:c:d:ghi:n:o:p:Pq:s:S:U" OPT; do
-	case $OPT in
-	1)
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-1)
 		RUN_LOAD_TEST=1
 		RUN_ALL_TESTS=0
 		;;
-	2)
+	(-2)
 		RUN_POWER_TEST=1
 		FLAG_POWER_TEST="-2"
 		RUN_ALL_TESTS=0
 		;;
-	3)
+	(-3)
 		RUN_THROUGHPUT_TEST=1
 		FLAG_THROUGHPUT_TEST="-3"
 		RUN_ALL_TESTS=0
 		;;
-	a)
-		DATABASE=${OPTARG}
+	(-a)
+		shift
+		DATABASE="${1}"
 		;;
-	c)
-		COMMENT=${OPTARG}
+	(-c)
+		shift
+		COMMENT="${1}"
 		;;
-	d)
-		DIALECT=$OPTARG
+	(-d)
+		shift
+		DIALECT="${1}"
 		DIALECT_ARG="-d $DIALECT"
 		;;
-	g)
+	(-g)
 		GENERATE_DATA_FLAG="-g"
 		;;
-	h)
-		usage
-		exit 1
-		;;
-	i)
-		INPUT=$OPTARG
+	(-i)
+		shift
+		INPUT="${1}"
 		INPUT_ARG="-i $INPUT"
 		;;
-	n)
-		STREAMS=$OPTARG
+	(-n)
+		shift
+		STREAMS="${1}"
 		;;
-	o)
+	(-o)
 		OUTPUT_DIR="${OPTARG}"
 		if [ -d "$OUTPUT_DIR" ]; then
 			echo "Error, the directory \"$OUTPUT_DIR\" already exists."
@@ -107,32 +115,48 @@ while getopts "123a:c:d:ghi:n:o:p:Pq:s:S:U" OPT; do
 		fi
 		mkdir -p $OUTPUT_DIR
 		;;
-	P)
+	(-P)
 		PROFILE_FLAG="-Y"
 		;;
-	p)
+	(-p)
+		shift
 		# PostgreSQL only.
-		LOAD_PARAMETERS="$LOAD_PARAMETERS $OPTARG"
+		LOAD_PARAMETERS="$LOAD_PARAMETERS ${1}"
 		;;
-	q)
+	(-q)
+		shift
 		# PostgreSQL only.
-		PERF_PARAMETERS="$PERF_PARAMETERS $OPTARG"
+		PERF_PARAMETERS="$PERF_PARAMETERS ${1}"
 		;;
-	s)
-		SCALE=$OPTARG
+	(-s)
+		shift
+		SCALE="${1}"
 		;;
-	S)
-		SEED=$OPTARG
+	(-S)
+		shift
+		SEED="${1}"
 		;;
-	U)
+	(-U)
 		PRIVILEGED=1
 		PRIVILEGED_ARG=""
 		;;
-	\?)
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
 		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
 		exit 1
 		;;
+	(*)
+		break
+		;;
 	esac
+	shift
 done
 
 if [ "x${DSTOOLS}" = "x" ]; then
