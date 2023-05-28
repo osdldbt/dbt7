@@ -1,0 +1,86 @@
+==========
+ dbt7-run
+==========
+
+---------------
+Database Test 7
+---------------
+
+:Date: @MANDATE@
+:Manual section: 1
+:Manual group: Database Test 7 @PROJECT_VERSION@ Documentation
+:Version: Database Test 7 @PROJECT_VERSION@
+
+SYNOPSIS
+========
+
+**dbt7-run** [option...]
+
+DESCRIPTION
+===========
+
+**dbt7-run** is a wrapper script that helps execute this kit's workload.
+
+OPTIONS
+=======
+
+-1  Run load test, default run load and performance test.  Selecting individual
+        tests disables the other tests unless explicitly specified again.
+-2  Run performance test, default run load and performance test. Selecting
+        individual tests disables the other tests unless explicitly specified
+        again.
+-a DBMS  *dbms* under test (pgsql).
+-c COMMENTS  Provide *comments* to save with the test.
+-d DIALECT  *dialect* override.
+-g  Generate data files, default no data generated.
+-i INPUT  *input* override.
+-n STREAMS  Number of throughput STREAMS, default 1.
+-o PATH  Output directory.
+-P  Enable profiling (Linux only).
+-s SCALE  *scale* factor, default 1.
+-U  Run test as a privileged operating system and database user.  This means
+        the user has the ability to stop and start the database between the
+        individual tests, as allowed per specification.
+
+PostgreSQL options (pgsql):
+
+-p PARAMETERS  Database *parameters* for the load test.
+-q PARAMETERS  Database *parameters* for the performance test.
+
+ENVIRONMENT
+===========
+
+PostgreSQL Specific:
+
+**LOAD_PARAMETERS**
+
+    Set to database configuration parameters for the load test.  This currently
+    requires elevated privileges because of the way these parameters are passed
+    to the database system.  The command line option will append configuration
+    settings to these environment variables, as opposed to override them.
+
+**PERF_PARAMETERS**
+
+    Set to database configuration parameters for the load test.  This currently
+    requires elevated privileges because of the way these parameters are passed
+    to the database system.  The command line option will append configuration
+    settings to these environment variables, as opposed to override them.
+
+EXAMPLES
+========
+
+A simple example of running a default 1 GB scale factor test against a locally
+running PostgreSQL database::
+
+    export DSHOME="DSGen-software-code-3.2.0rc1"
+    export DSQUERY="${DSHOME}/query_templates"
+    export DSTOOLS="${DSHOME}/tools"
+    export DS_DATA="/tmp/dbt7data"
+    export DBT7DBNAME=dbt7
+    dbt7 run -a pgsql -o results
+
+SEE ALSO
+========
+
+**dbt7**\ (1), **oprofile**\ (1), **perf**\ (1), **readprofile**\ (8),
+**ts-profile**\ (1), **ts-sysstat**\ (1)

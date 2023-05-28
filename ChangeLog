@@ -6,6 +6,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Change run-workload default behavior to run without privileged user
 - Add additional postgres query templates to sleep for 1 second for testing
 - Add build-dsgen script to patch and build TPC-DS Tools
+- Rename 'run-workload' scripts to 'run'
 
 v0.4.1 (2022-06-20)
 

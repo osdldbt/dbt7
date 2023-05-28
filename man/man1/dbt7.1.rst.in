@@ -41,3 +41,8 @@ ENVIRONMENT
 
 **PATCHDIR** can be set to specify the series of patches to apply to TPC-DS
 Tools when running **build-dsgen**.
+
+SEE ALSO
+========
+
+**dbt7-run**\ (1)
