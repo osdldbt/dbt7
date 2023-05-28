@@ -18,6 +18,7 @@ set (
 )
 
 add_subdirectory (man)
+add_subdirectory (patches)
 add_subdirectory (scripts)
 
 # CPack rules for creating distribution files.
