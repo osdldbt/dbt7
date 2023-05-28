@@ -14,7 +14,7 @@ Database Test 7
 SYNOPSIS
 ========
 
-**dbt7-run** [option...]
+**dbt7-run** [option...] dbms directory
 
 DESCRIPTION
 ===========
@@ -29,13 +29,11 @@ OPTIONS
 -2  Run performance test, default run load and performance test. Selecting
         individual tests disables the other tests unless explicitly specified
         again.
--a DBMS  *dbms* under test (pgsql).
 -c COMMENTS  Provide *comments* to save with the test.
 -d DIALECT  *dialect* override.
 -g  Generate data files, default no data generated.
 -i INPUT  *input* override.
 -n STREAMS  Number of throughput STREAMS, default 1.
--o PATH  Output directory.
 -P  Enable profiling (Linux only).
 -s SCALE  *scale* factor, default 1.
 -U  Run test as a privileged operating system and database user.  This means
@@ -46,6 +44,12 @@ PostgreSQL options (pgsql):
 
 -p PARAMETERS  Database *parameters* for the load test.
 -q PARAMETERS  Database *parameters* for the performance test.
+
+*dbms* options are:
+
+* pgsql PostgreSQL
+
+*directory* is the path to save test results.
 
 ENVIRONMENT
 ===========

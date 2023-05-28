@@ -102,7 +102,7 @@ if [ -f "$SEED_FILE" ]; then
 fi
 
 # Save dsdgen info.
-(cd $DSTOOLS && \
+(cd "${DSTOOLS}" && \
 		./dsdgen -TABLE dbgen_version \
 				-DIR $OUTPUT_DIR \
 				-SCALE $SCALE \
@@ -111,7 +111,7 @@ fi
 ) || exit 1
 
 # Generate the queries.  Clause 4.3.2
-(cd $DSTOOLS && \
+(cd "${DSTOOLS}" && \
 		./dsqgen -DIALECT $DIALECT \
 				-OUTPUT_DIR $OUTPUT_DIR \
 				-SCALE $SCALE \

@@ -164,7 +164,7 @@ if [ -f "$SEED_FILE" ]; then
 fi
 
 # Save dsdgen info.
-(cd $DSTOOLS && \
+(cd "${DSTOOLS}" && \
 		./dsdgen -TABLE dbgen_version \
 				-DIR $OUTPUT_DIR \
 				-SCALE $SCALE \
@@ -174,7 +174,7 @@ fi
 
 # Generate the queries.  Clause 4.3.2
 TOTAL_STREAMS=$(( ($STREAMS * 2) + 1 ))
-(cd $DSTOOLS && \
+(cd "${DSTOOLS}" && \
 		./dsqgen -DIALECT $DIALECT \
 				-OUTPUT_DIR $OUTPUT_DIR \
 				-SCALE $SCALE \
@@ -199,7 +199,7 @@ for J in `seq 1 $(( $STREAMS * 2 ))`; do
 	for I in `seq 1 $CPUS`; do
 		DMDIR=${DS_DATA}/${J}
 		mkdir -p $DMDIR
-		(cd $DSTOOLS && \
+		(cd "${DSTOOLS}" && \
 				./dsdgen \
 						-DIR $DMDIR \
 						-SCALE $SCALE \

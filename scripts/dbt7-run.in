@@ -20,7 +20,6 @@ RUN_ALL_TESTS=1
 RUN_LOAD_TEST=0
 RUN_POWER_TEST=0
 RUN_THROUGHPUT_TEST=0
-OUTPUT_DIR=""
 SCALE=1
 SEED=0
 STREAMS=1
@@ -31,23 +30,26 @@ usage()
 $(basename "${0}") is the Database Test 7 (DBT-7) workload runner
 
 Usage:
-  $(basename "${0}") [OPTION] DIRECTORY
+  $(basename "${0}") [OPTION] DBMS DIRECTORY
 
 Options:
   -1               run load test
   -2               run performance test
-  -a DBMS          dbms under test (pgsql)
   -d DIALECT       dialect override
   -c COMMENT       comment about the test
   -g               generate data files, default no data generated
   -i INPUT         input override, default $INPUT
   -n STREAMS       number of throughput streams, default $STREAMS
-  -o PATH          output directory
   -P               enable profiling (Linux only)
   -s SCALE         scale factor, default $SCALE
   -U               run test as a privileged user
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
+
+DBMS options are:
+  pgsql            PostgreSQL
+
+DIRECTORY is the path to save test results.
 
 PostgreSQL options (pgsql):
   -p PARAMETERS    database parameters for the load test
@@ -57,7 +59,6 @@ PostgreSQL options (pgsql):
 EOF
 }
 
-DATABASE=""
 if [ -n "$DEFAULT_LOAD_PARAMETERS" ]; then
 	LOAD_PARAMETERS="$DEFAULT_LOAD_PARAMETERS"
 fi
@@ -82,10 +83,6 @@ while [ "${#}" -gt 0 ] ; do
 		FLAG_THROUGHPUT_TEST="-3"
 		RUN_ALL_TESTS=0
 		;;
-	(-a)
-		shift
-		DATABASE="${1}"
-		;;
 	(-c)
 		shift
 		COMMENT="${1}"
@@ -106,14 +103,6 @@ while [ "${#}" -gt 0 ] ; do
 	(-n)
 		shift
 		STREAMS="${1}"
-		;;
-	(-o)
-		OUTPUT_DIR="${OPTARG}"
-		if [ -d "$OUTPUT_DIR" ]; then
-			echo "Error, the directory \"$OUTPUT_DIR\" already exists."
-			exit 1
-		fi
-		mkdir -p $OUTPUT_DIR
 		;;
 	(-P)
 		PROFILE_FLAG="-Y"
@@ -159,19 +148,28 @@ while [ "${#}" -gt 0 ] ; do
 	shift
 done
 
-if [ "x${DSTOOLS}" = "x" ]; then
-	>&2 echo "Error: DSTOOLS environment variable is not set"
+if [ "${#}" -eq 0 ]; then
+	printf "Specify which DBMS to test, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
 	exit 1
 fi
-if [ ! -d $DSTOOLS ]; then
-	>&2 echo "Error: DSTOOLS dir does not exist: $DSTOOLS"
-	exit 2
+DATABASE=${1}
+shift
+
+if [ "${#}" -eq 0 ]; then
+	printf "ERROR: Specify DIRECTORY to save results, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
+	exit 1
 fi
 
-if [ "x${OUTPUT_DIR}" = "x" ]; then
-	>&2 echo "Error: use -o to set output directory"
+OUTPUT_DIR=${1}
+if [ -d "${OUTPUT_DIR}" ]; then
+	>&2 echo "ERROR: Specify new location, '${OUTPUT_DIR}' already exists"
 	exit 1
 fi
+mkdir -p ${OUTPUT_DIR}
 
 if [ -n "$LOAD_PARAMETERS" ]; then
 	LOAD_PARAMETERS_ARG="-p \"$LOAD_PARAMETERS\""

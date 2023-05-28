@@ -7,6 +7,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Add additional postgres query templates to sleep for 1 second for testing
 - Add build-dsgen script to patch and build TPC-DS Tools
 - Rename 'run-workload' scripts to 'run'
+- Simplify 'run' script
 
 v0.4.1 (2022-06-20)
 
