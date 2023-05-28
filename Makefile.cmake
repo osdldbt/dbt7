@@ -1,7 +1,13 @@
-.PHONY: clean default debug package release
+.PHONY: appimage clean default debug package release
 
 default:
-	@echo "targets: clean, debug, package, release"
+	@echo "targets: appimage (Linux only), clean, debug, package, release"
+
+appimage:
+	cmake -H. -Bbuilds/appimage -DCMAKE_INSTALL_PREFIX=/usr
+	cd builds/appimage && make -s
+	cd builds/appimage && make -s install DESTDIR=AppDir
+	cd builds/appimage && make -s appimage-podman
 
 clean:
 	-rm -rf builds

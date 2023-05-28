@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=dbt7
+Exec=dbt7
+Icon=dbt7
+Type=Application
+Categories=Development;Database;
+Terminal=true
