@@ -12,64 +12,87 @@ RESTART=0
 
 usage()
 {
-	echo "Usage: `basename $0` is the DBT-7 Power Test"
-	echo ""
-	echo "Usage:"
-	echo "  `basename $0` [OPTION]"
-	echo ""
-	echo "Options:"
-	echo "  -a DBMS          database management system: pgsql"
-	echo "  -d DIALECT       dialect override"
-	echo "  -o PATH          path to save results"
-	echo "  -i INPUT         input override, default $INPUT"
-	echo "  -r               restart database, if already running"
-	echo "  -s SCALE         scale factor, default $SCALE"
-	echo "  -U               run test as an unprivileged user"
-	echo "  -Y               enable profiling"
-	echo ""
-	echo "PostgreSQL options (pgsql):"
-	echo "  -p PARAMETERS    PostgreSQL parameters"
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) power tester
+
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  -a DBMS          database management system: pgsql
+  -d DIALECT       dialect override
+  -o PATH          path to save results
+  -r               restart database, if already running
+  -s SCALE         scale factor, default $SCALE
+  -U               run test as an unprivileged user
+  -V, --version    output version information, then exit
+  -Y               enable profiling"
+  -?, --help       show this help, then exit
+
+DBMS options are:
+  pgsql            PostgreSQL
+
+PostgreSQL options (pgsql):
+  -p PARAMETERS    PostgreSQL parameters
+
+@HOMEPAGE@
+EOF
 }
 
-while getopts "a:d:hi:p:o:rs:UY" OPT; do
-	case $OPT in
-	a)
-		DATABASE=$OPTARG
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-a)
+		shift
+		DATABASE="${1}"
 		;;
-	d)
-		DIALECT=$OPTARG
+	(-d)
+		shift
+		DIALECT="${1}"
 		;;
-	h)
+	(-i)
+		shift
+		INPUT="${1}"
+		;;
+	(-o)
+		shift
+		OUTPUT_DIR="${1}"
+		mkdir -p $OUTPUT_DIR
+		;;
+	(-p)
+		shift
+		PARAMETERS_ARG="-p \"${1}\""
+		;;
+	(-r)
+		RESTART=1
+		;;
+	(-s)
+		shift
+		SCALE="${1}"
+		;;
+	(-U)
+		PRIVILEGED=0
+		;;
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-Y)
+		# TODO: Current implementation doesn't allow profiling by query, no-op.
+		;;
+	(-\? | --help)
 		usage
 		exit 0
 		;;
-	i)
-		INPUT=$OPTARG
-		;;
-	o)
-		OUTPUT_DIR=$OPTARG
-		mkdir -p $OUTPUT_DIR
-		;;
-	p)
-		PARAMETERS_ARG="-p \"$OPTARG\""
-		;;
-	r)
-		RESTART=1
-		;;
-	s)
-		SCALE=$OPTARG
-		;;
-	U)
-		PRIVILEGED=0
-		;;
-	Y)
-		# TODO: Current implementation doesn't allow profiling by query, no-op.
-		;;
-	\?)
-		usage
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
 		exit 1
 		;;
+	(*)
+		break
+		;;
 	esac
+	shift
 done
 
 if [ "x${DATABASE}" = "x" ]; then

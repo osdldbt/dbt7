@@ -1,0 +1,52 @@
+=====================
+ dbt7-throughput-test
+=====================
+
+---------------
+Database Test 7
+---------------
+
+:Date: @MANDATE@
+:Manual section: 1
+:Manual group: Database Test 7 @PROJECT_VERSION@ Documentation
+:Version: Database Test 7 @PROJECT_VERSION@
+
+SYNOPSIS
+========
+
+**dbt7-throughput-test** [option...]
+
+DESCRIPTION
+===========
+
+**dbt7-throughput-test** is the Database Test 7 (DBT-7) throughput tester
+
+OPTIONS
+=======
+
+-a DBMS  *dbms*: pgsql
+-d DIALECT  *dialect* override.
+-o PATH  *path* to save results.
+-i INPUT  *input* override.
+-n STREAMS  number of *streams*.
+-r  restart database, if already running
+-s SCALE  *scale* factor, default 1.
+-U  Run test as a privileged operating system and database user.  This means
+        the user has the ability to stop and start the database between the
+        individual tests, as allowed per specification.
+-V, --version  Output version information, then exit.
+-Y  Enable profiling.
+--help  This usage message.  Or **-?**.
+
+PostgreSQL options (pgsql):
+
+-p PARAMETERS  Database *parameters*.
+
+*dbms* options are:
+
+* pgsql PostgreSQL
+
+SEE ALSO
+========
+
+**dbt7**\ (1), **dbt7-run**\ (1)

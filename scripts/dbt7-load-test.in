@@ -13,21 +13,30 @@ SCALE=1
 
 usage()
 {
-	echo "`basename $0` is the DBT-7 Load Test"
-	echo ""
-	echo "Usage:"
-	echo "  `basename $0` [OPTION]"
-	echo ""
-	echo "Options:"
-	echo "  -a DBMS          database management system: pgsql"
-	echo "  -g               generate data files, default no data generated"
-	echo "  -o PATH          path to save results"
-	echo "  -s SCALE         scale factor, default $SCALE"
-	echo "  -U               run test as an unprivileged user"
-	echo "  -Y               enable profiling"
-	echo ""
-	echo "PostgreSQL options (pgsql):"
-	echo "  -p PARAMETERS    PostgreSQL parameters"
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) load tester
+
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  -a DBMS          DBMS: pgsql
+  -g               generate data files, default no data generated
+  -o PATH          PATH to save results
+  -s SCALE         scale factor, default $SCALE
+  -U               run test as an unprivileged user
+  -V, --version    output version information, then exit
+  -Y               enable profiling
+  -?, --help       show this help, then exit
+
+DBMS options are:
+  pgsql            PostgreSQL
+
+PostgreSQL options (pgsql):
+  -p PARAMETERS    database PARAMETERS
+
+@HOMEPAGE@
+EOF
 }
 
 bailout()
@@ -40,39 +49,53 @@ bailout()
 	exit 1
 }
 
-while getopts "a:gho:p:s:UY" OPT; do
-	case $OPT in
-	a)
-		DATABASE=$OPTARG
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-a)
+		shift
+		DATABASE="${1}"
 		;;
-	g)
+	(-g)
 		GENERATE_DATA=1
 		;;
-	h)
-		usage
-		exit 0
-		;;
-	o)
-		OUTPUT_DIR=$OPTARG
+	(-o)
+		shift
+		OUTPUT_DIR="${1}"
 		mkdir -p $OUTPUT_DIR
 		;;
-	p)
-		PARAMETERS_ARG="-p \"$OPTARG\""
+	(-p)
+		shift
+		PARAMETERS_ARG="-p \"$1\""
 		;;
-	s)
-		SCALE=$OPTARG
+	(-s)
+		shift
+		SCALE="${1}"
 		;;
-	U)
+	(-U)
 		PRIVILEGED=0
 		PRIVILEGED_ARG="-U"
 		;;
-	Y)
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-Y)
 		PROFILE=1
 		;;
-	\?)
+	(-\? | --help)
 		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
 		exit 1
+		;;
+	(*)
+		break
+		;;
 	esac
+	shift
 done
 
 if [ "x$DATABASE" = "x" ]; then
