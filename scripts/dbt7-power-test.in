@@ -9,6 +9,7 @@
 INPUT="templates.lst"
 PRIVILEGED=1
 RESTART=0
+STATS=0
 
 usage()
 {
@@ -24,6 +25,7 @@ Options:
   -o PATH          path to save results
   -r               restart database, if already running
   -s SCALE         scale factor, default $SCALE
+  --stats          enable system and database stats collection
   -U               run test as an unprivileged user
   -V, --version    output version information, then exit
   -Y               enable profiling"
@@ -69,6 +71,9 @@ while [ "${#}" -gt 0 ] ; do
 	(-s)
 		shift
 		SCALE="${1}"
+		;;
+	(--stats)
+		STATS=1
 		;;
 	(-U)
 		PRIVILEGED=0
@@ -155,11 +160,13 @@ fi
 
 dbt7-${DATABASE}-time-statistics -c
 
-# Start collecting system statistics.
-ts-sysstat -o "${OUTPUT_DIR}/sysstat"
+if [ "${STATS}" -eq 1 ]; then
+	# Start collecting system statistics.
+	ts-sysstat -o "${OUTPUT_DIR}/sysstat"
 
-# Collect database statistics
-eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+	# Collect database statistics
+	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+fi
 
 echo "**`date` power test starting**"
 
@@ -173,9 +180,11 @@ E_TIME_POWER=`date +%s`
 DIFF_TIME=$(( $E_TIME_POWER - $S_TIME_POWER ))
 echo "**`date` power test completed ($DIFF_TIME seconds)**"
 
-# Stop collecting system statistics.
-ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
-eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+if [ "${STATS}" -eq 1 ]; then
+	# Stop collecting system statistics.
+	ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
+	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+fi
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 

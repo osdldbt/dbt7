@@ -29,6 +29,7 @@ OPTIONS
 -o PATH  *path* to save results.
 -r  restart database, if already running
 -s SCALE  *scale* factor, default 1.
+--stats  Enable system and database stats collection.
 -U  Run test as a privileged operating system and database user.  This means
         the user has the ability to stop and start the database between the
         individual tests, as allowed per specification.

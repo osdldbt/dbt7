@@ -10,6 +10,7 @@ GENERATE_DATA=0
 PRIVILEGED=1
 PROFILE=0
 SCALE=1
+STATS=0
 
 usage()
 {
@@ -24,6 +25,7 @@ Options:
   -g               generate data files, default no data generated
   -o PATH          PATH to save results
   -s SCALE         scale factor, default $SCALE
+  --stats          enable system and database stats collection
   -U               run test as an unprivileged user
   -V, --version    output version information, then exit
   -Y               enable profiling
@@ -71,6 +73,9 @@ while [ "${#}" -gt 0 ] ; do
 	(-s)
 		shift
 		SCALE="${1}"
+		;;
+	(--stats)
+		STATS=1
 		;;
 	(-U)
 		PRIVILEGED=0
@@ -160,8 +165,10 @@ if [ $GENERATE_DATA -eq 1 ]; then
 	wait
 fi
 
-# Start collecting system statistics.
-ts-sysstat -o "${OUTPUT_DIR}/sysstat"
+if [ "${STATS}" -eq 1 ]; then
+	# Start collecting system statistics.
+	ts-sysstat -o "${OUTPUT_DIR}/sysstat"
+fi
 
 if [ "${PRIVILEGED}" -eq 1 ]; then
 	eval "dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG \
@@ -171,8 +178,10 @@ fi
 dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
 dbt7-${DATABASE}-create-tables >> $OUTPUTFILE 2>&1 || bailout
 
-# Collect database statistics
-eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+if [ "${STATS}" -eq 1 ]; then
+	# Collect database statistics
+	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+fi
 
 if [ $PROFILE -eq 1 ]; then
 	ts-profile -o "${OUTPUT_DIR}/profile" sleep 1
@@ -190,8 +199,10 @@ E_TIME=`date +%s`
 DIFF_TIME=`expr $E_TIME - $S_TIME`
 echo "**`date` load test completed  ($DIFF_TIME seconds)**"
 
-ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
-eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+if [ "${STATS}" -eq 1 ]; then
+	ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
+	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+fi
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 

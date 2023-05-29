@@ -9,6 +9,7 @@
 PRIVILEGED=1
 RESTART=0
 PROFILE=0
+STATS=0
 
 usage()
 {
@@ -26,6 +27,7 @@ Options:
   -n STREAMS       number of streams
   -r               restart database, if already running
   -s SCALE         scale factor, default $SCALE
+  --stats          enable system and database stats collection
   -U               run test as an unprivileged user
   -V, --version    output version information, then exit
   -Y               enable profiling"
@@ -125,6 +127,9 @@ while [ "${#}" -gt 0 ] ; do
 	(-S)
 		shift
 		SEED_FILE="${1}"
+		;;
+	(--stats)
+		STATS=1
 		;;
 	(-U)
 		PRIVILEGED=0
@@ -248,11 +253,13 @@ if [ $PRIVILEGED -eq 1 ]; then
 fi
 dbt7-${DATABASE}-time-statistics -c
 
-# Start collecting system statistics. 
-ts-sysstat -o "${OUTPUT_DIR}/sysstat"
+if [ "${STATS}" -eq 1 ]; then
+	# Start collecting system statistics.
+	ts-sysstat -o "${OUTPUT_DIR}/sysstat"
 
-# Start collecting database statistics.
-eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+	# Start collecting database statistics.
+	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+fi
 
 if [ $PROFILE -eq 1 ]; then
 	ts-profile -o "${OUTPUT_DIR}/profile" sleep 1
@@ -264,9 +271,11 @@ for I in 1 2; do
 	run_data_maintenance $I
 done
 
-# Stop collecting system statistics.
-ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
-eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+if [ "${STATS}" -eq 1 ]; then
+	# Stop collecting system statistics.
+	ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
+	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+fi
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 

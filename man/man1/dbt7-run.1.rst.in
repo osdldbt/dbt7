@@ -36,6 +36,7 @@ OPTIONS
 -n STREAMS  Number of throughput STREAMS, default 1.
 -P  Enable profiling (Linux only).
 -s SCALE  *scale* factor, default 1.
+--stats  Enable system and database stats collection.
 -U  Run test as a privileged operating system and database user.  This means
         the user has the ability to stop and start the database between the
         individual tests, as allowed per specification.

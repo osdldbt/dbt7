@@ -22,6 +22,7 @@ RUN_POWER_TEST=0
 RUN_THROUGHPUT_TEST=0
 SCALE=1
 SEED=0
+STATS_ARG=""
 STREAMS=1
 
 usage()
@@ -42,6 +43,7 @@ Options:
   -n STREAMS       number of throughput streams, default $STREAMS
   -P               enable profiling (Linux only)
   -s SCALE         scale factor, default $SCALE
+  --stats          enable system and database stats collection
   -U               run test as a privileged user
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
@@ -125,6 +127,9 @@ while [ "${#}" -gt 0 ] ; do
 		shift
 		SEED="${1}"
 		;;
+	(--stats)
+		STATS_ARG="--stats"
+		;;
 	(-U)
 		PRIVILEGED=1
 		PRIVILEGED_ARG=""
@@ -203,7 +208,7 @@ fi
 
 # Load Test
 if [ $RUN_LOAD_TEST -eq 1 ]; then
-	eval dbt7-load-test \
+	eval "dbt7-load-test \
 			-a $DATABASE \
 			-o ${OUTPUT_DIR}/load \
 			-s $SCALE \
@@ -211,6 +216,7 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			$LOAD_PARAMETERS_ARG \
 			$PROFILE_FLAG \
 			$PRIVILEGED_ARG \
+			${STATS_ARG}" \
 			|| exit 1
 elif [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-start-db -o $OUTPUT_DIR
@@ -230,7 +236,7 @@ if [ $RUN_POWER_TEST -eq 1 ] || [ $RUN_THROUGHPUT_TEST -eq 1 ]; then
 fi
 
 if [ $RUN_POWER_TEST -eq 1 ]; then
-	eval dbt7-power-test \
+	eval "dbt7-power-test \
 			-a $DATABASE \
 			-s $SCALE \
 			-o ${OUTPUT_DIR}/power \
@@ -238,7 +244,8 @@ if [ $RUN_POWER_TEST -eq 1 ]; then
 			$INPUT_ARG \
 			$PERF_PARAMETERS_ARG\
 			$PROFILE_FLAG \
-			$PRIVILEGED_ARG
+			$PRIVILEGED_ARG \
+			${STATS_ARG}"
 	if [ $? -eq 1 ] ; then
 		2&> echo "Error: power test problem!"
 		exit 1
@@ -246,7 +253,7 @@ if [ $RUN_POWER_TEST -eq 1 ]; then
 fi
 
 if [ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
-	eval dbt7-throughput-test \
+	eval "dbt7-throughput-test \
 			-a $DATABASE \
 			-s $SCALE \
 			-n $STREAMS \
@@ -255,7 +262,8 @@ if [ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
 			$INPUT_ARG \
 			$THROUGHPUT_PARAMETERS_ARG \
 			$PRIVILEGED_ARG \
-			$PROFILE_FLAG
+			$PROFILE_FLAG \
+			${STATS_ARG}"
 	if [ $? -eq 1 ] ; then
 		2&> echo "throughput test problem!"
 		exit 1
