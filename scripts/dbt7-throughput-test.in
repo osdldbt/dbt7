@@ -223,6 +223,10 @@ if [ -f "/proc/stat" ]; then
 	CPUS=$(( $CPUS - 1 ))
 	echo "detected $CPUS processors for parallel data generation and loading"
 fi
+PARALLEL_ARG=""
+if [ "${CPUS}" -gt 1 ]; then
+	PARALLEL_ARG="-PARALLEL ${CPUS}"
+fi
 
 # Generate refresh data
 for J in `seq 1 $(( $STREAMS * 2 ))`; do
@@ -230,15 +234,15 @@ for J in `seq 1 $(( $STREAMS * 2 ))`; do
 		DMDIR=${DS_DATA}/${J}
 		mkdir -p $DMDIR
 		(cd "${DSTOOLS}" && \
-				./dsdgen \
+				eval "./dsdgen \
 						-DIR $DMDIR \
 						-SCALE $SCALE \
 						-UPDATE $J \
-						-PARALLEL $CPUS \
+						${PARALLEL_ARG} \
 						-CHILD $I \
 						-TERMINATE N \
 						-FORCE Y \
-						$RNGSEED_ARG \
+						$RNGSEED_ARG" \
 						2> /dev/null \
 		) &
 	done

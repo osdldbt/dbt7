@@ -145,6 +145,10 @@ if [ $GENERATE_DATA -eq 1 ]; then
 		CPUS=$(( $CPUS - 1 ))
 		echo "detected $CPUS processors for parallel data generation and loading"
 	fi
+	PARALLEL_ARG=""
+	if [ "${CPUS}" -gt 1 ]; then
+		PARALLEL_ARG="-PARALLEL ${CPUS}"
+	fi
 
 	# Use a separate seed for generating data
 	DGENSEED=`date +%-m%d%H%M%S`
@@ -152,13 +156,13 @@ if [ $GENERATE_DATA -eq 1 ]; then
 	mkdir -p $DS_DATA
 	for I in `seq 1 $I`; do
 		(cd "${DSTOOLS}" && \
-				./dsdgen \
+				eval "./dsdgen \
 						-DIR $DS_DATA \
 						-SCALE $SCALE \
 						-TERMINATE N \
-						-PARALLEL $CPUS \
+						${PARALLEL_ARG} \
 						-CHILD $I \
-						-RNGSEED $DGENSEED \
+						-RNGSEED $DGENSEED" \
 						2> /dev/null \
 		) &
 	done

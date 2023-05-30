@@ -42,7 +42,11 @@ SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
 __EOF__
 
 	for I in `seq 1 $CPUS`; do
-		FILENAME="${DS_DATA}/${TABLE}_${I}_${CPUS}.dat"
+		if [ "${CPUS}" -eq 1 ]; then
+			FILENAME="${DS_DATA}/${TABLE}.dat"
+		else
+			FILENAME="${DS_DATA}/${TABLE}_${I}_${CPUS}.dat"
+		fi
 		if [ ! -f "$FILENAME" ]; then
 			# Smaller scale factors may not generate as many data files as there
 			# are available processors.

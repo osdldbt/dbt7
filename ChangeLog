@@ -10,6 +10,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Simplify 'run' script
 - Disable stats collection by default, use --stats to collect with 'run',
   'load-test', 'power-test' and 'throughput-test'
+- Fix data loading for single processor systems
 
 v0.4.1 (2022-06-20)
 
