@@ -36,20 +36,33 @@ Usage:
   $(basename "${0}") [OPTION] DBMS DIRECTORY
 
 Options:
-  -1               run load test
-  -2               run performance test
-  -d DIALECT       dialect override, default matches DBMS
-  -c COMMENT       comment about the test
+  -d DIALECT, --dialect=DIALECT
+                   dialect override, default matches DBMS
+  -c COMMENTS, --comment=COMMENTS
+                   provide COMMENTS about the test
   -g               generate data files, default no data generated
-  -i INPUT         input override, default
+  -i INPUT, --input=INPUT
+                   input override, default
                    DSHOME/query_templates/templates-DBMS.lst
-  -n STREAMS       number of throughput streams, default $STREAMS
-  -P               enable profiling (Linux only)
-  -s SCALE         scale factor, default $SCALE
+  --load          run load test, default run load, power and throughput,
+                  selecting individual tests disables the other tests unless
+                  explicitly specified again
+  -n STREAMS, --streams=STREAMS
+                   number of throughput streams, default $STREAMS
+  --power         run power test, default run load, power and throughput,
+                  selecting individual tests disables the other tests unless
+                  explicitly specified again
+  --privileged     run test as a privileged user
+  --profile        enable profiling (Linux only)
+  -s SCALE_FACTOR, --scale-factor=SCALE_FACTOR
+                   scale factor, default $SCALE
+  --seed=SEED      set SEED, default is a random number
   --stats          enable system and database stats collection
   --tpcdstools=DSHOME
                    DSHOME is the directory location of the TPC-DS Tools
-  -U               run test as a privileged user
+  --throughput    run throughput test, default run load, power and throughput,
+                  selecting individual tests disables the other tests unless
+                  explicitly specified again
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
 
@@ -59,8 +72,10 @@ DBMS options are:
 DIRECTORY is the path to save test results.
 
 PostgreSQL options (pgsql):
-  -p PARAMETERS    database parameters for the load test
-  -q PARAMETERS    database parameters for the performance test
+  --load-parameters PARAMETERS
+                   database parameters for the load test
+  --performance-parameters PARAMETERS
+                   database parameters for the performance test
 
 @HOMEPAGE@
 EOF
@@ -76,60 +91,82 @@ fi
 # Custom argument handling for hopefully most portability.
 while [ "${#}" -gt 0 ] ; do
 	case "${1}" in
-	(-1)
-		RUN_LOAD_TEST=1
-		RUN_ALL_TESTS=0
-		;;
-	(-2)
-		RUN_POWER_TEST=1
-		FLAG_POWER_TEST="-2"
-		RUN_ALL_TESTS=0
-		;;
-	(-3)
-		RUN_THROUGHPUT_TEST=1
-		FLAG_THROUGHPUT_TEST="-3"
-		RUN_ALL_TESTS=0
-		;;
-	(-c)
+	(-c | --comment)
 		shift
 		COMMENT="${1}"
 		;;
-	(-d)
+	(--comment=?*)
+		COMMENT="${1#*--comments=}"
+		;;
+	(-d | --dialect)
 		shift
 		DIALECT_ARG="-d ${1}"
+		;;
+	(--dialect=?*)
+		DIALECT_ARG="-d ${1#*--dialect=}"
 		;;
 	(-g)
 		GENERATE_DATA_FLAG="-g"
 		;;
-	(-i)
+	(-i | --input)
 		shift
 		INPUT="${1}"
 		INPUT_ARG="-i $INPUT"
 		;;
-	(-n)
+	(--input=?*)
+		INPUT_ARG="-i ${1#*--input=}"
+		;;
+	(--load)
+		RUN_LOAD_TEST=1
+		RUN_ALL_TESTS=0
+		;;
+	(-n | --streams)
 		shift
 		STREAMS="${1}"
 		;;
-	(-P)
+	(--streams=?*)
+		STREAMS="${1#*--streams=}"
+		;;
+	(--power)
+		RUN_POWER_TEST=1
+		FLAG_POWER_TEST="-2"
+		RUN_ALL_TESTS=0
+		;;
+	(--profile)
 		PROFILE_FLAG="-Y"
 		;;
-	(-p)
+	(--load-parameters)
 		shift
-		# PostgreSQL only.
 		LOAD_PARAMETERS="$LOAD_PARAMETERS ${1}"
 		;;
-	(-q)
+	(--load-parameters=?*)
+		LOAD_PARAMETERS="$LOAD_PARAMETERS ${1#*--load-parameters=}"
+		;;
+	(--performance-parameters)
 		shift
-		# PostgreSQL only.
 		PERF_PARAMETERS="$PERF_PARAMETERS ${1}"
 		;;
-	(-s)
+	(--performance-parameters=?*)
+		shift
+		PERF_PARAMETERS="$PERF_PARAMETERS ${1#*--performance-parameters=}"
+		;;
+	(--privileged)
+		PRIVILEGED=1
+		PRIVILEGED_ARG=""
+		;;
+	(-s | --scale-factor)
 		shift
 		SCALE="${1}"
 		;;
-	(-S)
+	(--scale-factor=?*)
+		SCALE="${1#*--scale-factor=}"
+		;;
+	(--seed)
 		shift
 		SEED="${1}"
+		;;
+	(--seed=?*)
+		SEED="${1#*--seed=}"
 		;;
 	(--stats)
 		STATS_ARG="--stats"
@@ -141,9 +178,10 @@ while [ "${#}" -gt 0 ] ; do
    (--tpcdstools=?*)
 		DSHOME="${1#*--tpcdstools=}"
 		;;
-	(-U)
-		PRIVILEGED=1
-		PRIVILEGED_ARG=""
+	(--throughput)
+		RUN_THROUGHPUT_TEST=1
+		FLAG_THROUGHPUT_TEST="-3"
+		RUN_ALL_TESTS=0
 		;;
 	(-V | --version)
 		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
@@ -252,12 +290,6 @@ eval "dbt7-get-config -a $DATABASE -o $OUTPUT_DIR -s $SCALE -n $STREAMS \
 		${DIALECT_ARG} ${INPUT_ARG} -p \"${LOAD_PARAMETERS}\" \
 		-q \"${PERF_PARAMETERS}\""
 
-SEED_FILE=${OUTPUT_DIR}/seed
-if [ $SEED -ne 0 ]; then
-	echo $SEED > $SEED_FILE
-	echo "Using seed: `cat $SEED_FILE`"
-fi
-
 # Load Test
 if [ $RUN_LOAD_TEST -eq 1 ]; then
 	eval "dbt7-load-test \
@@ -274,7 +306,11 @@ elif [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-start-db -o $OUTPUT_DIR
 fi
 
-if [ $SEED -eq 0 ]; then
+SEED_FILE=${OUTPUT_DIR}/seed
+if [ $SEED -ne 0 ]; then
+	echo $SEED > $SEED_FILE
+	echo "Using seed: `cat $SEED_FILE`"
+else
 	# generate the initial seed according to Clause 4.3.1
 	# the initial seed is the time stamp of the end of the database load time
 	# expressed in the format mmddhhmmss.

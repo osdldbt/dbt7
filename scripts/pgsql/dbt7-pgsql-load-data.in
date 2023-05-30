@@ -15,7 +15,6 @@ usage()
 	echo ""
 	echo "Options:"
 	echo "  -s SCALE   set the scale factor"
-	echo "  -S SEED    set the rngseed"
 	echo "  -U         run test as an unprivileged user"
 }
 
@@ -68,7 +67,7 @@ SET (autovacuum_enabled = true, toast.autovacuum_enabled = true);
 __EOF__
 }
 
-while getopts "hs:S:U" OPT; do
+while getopts "hs:U" OPT; do
 	case $OPT in
 	h)
 		usage
@@ -76,9 +75,6 @@ while getopts "hs:S:U" OPT; do
 		;;
 	s)
 		SCALE="$OPTARG"
-		;;
-	S)
-		RNGSEED_FLAG="-RNGSEED $OPTARG"
 		;;
 	U)
 		PRIVILEGED=0

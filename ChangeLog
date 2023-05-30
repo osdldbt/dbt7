@@ -12,6 +12,7 @@ vX.Y.Z (YYYY-MM-DD)
   'load-test', 'power-test' and 'throughput-test'
 - Fix data loading for single processor systems
 - 'run' script dialect and input default dynamically set based on dbms
+- Add to or replace short options with long options
 
 v0.4.1 (2022-06-20)
 

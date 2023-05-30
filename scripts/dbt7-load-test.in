@@ -119,13 +119,6 @@ echo "**`date` load test prep**"
 
 OUTPUTFILE="${OUTPUT_DIR}/output.txt"
 
-SEED_FILE="${OUTPUT_DIR}/../seed"
-if [ -f "$SEED_FILE" ]; then
-	echo "Using generated seed file..."
-	read SEED < $SEED_FILE
-	SEED_ARG="-S $SEED"
-fi
-
 # Save dsdgen info.
 eval "${DSTOOLS}/dsdgen \
 		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
@@ -148,7 +141,7 @@ if [ $GENERATE_DATA -eq 1 ]; then
 		PARALLEL_ARG="-PARALLEL ${CPUS}"
 	fi
 
-	# Use a separate seed for generating data
+	# Use a random seed for generating data
 	DGENSEED=`date +%-m%d%H%M%S`
 	echo "data generation seed: $DGENSEED"
 	mkdir -p $DS_DATA
@@ -192,7 +185,7 @@ echo "**`date` load test starting**"
 S_TIME=`date +%s`
 dbt7-${DATABASE}-time-statistics -s -n LOADTEST || bailout
 
-eval $PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE $SEED_ARG \
+eval $PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE \
 		$PRIVILEGED_ARG >> $OUTPUTFILE 2>&1 || bailout
 
 dbt7-${DATABASE}-time-statistics -e -n LOADTEST || bailout

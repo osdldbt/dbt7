@@ -24,24 +24,32 @@ DESCRIPTION
 OPTIONS
 =======
 
--1  Run load test, default run load and performance test.  Selecting individual
-        tests disables the other tests unless explicitly specified again.
--2  Run performance test, default run load and performance test. Selecting
+-c COMMENTS, --comment=COMMENTS  Provide *comments* to save with the test.
+-d DIALECT, --dialect=DIALECT  *dialect* override, default matches *dbms*.
+-g  Generate data files, default no data generated.
+-i INPUT, --input=INPUT  *input* override, default
+        *dshome*/query_templates/templates-*dbms*.lst.
+--load  Run load test, default run load, power and throughput.  Selecting
         individual tests disables the other tests unless explicitly specified
         again.
--c COMMENTS  Provide *comments* to save with the test.
--d DIALECT  *dialect* override, default matches *dbms*.
--g  Generate data files, default no data generated.
--i INPUT  *input* override, default
-        *dshome*/query_templates/templates-*dbms*.lst.
--n STREAMS  Number of throughput STREAMS, default 1.
--P  Enable profiling (Linux only).
+-n STREAMS, --streams=STREAMS  Number of throughput STREAMS, default 1.
+--performance  Run performance test, default run load and performance tests.
+        Selecting individual tests disables the other test unless explicitly
+        specified again.
+--power  Run power test, default run load, power and throughput. Selecting
+        individual tests disables the other tests unless explicitly specified
+        again.
+--privileged  Run test as a privileged user.
+--profile  Enable profiling (Linux only).
 -s SCALE  *scale* factor, default 1.
+--seed=SEED  set *seed*, default is a random number.
 --stats  Enable system and database stats collection.
 --tpcdstools=DSHOME  *dshome* is the directory location of the TPC-DS Tools.
--U  Run test as a privileged operating system and database user.  This means
-        the user has the ability to stop and start the database between the
-        individual tests, as allowed per specification.
+--throughput  Run throughput test, default run load, power and throughput.
+        Selecting individual tests disables the other tests unless explicitly
+        specified again.
+-V, --version  Output version information, then exit.
+--help  This usage message.  Or **-?**.
 
 PostgreSQL options (pgsql):
 
