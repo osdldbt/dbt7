@@ -12,8 +12,10 @@ trap 'echo "Test was interrupted. Got TERM signal."; \
 killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' TERM
 
 COMMENT=""
+DIALECT_ARG=""
 FLAG_POWER_TEST=""
 FLAG_THROUGHPUT_TEST=""
+INPUT_ARG=""
 PRIVILEGED=0
 PRIVILEGED_ARG="-U"
 RUN_ALL_TESTS=1
@@ -36,14 +38,17 @@ Usage:
 Options:
   -1               run load test
   -2               run performance test
-  -d DIALECT       dialect override
+  -d DIALECT       dialect override, default matches DBMS
   -c COMMENT       comment about the test
   -g               generate data files, default no data generated
-  -i INPUT         input override, default $INPUT
+  -i INPUT         input override, default
+                   DSHOME/query_templates/templates-DBMS.lst
   -n STREAMS       number of throughput streams, default $STREAMS
   -P               enable profiling (Linux only)
   -s SCALE         scale factor, default $SCALE
   --stats          enable system and database stats collection
+  --tpcdstools=DSHOME
+                   DSHOME is the directory location of the TPC-DS Tools
   -U               run test as a privileged user
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
@@ -91,8 +96,7 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(-d)
 		shift
-		DIALECT="${1}"
-		DIALECT_ARG="-d $DIALECT"
+		DIALECT_ARG="-d ${1}"
 		;;
 	(-g)
 		GENERATE_DATA_FLAG="-g"
@@ -130,6 +134,13 @@ while [ "${#}" -gt 0 ] ; do
 	(--stats)
 		STATS_ARG="--stats"
 		;;
+   (--tpcdstools)
+		shift
+		DSHOME="${1}"
+		;;
+   (--tpcdstools=?*)
+		DSHOME="${1#*--tpcdstools=}"
+		;;
 	(-U)
 		PRIVILEGED=1
 		PRIVILEGED_ARG=""
@@ -153,6 +164,25 @@ while [ "${#}" -gt 0 ] ; do
 	shift
 done
 
+# Set up environment based on $DSHOME
+
+if [ "${DSHOME}" = "" ]; then
+	printf "Specify DSHOME directory, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
+	exit 1
+fi
+export DSHOME
+if [ ! -d "${DSHOME}" ]; then
+	>&2 echo "ERROR: DSHOME dir does not exist: ${DSHOME}"
+	exit 2
+fi
+export DSTOOLS="${DSHOME}/tools"
+export DSQUERY="${DSHOME}/query_templates"
+export DSDISTRIBUTIONS="${DSTOOLS}/tpcds.idx"
+
+# Process the rest of the command line arguments.
+
 if [ "${#}" -eq 0 ]; then
 	printf "Specify which DBMS to test, try \"%s -?\" " \
 			"$(basename "${0}")" 1>&2
@@ -167,6 +197,27 @@ if [ "${#}" -eq 0 ]; then
 			"$(basename "${0}")" 1>&2
 	echo "for more information." 1>&2
 	exit 1
+fi
+
+if [ "${DIALECT_ARG}" = "" ]; then
+	if [ "${DATABASE}"  = "pgsql" ]; then
+		DIALECT_ARG="-d postgresql"
+	else
+		prints "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
+				"$(basename "${0}")" 1>&2
+		echo "for more information." 1>&2
+		exit 1
+	fi
+fi
+if [ "${INPUT_ARG}" = "" ]; then
+	if [ "${DATABASE}"  = "pgsql" ]; then
+		INPUT_ARG="-i ${DSQUERY}/templates-postgresql.lst"
+	else
+		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
+				"$(basename "${0}")" 1>&2
+		echo "for more information." 1>&2
+		exit 1
+	fi
 fi
 
 OUTPUT_DIR=${1}
@@ -197,8 +248,9 @@ if [ "x${COMMENT}" != "x" ]; then
 fi
 
 # Save system details.
-dbt7-get-config -a $DATABASE -o $OUTPUT_DIR -s $SCALE -n $STREAMS \
-		-d $DIALECT -i $INPUT -p \"$LOAD_PARAMETERS\" -q \"$PERF_PARAMETERS\" 
+eval "dbt7-get-config -a $DATABASE -o $OUTPUT_DIR -s $SCALE -n $STREAMS \
+		${DIALECT_ARG} ${INPUT_ARG} -p \"${LOAD_PARAMETERS}\" \
+		-q \"${PERF_PARAMETERS}\""
 
 SEED_FILE=${OUTPUT_DIR}/seed
 if [ $SEED -ne 0 ]; then

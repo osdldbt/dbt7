@@ -6,7 +6,6 @@
 #
 # Copyright The DBT-7 Authors
 
-INPUT="templates.lst"
 PRIVILEGED=1
 RESTART=0
 STATS=0
@@ -54,7 +53,7 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(-i)
 		shift
-		INPUT="${1}"
+		INPUT_ARG="-INPUT ${1}"
 		;;
 	(-o)
 		shift
@@ -130,26 +129,26 @@ if [ -f "$SEED_FILE" ]; then
 fi
 
 # Save dsdgen info.
-(cd "${DSTOOLS}" && \
-		./dsdgen -TABLE dbgen_version \
-				-DIR $OUTPUT_DIR \
-				-SCALE $SCALE \
-				$RNGSEED_ARG \
-				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
-) || exit 1
+eval "${DSTOOLS}/dsdgen \
+		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+		-TABLE dbgen_version \
+		-DIR $OUTPUT_DIR \
+		-SCALE $SCALE \
+		${RNGSEED_ARG}" \
+		> ${OUTPUT_DIR}/dsdgen.txt 2>&1 || exit 1
 
 # Generate the queries.  Clause 4.3.2
-(cd "${DSTOOLS}" && \
-		./dsqgen -DIALECT $DIALECT \
-				-OUTPUT_DIR $OUTPUT_DIR \
-				-SCALE $SCALE \
-				-DIRECTORY $DSQUERY \
-				-STREAMS 1 \
-				-INPUT ../query_templates/$INPUT \
-				$TEMPLATE_ARG \
-				$RNGSEED_ARG \
-				> ${OUTPUT_DIR}/dsqgen.txt 2>&1 \
-) || exit 1
+eval "${DSTOOLS}/dsqgen \
+		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+		-DIALECT $DIALECT \
+		-OUTPUT_DIR $OUTPUT_DIR \
+		-SCALE $SCALE \
+		-DIRECTORY $DSQUERY \
+		-STREAMS 1 \
+		$INPUT_ARG \
+		$TEMPLATE_ARG \
+		${RNGSEED_ARG}" \
+		> ${OUTPUT_DIR}/dsqgen.txt 2>&1 || exit 1
 
 if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1

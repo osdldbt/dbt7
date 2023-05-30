@@ -10,17 +10,18 @@ by default.
 
 Run a 1GB test with 3 streams (with DBT7DMPREFIX unset)::
 
-    dbt7-run -a pgsql -s 1 -d postgresql -i templates-postgresql.lst \
-            -n 3 -o /tmp/results
+    dbt7-run -n 3 psql $DSHOME /tmp/results
 
 Run a 1GB test with 3 streams and capturing EXPLAIN output query results::
 
     export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice;"
-    dbt7-run -a pgsql -s 1 -d postgresqle \
-            -i templates-postgresqle.lst -n 3 -o /tmp/results
+    dbt7-run -d postgresqle \
+            -i ${DSHOME}/query_templates/templates-postgresqle.lst -n 3 \
+            pgsql $DSHOME /tmp/results
 
 Run a 1GB test with 3 streams and capturing EXPLAIN ANALYZE output query::
 
     export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice;"
-    dbt7-run -a pgsql -s 1 -d postgresqlea \
-            -i templates-postgresqlea.lst -n 3 -o /tmp/results
+    dbt7-run -d postgresqlea \
+            -i ${DSHOME}/query_templates/templates-postgresqlea.lst -n 3 \
+            pgsql $DSHOME /tmp/results

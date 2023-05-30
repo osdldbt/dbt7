@@ -30,13 +30,15 @@ OPTIONS
         individual tests disables the other tests unless explicitly specified
         again.
 -c COMMENTS  Provide *comments* to save with the test.
--d DIALECT  *dialect* override.
+-d DIALECT  *dialect* override, default matches *dbms*.
 -g  Generate data files, default no data generated.
--i INPUT  *input* override.
+-i INPUT  *input* override, default
+        *dshome*/query_templates/templates-*dbms*.lst.
 -n STREAMS  Number of throughput STREAMS, default 1.
 -P  Enable profiling (Linux only).
 -s SCALE  *scale* factor, default 1.
 --stats  Enable system and database stats collection.
+--tpcdstools=DSHOME  *dshome* is the directory location of the TPC-DS Tools.
 -U  Run test as a privileged operating system and database user.  This means
         the user has the ability to stop and start the database between the
         individual tests, as allowed per specification.
@@ -54,6 +56,11 @@ PostgreSQL options (pgsql):
 
 ENVIRONMENT
 ===========
+
+**DSHOME**
+
+    This is the absolute path to the unzipped TPC-DS Tools directory.  The
+    --tpcdstools argument will override this environment variable.
 
 PostgreSQL Specific:
 
@@ -77,12 +84,9 @@ EXAMPLES
 A simple example of running a default 1 GB scale factor test against a locally
 running PostgreSQL database::
 
-    export DSHOME="DSGen-software-code-3.2.0rc1"
-    export DSQUERY="${DSHOME}/query_templates"
-    export DSTOOLS="${DSHOME}/tools"
     export DS_DATA="/tmp/dbt7data"
     export DBT7DBNAME=dbt7
-    dbt7 run -a pgsql -o results
+    dbt7 run --tpcdstool=DSGen-software-code-3.2.0rc1 pgsql results
 
 SEE ALSO
 ========

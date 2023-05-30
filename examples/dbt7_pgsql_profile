@@ -1,10 +1,14 @@
-export DSHOME="/home/mark.wong/src/dbt7/DSGen-software-code-3.2.0rc1"
+# Examples are for advanced usage if not using the 'run' script.
+
+export DSHOME="/tmp/DSGen-software-code-3.2.0rc1"
 export DSQUERY="${DSHOME}/query_templates"
 export DSTOOLS="${DSHOME}/tools"
 export DS_DATA="/tmp/dbt7data"
 
 export DBT7PGDATA="/tmp/pgdata"
 export DBT7DBNAME=dbt7
+
+# This following can still be used if not using the 'run' script.
 
 # Set PGHOST to connect to a specific hostname or Unix-domain socket.
 # Set PGPORT to connect to a non-default TCP port.

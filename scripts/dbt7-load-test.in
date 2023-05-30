@@ -127,14 +127,12 @@ if [ -f "$SEED_FILE" ]; then
 fi
 
 # Save dsdgen info.
-(cd "${DSTOOLS}" && \
-		./dsdgen \
-				-TABLE dbgen_version \
-				-DIR $OUTPUT_DIR \
-				-SCALE $SCALE \
-				$RNGSEED_ARG \
-				> ${OUTPUT_DIR}/dsdgen.txt 2>&1 \
-) || bailout
+eval "${DSTOOLS}/dsdgen \
+		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+		-TABLE dbgen_version \
+		-DIR $OUTPUT_DIR \
+		-SCALE ${SCALE}" \
+		> ${OUTPUT_DIR}/dsdgen.txt 2>&1 || bailout
 
 # Generate database data
 if [ $GENERATE_DATA -eq 1 ]; then
@@ -155,16 +153,15 @@ if [ $GENERATE_DATA -eq 1 ]; then
 	echo "data generation seed: $DGENSEED"
 	mkdir -p $DS_DATA
 	for I in `seq 1 $I`; do
-		(cd "${DSTOOLS}" && \
-				eval "./dsdgen \
-						-DIR $DS_DATA \
-						-SCALE $SCALE \
-						-TERMINATE N \
-						${PARALLEL_ARG} \
-						-CHILD $I \
-						-RNGSEED $DGENSEED" \
-						2> /dev/null \
-		) &
+		eval "${DSTOOLS}/dsdgen \
+				-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+				-DIR $DS_DATA \
+				-SCALE $SCALE \
+				-TERMINATE N \
+				${PARALLEL_ARG} \
+				-CHILD $I \
+				-RNGSEED $DGENSEED" \
+				2> /dev/null &
 	done
 	wait
 fi

@@ -31,7 +31,6 @@ while getopts "a:d:hi:n:o:pq:s:" opt; do
 		;;
 	d)
 		DIALECT=$OPTARG
-		DIALECT_ARG="-d $DIALECT"
 		;;
 	h)
 		usage
@@ -39,7 +38,6 @@ while getopts "a:d:hi:n:o:pq:s:" opt; do
 		;;
 	i)
 		INPUT=$OPTARG
-		INPUT_ARG="-i $INPUT"
 		;;
 	n)
 		STREAMS=$OPTARG
