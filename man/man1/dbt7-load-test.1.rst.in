@@ -25,7 +25,6 @@ OPTIONS
 =======
 
 -a DBMS  *dbms*: pgsql
--g  Generate data files, default no data generated.
 -o PATH  *path* to save results.
 -s SCALE  *scale* factor, default 1.
 --stats  Enable system and database stats collection.

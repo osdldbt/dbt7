@@ -26,7 +26,6 @@ OPTIONS
 
 -c COMMENTS, --comment=COMMENTS  Provide *comments* to save with the test.
 -d DIALECT, --dialect=DIALECT  *dialect* override, default matches *dbms*.
--g  Generate data files, default no data generated.
 -i INPUT, --input=INPUT  *input* override, default
         *dshome*/query_templates/templates-*dbms*.lst.
 --load  Run load test, default run load, power and throughput.  Selecting

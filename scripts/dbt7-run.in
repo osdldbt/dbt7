@@ -40,7 +40,6 @@ Options:
                    dialect override, default matches DBMS
   -c COMMENTS, --comment=COMMENTS
                    provide COMMENTS about the test
-  -g               generate data files, default no data generated
   -i INPUT, --input=INPUT
                    input override, default
                    DSHOME/query_templates/templates-DBMS.lst
@@ -104,9 +103,6 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(--dialect=?*)
 		DIALECT_ARG="-d ${1#*--dialect=}"
-		;;
-	(-g)
-		GENERATE_DATA_FLAG="-g"
 		;;
 	(-i | --input)
 		shift
@@ -296,7 +292,6 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			-a $DATABASE \
 			-o ${OUTPUT_DIR}/load \
 			-s $SCALE \
-			$GENERATE_DATA_FLAG \
 			$LOAD_PARAMETERS_ARG \
 			$PROFILE_FLAG \
 			$PRIVILEGED_ARG \

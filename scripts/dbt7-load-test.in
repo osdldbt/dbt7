@@ -6,7 +6,6 @@
 #
 # Copyright The DBT-7 Authors
 
-GENERATE_DATA=0
 PRIVILEGED=1
 PROFILE=0
 SCALE=1
@@ -22,7 +21,6 @@ Usage:
 
 Options:
   -a DBMS          DBMS: pgsql
-  -g               generate data files, default no data generated
   -o PATH          PATH to save results
   -s SCALE         scale factor, default $SCALE
   --stats          enable system and database stats collection
@@ -57,9 +55,6 @@ while [ "${#}" -gt 0 ] ; do
 	(-a)
 		shift
 		DATABASE="${1}"
-		;;
-	(-g)
-		GENERATE_DATA=1
 		;;
 	(-o)
 		shift
@@ -127,8 +122,10 @@ eval "${DSTOOLS}/dsdgen \
 		-SCALE ${SCALE}" \
 		> ${OUTPUT_DIR}/dsdgen.txt 2>&1 || bailout
 
-# Generate database data
-if [ $GENERATE_DATA -eq 1 ]; then
+# Generate database data if $DS_DATA does not exist
+if [ ! -d "$DS_DATA" ]; then
+	echo "generating data in ${DS_DATA}"
+
 	# Determine number of processors for parallelism.
 	CPUS=1
 	if [ -f "/proc/stat" ]; then
@@ -157,6 +154,8 @@ if [ $GENERATE_DATA -eq 1 ]; then
 				2> /dev/null &
 	done
 	wait
+else
+	echo "skipping data generation, directory exists: ${DS_DATA}"
 fi
 
 if [ "${STATS}" -eq 1 ]; then
