@@ -4,6 +4,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Add top level dbt7 script
 - Use touchstone tools for system and database stats collection
 - Change run-workload default behavior to run without privileged user
+- Add additional postgres query templates to sleep for 1 second for testing
 
 v0.4.1 (2022-06-20)
 
