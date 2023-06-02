@@ -373,7 +373,7 @@ if [ $PRIVILEGED -eq 1 ]; then
 fi
 
 echo "Generating report... "
-dbt7-generate-report -i $OUTPUT_DIR
+dbt7-report -i $OUTPUT_DIR
 
 echo ""
 head ${OUTPUT_DIR}/summary.rst

@@ -21,6 +21,14 @@ DESCRIPTION
 
 **dbt7-run** is a wrapper script that helps execute this kit's workload.
 
+The results *directory* will contain subdirectories for each of the test
+individual tests: load, power, and throughput.  Note that the power and
+throughput test constitute the performance test, and that the data maintenance
+tests are part of the throughput test.
+
+If collected, the system and database statistics are separately saved and
+within the subdirectories of the load, power, and throughput tests.
+
 OPTIONS
 =======
 

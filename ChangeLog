@@ -18,6 +18,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Set default DBT7DBNAME to "dbt7" in 'run'
 - Set default DS_DATA to "/tmp/dbt7data" in 'run'
 - Fix syntax error in pgsql-data-maintenance script
+- Rename 'generage-report' to 'report'
 
 v0.4.1 (2022-06-20)
 
