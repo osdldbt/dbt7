@@ -67,6 +67,7 @@ __EOF__
 		$PSQL << __EOF__ &
 ${COPYPREFIX}COPY $TABLE FROM '$FILENAME' WITH (DELIMITER '|', NULL '');
 __EOF__
+		fi
 	done
 
 	wait
@@ -77,7 +78,7 @@ SET (autovacuum_enabled = true, toast.autovacuum_enabled = true);
 __EOF__
 }
 
-while getopts "hi:n:o:s:" OPT; do
+while getopts "hi:n:o:s:U" OPT; do
 	case $OPT in
 	h)
 		usage

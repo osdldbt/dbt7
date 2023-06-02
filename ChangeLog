@@ -17,6 +17,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Set default streams to 4 in 'run', per specification
 - Set default DBT7DBNAME to "dbt7" in 'run'
 - Set default DS_DATA to "/tmp/dbt7data" in 'run'
+- Fix syntax error in pgsql-data-maintenance script
 
 v0.4.1 (2022-06-20)
 
