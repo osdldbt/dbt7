@@ -14,6 +14,7 @@ vX.Y.Z (YYYY-MM-DD)
 - 'run' script dialect and input default dynamically set based on dbms
 - Add to or replace short options with long options
 - Automatically detect whether to generate data
+- Set default streams to 4 in 'run', per specification
 
 v0.4.1 (2022-06-20)
 
