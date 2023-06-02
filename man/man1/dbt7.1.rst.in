@@ -45,4 +45,4 @@ Tools when running **build-dsgen**.
 SEE ALSO
 ========
 
-**dbt7-run**\ (1)
+**dbt7-report**\ (1), **dbt7-run**\ (1)

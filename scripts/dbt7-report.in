@@ -9,13 +9,17 @@
 
 usage()
 {
-	echo "`basename $0` is the DBT-7 report generator"
-	echo ""
-	echo "Usage:"
-	echo "  `basename $0` [OPTIONS]"
-	echo ""
-	echo "General options:"
-	echo "  -i PATH     results directory"
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) report generator
+
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  -i PATH     results directory"
+
+@HOMEPAGE@
+EOF
 }
 
 create_sar_page()
@@ -109,20 +113,31 @@ __EOF__
 	done
 }
 
-while getopts hi: OPT; do
-	case $OPT in
-		h)
-			usage
-			exit 0
-			;;
-		i)
-			INDIR=$OPTARG
-			OUTDIR=$INDIR
-			;;
-		\?)
-			usage
-			exit 1
-			;;
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-i)
+		shift
+		INDIR="${1}"
+		OUTDIR=$INDIR
+		;;
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
 done
 
 if [ "${#}" -eq 0 ]; then

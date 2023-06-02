@@ -1,0 +1,32 @@
+============
+ dbt7-report
+============
+
+---------------
+Database Test 7
+---------------
+
+:Date: @MANDATE@
+:Manual section: 1
+:Manual group: Database Test 7 @PROJECT_VERSION@ Documentation
+:Version: Database Test 7 @PROJECT_VERSION@
+
+SYNOPSIS
+========
+
+**dbt7-report** [option...]
+
+DESCRIPTION
+===========
+
+**dbt7-report** is the Database Test 7 (DBT-7) report generator
+
+OPTIONS
+=======
+
+-i PATH  results directory"
+
+SEE ALSO
+========
+
+**dbt7**\ (1), **dbt7-run**\ (1)
