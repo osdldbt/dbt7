@@ -91,8 +91,6 @@ EXAMPLES
 A simple example of running a default 1 GB scale factor test against a locally
 running PostgreSQL database::
 
-    export DS_DATA="/tmp/dbt7data"
-    export DBT7DBNAME=dbt7
     dbt7 run --tpcdstool=DSGen-software-code-3.2.0rc1 pgsql results
 
 SEE ALSO

@@ -281,6 +281,13 @@ if [ "x${COMMENT}" != "x" ]; then
 	echo "$COMMENT" > ${OUTPUT_DIR}/comment.txt
 fi
 
+if [ "${DBT7DBNAME}" = "" ]; then
+	export DBT7DBNAME="dbt7"
+fi
+if [ "${DS_DATA}" = "" ]; then
+	export DS_DATA="/tmp/dbt7data"
+fi
+
 # Save system details.
 eval "dbt7-get-config -a $DATABASE -o $OUTPUT_DIR -s $SCALE -n $STREAMS \
 		${DIALECT_ARG} ${INPUT_ARG} -p \"${LOAD_PARAMETERS}\" \
