@@ -13,10 +13,13 @@ usage()
 $(basename "${0}") is the Database Test 7 (DBT-7) report generator
 
 Usage:
-  $(basename "${0}") [OPTION]
+  $(basename "${0}") [OPTION] DIRECTORY
 
 Options:
-  -i PATH     results directory"
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+DIRECTORY is the path to DBT-7 results.
 
 @HOMEPAGE@
 EOF
@@ -116,11 +119,6 @@ __EOF__
 # Custom argument handling for hopefully most portability.
 while [ "${#}" -gt 0 ] ; do
 	case "${1}" in
-	(-i)
-		shift
-		INDIR="${1}"
-		OUTDIR=$INDIR
-		;;
 	(-V | --version)
 		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
 		;;

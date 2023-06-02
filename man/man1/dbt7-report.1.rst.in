@@ -24,7 +24,10 @@ DESCRIPTION
 OPTIONS
 =======
 
--i PATH  results directory"
+-V, --version  Output version information, then exit.
+--help  This usage message.  Or **-?**.
+
+*directory* is the path to save test results.
 
 SEE ALSO
 ========
