@@ -111,7 +111,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresql.tpl
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
-+define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "';";
++define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
 ===================================================================
 --- /dev/null
@@ -1917,7 +1917,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqle.tpl
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
-+define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "';";
++define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqlea.tpl
 ===================================================================
 --- /dev/null
@@ -1927,7 +1927,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqlea.tpl
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
-+define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "';";
++define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
 ===================================================================
 --- /dev/null
