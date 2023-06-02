@@ -14,12 +14,8 @@ usage()
 	echo "  `basename $0` [OPTIONS]"
 	echo ""
 	echo "General options:"
-	echo "  -1 PATH          load test results directory"
-	echo "  -2 PATH          performance test results directory"
-	echo "  -3 PATH          throughput test results directory"
-	echo "  -n STREAMS       number of throughput streams"
+	echo "  -i DIRECTORY     DBT-7 results DIRECTORY"
 	echo "  -o PATH          output directory"
-	echo "  -s SCALE         scale factor"
 }
 
 get_time()
@@ -38,25 +34,13 @@ get_time()
 	echo $V
 }
 
-while getopts "1:2:3:o:s:" OPT; do
+while getopts "i:o:" OPT; do
 	case $OPT in
-	1)
-		LOADDIR=$OPTARG
-		;;
-	2)
-		POWERDIR=$OPTARG
-		;;
-	3)
-		THROUGHPUTDIR=$OPTARG
+	i)
+		RESULTSDIR="${OPTARG}"
 		;;
 	o)
 		OUTPUT_DIR=$OPTARG
-		;;
-	n)
-		STREAMS=$OPTARG
-		;;
-	s)
-		SCALE=$OPTARG
 		;;
 	\?)
 		exit 1
@@ -64,11 +48,9 @@ while getopts "1:2:3:o:s:" OPT; do
 	esac
 done
 
-which R > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-	echo "R is required to process results."
-	exit 1
-fi
+LOADDIR="${RESULTSDIR}/load"
+POWERDIR="${RESULTSDIR}/power"
+THROUGHPUTDIR="${RESULTSDIR}/throughput"
 
 if [ -d "$LOADDIR" ]; then
 	TIMEFILE="${LOADDIR}/time_statistics.csv"
@@ -88,7 +70,7 @@ fi
 
 TIMEFILE="${THROUGHPUTDIR}/time_statistics.csv"
 if [ -d "$THROUGHPUTDIR" ]; then
-	STREAMS=`cat ${THROUGHPUTDIR}/streams`
+	Sq="$(cat "${THROUGHPUTDIR}/streams")"
 
 	THROUGHPUTTIME1=`get_time THROUGHPUT1 $TIMEFILE 6`
 	THROUGHPUTTIMEH1=`get_time THROUGHPUT1 $TIMEFILE 7`
@@ -111,39 +93,25 @@ if [ -d "$THROUGHPUTDIR" ]; then
 	DMEND2=`get_time DATAMAINT2 $TIMEFILE 5`
 fi
 
-which R > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-	HAVE_R=1
-else
-	HAVE_R=0
-fi
+TMPDIR=$(mktemp -d)
+DBFILE="${TMPDIR}/dbt7.db"
 
-if [ $HAVE_R -eq 1 ]; then
-	QPHFILE="${OUTPUT_DIR}/qph"
-	R --slave --no-save << __EOF__ > $QPHFILE
-SF <- $SCALE
-S_q <- $STREAMS
-Q <- S_q * 99
-T_POWER <- $POWERTIMEH
-T_PT <- T_POWER * S_q / 3600
-T_TT1 <- $THROUGHPUTTIMEH1
-T_TT2 <- $THROUGHPUTTIMEH2
-T_TT <- (T_TT1 + T_TT2) / 3600
-T_DM1 <- $DMTIMEH1
-T_DM2 <- $DMTIMEH2
-T_DM <- (T_DM1 + T_DM2) / 3600
-T_Load <- $LOADTIMEH
-T_LD <- 0.01 * S_q * T_Load / 3600
+SF=$(grep scale: ${RESULTSDIR}/config.txt | cut -d " " -f 2)
+Q="${Sq}.0 * 99.0"
+TPT="(${POWERTIMEH} * ${Sq}.0 / 3600.0)"
+TTT="((${THROUGHPUTTIMEH1} + ${THROUGHPUTTIMEH2}) / 3600.0)"
+TDM="((${DMTIMEH1} + ${DMTIMEH2}) / 3600.0)"
+TLD="(0.01 * ${Sq}.0 * ${LOADTIMEH})"
 
-Qph <- (SF * Q) / (T_PT * T_TT * T_DM * T_LD) ^ (1/4)
-cat(sprintf("%f\n", Qph))
-__EOF__
-	QPH=`cat $QPHFILE`
-else
-	QPH="R required for calculation..."
-fi
+QPHFILE="${OUTPUT_DIR}/qph"
+sqlite3 "${DBFILE}" << EOF > "${QPHFILE}"
+SELECT cast((${SF}.0 * ${Q})
+     / pow(${TPT} * ${TTT} * ${TDM} * ${TLD}, 1.0 / 4.0) AS INT);
+EOF
+read QPH < "${QPHFILE}"
 
 SUMMARY="${OUTPUT_DIR}/summary.rst"
+
 cat << __EOF__ > $SUMMARY
 =======================
 Database Test 7 Results
@@ -152,22 +120,22 @@ Database Test 7 Results
 **These results are not comparable to TPC Benchmark(TM) DS Results.**
 
 * Queries per Hour: $QPH
-* Scale: $SCALE
-* Number of Query Streams: $STREAMS
+* Scale: $SF
+* Number of Query Streams: $Sq
 
 Start and End Times
 ===================
 
-================  ===================  ===================  ===============
-Test              Start Timestamp      End Timestamp        Elapsed Time
-================  ===================  ===================  ===============
-Database Load     $LOADSTART  $LOADEND  $LOADTIME
-Power Test        $POWERSTART  $POWEREND  $POWERTIME
-Throughput Run 1  $THROUGHPUTSTART1  $THROUGHPUTEND1  $THROUGHPUTTIME1
-Refresh Run 1     $DMSTART1  $DMEND1  $DMTIME1
-Throughput Run 2  $THROUGHPUTSTART2  $THROUGHPUTEND2  $THROUGHPUTTIME2
-Refresh Run 2     $DMSTART2  $DMEND2  $DMTIME2
-================  ===================  ===================  ===============
+=================  ====================  ====================  ================
+Test               Start Timestamp       End Timestamp         Elapsed Time
+=================  ====================  ====================  ================
+Database Load      $LOADSTART   $LOADEND   $LOADTIME
+Power Test         $POWERSTART   $POWEREND   $POWERTIME
+Throughput Run 1   $THROUGHPUTSTART1   $THROUGHPUTEND1   $THROUGHPUTTIME1
+Refresh Run 1      $DMSTART1   $DMEND1   $DMTIME1
+Throughput Run 2   $THROUGHPUTSTART2   $THROUGHPUTEND2   $THROUGHPUTTIME2
+Refresh Run 2      $DMSTART2   $DMEND2   $DMTIME2
+=================  ====================  ====================  ================
 
 Timing Intervals (in seconds)
 =============================
@@ -179,47 +147,154 @@ if [ ! -f "$TIMEFILE" ]; then
 	exit 1
 fi
 
-if [ ! $HAVE_R -eq 1 ]; then
-	echo "R required to generate timing intervals table" >> $SUMMARY
-	exit 0
-fi
+cat << EOF >> "${SUMMARY}"
+==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======
+ Q       Minimum       25th Percentile        Median        75th Percentile       Maximum
+--  ----------------  -----------------  ----------------  -----------------  ----------------
+ #   Run1     Run2     Run1      Run2     Run1     Run2     Run1      Run2     Run1     Run2
+==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======
+EOF
 
-R --slave --no-save << __EOF__ >> $SUMMARY
-df <- read.csv("$TIMEFILE", header=TRUE)
+sqlite3 "${DBFILE}" << EOF
+CREATE TABLE qtime(
+    stream INTEGER
+  , query INTEGER
+  , template TEXT
+  , s_time TEXT
+  , e_time TEXT
+  , elapsed_time TEXT
+  , diff_time REAL
+);
+.mode csv
+.import ${TIMEFILE} qtime
+EOF
 
-# Queries are numbered by execution order, not by the actual query name.
-# Build a new column from the number embedded in the template name so we can
-# reference the query correctly by number.
-q <- as.numeric(gsub("[^[:digit:]]", "", df\$template))
-df\$q <- q
+for Q in $(seq 1 99); do
+	MIN1="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT min(diff_time)
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream <= $Sq
+		;
+	EOF
+	)"
 
-cat("==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======\n")
-cat(" Q       Minimum       25th Percentile        Median        75th Percentile       Maximum\n")
-cat("--  ----------------  -----------------  ----------------  -----------------  ----------------\n")
-cat(" #   Run1     Run2     Run1      Run2     Run1     Run2     Run1      Run2     Run1     Run2\n")
-cat("==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======\n")
-for (i in 1:99) {
-  df1 <- df[df\$q == i & df\$stream >= 1 & df\$stream <= $STREAMS,]
-  df2 <- df[df\$q == i & df\$stream > $STREAMS,]
+	MIN2="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT min(diff_time)
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream > $Sq
+		;
+	EOF
+	)"
 
-  min1 <- min(df1\$diff_time)
-  min2 <- min(df2\$diff_time)
+	Q25_1="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream <= $Sq
+		ORDER BY diff_time ASC
+		LIMIT 1
+		OFFSET cast(${Sq}.0 / 4.0 AS INT)
+		;
+	EOF
+	)"
 
-  q25_1 <- quantile(df1\$diff_time, .25)
-  q25_2 <- quantile(df2\$diff_time, .25)
+	Q25_2="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream > $Sq
+		ORDER BY diff_time ASC
+		LIMIT 1
+		OFFSET cast(${Sq}.0 / 4.0 AS INT)
+		;
+	EOF
+	)"
 
-  median1 <- median(df1\$diff_time)
-  median2 <- median(df2\$diff_time)
+	MEDIAN1="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream <= $Sq
+		ORDER BY diff_time ASC
+		LIMIT 1
+		OFFSET cast(${Sq}.0 / 2.0 AS INT)
+		;
+	EOF
+	)"
 
-  q75_1 <- quantile(df1\$diff_time, .75)
-  q75_2 <- quantile(df2\$diff_time, .75)
+	MEDIAN2="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream > $Sq
+		ORDER BY diff_time ASC
+		LIMIT 1
+		OFFSET cast(${Sq}.0 / 2.0 AS INT)
+		;
+	EOF
+	)"
 
-  max1 <- max(df1\$diff_time)
-  max2 <- max(df2\$diff_time)
+	Q75_1="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream <= $Sq
+		ORDER BY diff_time ASC
+		LIMIT 1
+		OFFSET cast(${Sq}.0 * 0.75 AS INT)
+		;
+	EOF
+	)"
 
+	Q75_2="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream > $Sq
+		ORDER BY diff_time ASC
+		LIMIT 1
+		OFFSET cast(${Sq}.0 * 0.75 AS INT)
+		;
+	EOF
+	)"
 
-  cat(sprintf("%2d  %7.1f  %7.1f  %7.1f   %7.1f  %7.1f  %7.1f  %7.1f   %7.1f  %7.1f  %7.1f\n",
-      i, min1, min2, q25_1, q25_2, median1, median2, q75_1, q75_2, max1, max2))
-}
-cat("==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======\n")
-__EOF__
+	MAX1="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT max(diff_time)
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream <= $Sq
+		;
+	EOF
+	)"
+
+	MAX2="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT max(diff_time)
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream > $Sq
+		;
+	EOF
+	)"
+
+	printf "%2d  %7.1f  %7.1f  %7.1f   %7.1f  %7.1f  %7.1f  %7.1f   %7.1f  %7.1f  %7.1f\n" \
+			${Q} \
+			${MIN1} \
+			${MIN2} \
+			${Q25_1} \
+			${Q25_2} \
+			${MEDIAN1} \
+			${MEDIAN2} \
+			${Q75_1} \
+			${Q75_2} \
+			${MAX1} \
+			${MAX2} \
+			>> "${SUMMARY}"
+done
+
+cat << EOF >> "${SUMMARY}"
+==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======
+EOF
+
+rm -rf "${TMPDIR}"

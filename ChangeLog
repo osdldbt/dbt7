@@ -20,6 +20,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Fix syntax error in pgsql-data-maintenance script
 - Rename 'generage-report' to 'report'
 - Change 'report' script usage
+- Rewrite 'post-process' to use sqlite3
 
 v0.4.1 (2022-06-20)
 

@@ -372,9 +372,10 @@ if [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db
 fi
 
-echo "Generating report... "
-dbt7-report "${OUTPUT_DIR}"
+echo "Processing results... "
+dbt7-post-process -i "${OUTPUT_DIR}" -o "${OUTPUT_DIR}"
 
 echo ""
-head ${OUTPUT_DIR}/summary.rst
-echo "Full test summary in: ${OUTPUT_DIR}/summary.rst"
+echo "Queries per Hour: $(cat ${OUTPUT_DIR}/qph)"
+echo ""
+echo "See query summary in: ${OUTPUT_DIR}/summary.rst"
