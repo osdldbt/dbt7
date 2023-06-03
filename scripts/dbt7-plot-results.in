@@ -37,29 +37,49 @@ while getopts "hi:o:" OPT; do
 	esac
 done
 
-which R > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-	echo "R required to generate plots."
-	exit 1
-fi
+# Queries are numbered by execution order, not by the actual query number.
+# Construct a new datafile to plot.
 
-R --slave --no-save << __EOF__
-df <- read.csv("$INFILE", header=TRUE)
+TMPDIR=$(mktemp -d)
+DATAFILE=$(mktemp)
+DBFILE="${TMPDIR}/dbt7.db"
 
-# Queries are numbered by execution order, not by the actual query name.
-# Build a new column from the number embedded in the template name so we can
-# sort by query number, and also use it as the axis label.
-q <- as.numeric(gsub("[^[:digit:]]", "", df\$template))
-df\$q <- q
-df <- df[order(df\$q),]
+sqlite3 "${DBFILE}" << EOF
+CREATE TABLE qtime(
+    stream INTEGER
+  , query INTEGER
+  , template TEXT
+  , s_time TEXT
+  , e_time TEXT
+  , elapsed_time TEXT
+  , diff_time REAL
+);
+.mode csv
+.import ${INFILE} qtime
+EOF
 
-colors <- cm.colors(99)
-bitmap("${OUTDIR}/power.png", type="png16m", units="px",
-       width=1646, height=2664, res=150, taa=4, gaa=4)
-barplot(df[df\$stream == 0,]\$diff_time, names.arg=df[df\$stream == 0,]\$q,
-        col=colors, beside=T, horiz=T, las=1,
-        main="Power Test Query Execution Times",
-        xlab="Seconds", cex.names=0.6, ylab="Query")
-grid(col="gray")
-invisible(dev.off())
-__EOF__
+for Q in $(seq 1 99); do
+	DIFFTIME="$(sqlite3 "${DBFILE}" <<- EOF
+		SELECT diff_time
+		FROM qtime
+		WHERE template REGEXP '\D${Q}\D'
+		  AND stream = 0
+		;
+	EOF
+	)"
+	echo "Q${Q} ${DIFFTIME}" >> "${DATAFILE}"
+done
+
+gnuplot << EOF
+set terminal pngcairo size 1600,1000
+set title "Query Execution Time"
+set grid
+set output "${OUTDIR}/power.png"
+set xtics rotate
+set ylabel "Seconds"
+set style data histogram
+set style fill solid
+plot '${DATAFILE}' using 2:xtic(1) title 'Power'
+EOF
+
+rm -rf "${TMPDIR}" "${DATAFILE}"

@@ -22,6 +22,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Change 'report' script usage
 - Rewrite 'post-process' to use sqlite3
 - Fix postgresql templates to update throughput stream end times
+- Use gnuplot instead of R to generate power query chart
 
 v0.4.1 (2022-06-20)
 
