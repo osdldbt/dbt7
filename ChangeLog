@@ -23,6 +23,8 @@ vX.Y.Z (YYYY-MM-DD)
 - Rewrite 'post-process' to use sqlite3
 - Fix postgresql templates to update throughput stream end times
 - Use gnuplot instead of R to generate power query chart
+- Add missing libraries to AppImage for gnuplot
+- Add fonts to AppImage for gnuplot
 
 v0.4.1 (2022-06-20)
 
