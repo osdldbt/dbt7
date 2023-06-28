@@ -11,6 +11,9 @@ cmake_install.cmake
 install_manifest.txt
 Makefile
 
+!doc/Makefile
+doc/html
+
 # cpack
 _CPack_Packages/
 CPackConfig.cmake
