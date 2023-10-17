@@ -1,3 +1,8 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- Remove fonts from AppImage; it was a partial solution so instead rely on
+  font config and fonts to be installed on the host
+
 v0.5.0 (2022-06-28)
 
 - Use set -x when scripts built with debug rule
