@@ -8,14 +8,19 @@
 
 usage()
 {
-	echo "Usage: `basename $0` is the DBT-7 PostgreSQL Data Loader"
-	echo ""
-	echo "Usage:"
-	echo "  `basename $0` [OPTION]"
-	echo ""
-	echo "Options:"
-	echo "  -s SCALE   set the scale factor"
-	echo "  -U         run test as an unprivileged user"
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) PostgreSQL data loader
+
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  -s SCALE_FACTOR, --scale-factor=SCALE_FACTOR
+                   set the scale factor
+  --tablespaces    create and use tablespaces
+  -U               run test as an unprivileged user
+  -?, --help       show this help, then exit
+EOF
 }
 
 CPUS=1
@@ -67,23 +72,38 @@ SET (autovacuum_enabled = true, toast.autovacuum_enabled = true);
 __EOF__
 }
 
-while getopts "hs:U" OPT; do
-	case $OPT in
-	h)
+TABLESPACES_ARG=""
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-s | --scale-factor)
+		shift
+		SCALE="${1}"
+		;;
+	(--scale-factor=?*)
+		SCALE="${1#*--scale-factor=}"
+		;;
+	(--tablespaces)
+		TABLESPACES_ARG="--tablespaces"
+		;;
+	(-U)
+		PRIVILEGED=0
+		;;
+	(-\? | --help)
 		usage
 		exit 0
 		;;
-	s)
-		SCALE="$OPTARG"
-		;;
-	U)
-		PRIVILEGED=0
-		;;
-	\?)
-		usage
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
 		exit 1
 		;;
+	(*)
+		break
+		;;
 	esac
+	shift
 done
 
 if [ -z $DBT7DBNAME ]; then
@@ -113,7 +133,7 @@ for T in store_sales store_returns catalog_sales catalog_returns web_sales \
 done
 dbt7-pgsql-time-statistics -e -n TABLE
 dbt7-pgsql-time-statistics -s -n INDEX
-dbt7-pgsql-create-indexes
+eval "dbt7-pgsql-create-indexes ${TABLESPACES_ARG}"
 dbt7-pgsql-time-statistics -e -n INDEX
 
 # Set the number of vacuumdb jobs to 1 (no parallelism) and let see

@@ -75,6 +75,8 @@ PostgreSQL options (pgsql):
                    database parameters for the load test
   --performance-parameters PARAMETERS
                    database parameters for the performance test
+  --tablespaces=DIRECTORY
+                   use and create tablespaces under DIRECTORY
 
 @HOMEPAGE@
 EOF
@@ -166,6 +168,14 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(--stats)
 		STATS_ARG="--stats"
+		;;
+	(--tablespaces)
+		TABLESPACES_ARG="--tablespaces"
+		export DBT7TSDIR="${1}"
+		;;
+	(--tablespaces=?*)
+		TABLESPACES_ARG="--tablespaces"
+		export DBT7TSDIR="${1#*--tablespaces=}"
 		;;
    (--tpcdstools)
 		shift
@@ -302,6 +312,7 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			$LOAD_PARAMETERS_ARG \
 			$PROFILE_FLAG \
 			$PRIVILEGED_ARG \
+			${TABLESPACES_ARG} \
 			${STATS_ARG}" \
 			|| exit 1
 elif [ $PRIVILEGED -eq 1 ]; then

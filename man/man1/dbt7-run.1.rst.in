@@ -62,6 +62,7 @@ PostgreSQL options (pgsql):
 
 -p PARAMETERS  Database *parameters* for the load test.
 -q PARAMETERS  Database *parameters* for the performance test.
+--tablespaces=DIRECTORY  Use and create tablespaces under *directory*.
 
 *dbms* options are:
 

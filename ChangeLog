@@ -2,6 +2,7 @@ vX.Y.Z (YYYY-MM-DD)
 
 - Remove fonts from AppImage; it was a partial solution so instead rely on
   font config and fonts to be installed on the host
+- Add --tablespaces flag to run script to create and use tablespaces
 
 v0.5.0 (2022-06-28)
 

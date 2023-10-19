@@ -24,6 +24,7 @@ Options:
   -o PATH          PATH to save results
   -s SCALE         scale factor, default $SCALE
   --stats          enable system and database stats collection
+  --tablespaces    use tablespaces
   -U               run test as an unprivileged user
   -V, --version    output version information, then exit
   -Y               enable profiling
@@ -71,6 +72,9 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(--stats)
 		STATS=1
+		;;
+	(--tablespaces)
+		TABLESPACES_ARG="--tablespaces"
 		;;
 	(-U)
 		PRIVILEGED=0
@@ -169,7 +173,8 @@ if [ "${PRIVILEGED}" -eq 1 ]; then
 fi
 
 dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
-dbt7-${DATABASE}-create-tables >> $OUTPUTFILE 2>&1 || bailout
+eval dbt7-${DATABASE}-create-tables ${TABLESPACES_ARG} \
+		>> $OUTPUTFILE 2>&1 || bailout
 
 if [ "${STATS}" -eq 1 ]; then
 	# Collect database statistics
@@ -184,8 +189,8 @@ echo "**`date` load test starting**"
 S_TIME=`date +%s`
 dbt7-${DATABASE}-time-statistics -s -n LOADTEST || bailout
 
-eval $PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE \
-		$PRIVILEGED_ARG >> $OUTPUTFILE 2>&1 || bailout
+eval "$PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE ${TABLESPACES_ARG} \
+		$PRIVILEGED_ARG" >> $OUTPUTFILE 2>&1 || bailout
 
 dbt7-${DATABASE}-time-statistics -e -n LOADTEST || bailout
 E_TIME=`date +%s`
