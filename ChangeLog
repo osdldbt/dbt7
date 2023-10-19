@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.6.0 (2023-10-19)
 
 - Remove fonts from AppImage; it was a partial solution so instead rely on
   font config and fonts to be installed on the host
