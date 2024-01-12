@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.6.1 (2024-01-12)
 
 - Create dbt7-DSGen-software-code-3.2.0rc1-utf8.diff patch for DSGEN to create
   valid UTF-8 data.
