@@ -88,7 +88,6 @@ set (PSQL "AppDir/usr/bin/psql")
 add_custom_target(appimage-podman
     COMMAND cp -aLr /usr/local/AppDir .
     COMMAND cp -aL ${CMAKE_BINARY_DIR}/AppRun
-                   ${APPIMAGE_SOURCE_DIR}/activate
                    ${APPIMAGE_SOURCE_DIR}/dbt7.desktop
                    ${APPIMAGE_SOURCE_DIR}/dbt7.svg
             AppDir
