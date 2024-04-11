@@ -4,6 +4,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Build AppImage with linuxdeploy instead of appimagetool
 - Create AppImage on Debian 10 (buster), previously Ubuntu 14.04 (Trust Tahr)
 - Fix use of relative paths in build-dsgen
+- Allow creating AppImage built with TPC-DS Tools binaries
 
 v0.6.1 (2024-01-12)
 
