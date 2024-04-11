@@ -87,24 +87,10 @@ set (PSQL "AppDir/usr/bin/psql")
 
 add_custom_target(appimage-podman
     COMMAND cp -aLr /usr/local/AppDir .
-    COMMAND cp -aL ${CMAKE_BINARY_DIR}/AppRun
-                   ${APPIMAGE_SOURCE_DIR}/dbt7.desktop
-                   ${APPIMAGE_SOURCE_DIR}/dbt7.svg
-            AppDir
-    COMMAND mkdir -p AppDir/usr/share/metainfo
-    COMMAND cp -aL ${APPIMAGE_SOURCE_DIR}/dbt7.appdata.xml
-            AppDir/usr/share/metainfo
-    COMMAND mkdir -p AppDir/usr/lib
-    COMMAND cp -aL `ldd ${GNUPLOT} | grep libfribidi\\. | cut -d \" \" -f 3`
-                   `ldd ${GNUPLOT} | grep libgraphite2\\. | cut -d \" \" -f 3`
-                   `ldd ${GNUPLOT} | grep harfbuzz\\. | cut -d \" \" -f 3`
-                   `ldd ${GNUPLOT} | grep libpango-1\\.0\\. | cut -d \" \" -f 3`
-                   `ldd ${GNUPLOT} | grep libpangoft2-1\\.0\\. | cut -d \" \" -f 3`
-                   `ldd ${GNUPLOT} | grep libpangocairo-1\\.0\\. | cut -d \" \" -f 3`
-                   `ldd ${GNUPLOT} | grep libthai\\. | cut -d \" \" -f 3`
-                   `ldd ${PSQL} | grep libcrypto\\. | cut -d \" \" -f 3`
-                   `ldd ${PSQL} | grep libssl\\. | cut -d \" \" -f 3`
-            AppDir/usr/lib
     COMMAND VERSION=${PROJECT_VERSION} /usr/local/squashfs-root/AppRun
-            --comp=xz AppDir
+            --appdir AppDir
+            --custom-apprun=${CMAKE_BINARY_DIR}/AppRun
+            --desktop-file=${APPIMAGE_SOURCE_DIR}/dbt7.desktop
+            --icon-file=${APPIMAGE_SOURCE_DIR}/dbt7.svg
+            --output appimage
 )

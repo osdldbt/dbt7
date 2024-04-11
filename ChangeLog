@@ -1,6 +1,7 @@
 vX.Y.Z (YYYY-MM-DD)
 
 - Fix AppRun to export APPDIR when running from an extracted directory
+- Build AppImage with linuxdeploy instead of appimagetool
 
 v0.6.1 (2024-01-12)
 
