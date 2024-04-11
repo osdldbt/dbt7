@@ -5,6 +5,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Create AppImage on Debian 10 (buster), previously Ubuntu 14.04 (Trust Tahr)
 - Fix use of relative paths in build-dsgen
 - Allow creating AppImage built with TPC-DS Tools binaries
+- pgsql: Run VACUUM through psql instead of using vacuumdb binary
 
 v0.6.1 (2024-01-12)
 

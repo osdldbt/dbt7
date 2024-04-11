@@ -167,5 +167,7 @@ if [ $VACUUM_JOBS -gt 1 ]; then
 fi
 
 dbt7-pgsql-time-statistics -s -n VACUUM
-vacuumdb $VACUUM_OPTS -d $DBT7DBNAME || exit 1
+${PSQL} << __EOF__
+VACUUM (PARALLEL ${VACUUM_JOBS}) VERBOSE ANALYZE;
+__EOF__
 dbt7-pgsql-time-statistics -e -n VACUUM
