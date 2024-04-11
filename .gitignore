@@ -30,4 +30,5 @@ patches/*~
 .pc/
 
 # TPC
+dsgen
 DSGen-software-code-3.2.0rc1
