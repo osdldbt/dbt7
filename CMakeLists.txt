@@ -91,6 +91,10 @@ add_custom_target(appimage-podman
             --appdir AppDir
             --custom-apprun=${CMAKE_BINARY_DIR}/AppRun
             --desktop-file=${APPIMAGE_SOURCE_DIR}/dbt7.desktop
+            --executable=/usr/bin/perl
+            --executable=/usr/bin/psql
+            --executable=/usr/local/bin/gnuplot
+            --executable=/usr/local/bin/sqlite3
             --icon-file=${APPIMAGE_SOURCE_DIR}/dbt7.svg
             --output appimage
 )

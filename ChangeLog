@@ -2,6 +2,7 @@ vX.Y.Z (YYYY-MM-DD)
 
 - Fix AppRun to export APPDIR when running from an extracted directory
 - Build AppImage with linuxdeploy instead of appimagetool
+- Create AppImage on Debian 10 (buster), previously Ubuntu 14.04 (Trust Tahr)
 
 v0.6.1 (2024-01-12)
 
