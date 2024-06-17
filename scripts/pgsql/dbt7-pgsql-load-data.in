@@ -136,38 +136,8 @@ dbt7-pgsql-time-statistics -s -n INDEX
 eval "dbt7-pgsql-create-indexes ${TABLESPACES_ARG}"
 dbt7-pgsql-time-statistics -e -n INDEX
 
-# Set the number of vacuumdb jobs to 1 (no parallelism) and let see
-# if the system can support a greater value.
-VACUUM_JOBS=1
-# Based on server version, enable vaccumdb parallelism if that version
-# is greater than or equal to 9.5.
-PG_VERSION_NUM=$(psql -At -d $DBT7DBNAME -c "SHOW server_version_num")
-PG_VERSION_NUM=$(( $PG_VERSION_NUM + 0 ))
-if [ $PG_VERSION_NUM -ge 95000 ]; then
-	# Set default vacuum jobs to 25 because this is the number of tables
-	# present in the database. Setting the number of job to a value
-	# greater than 25 won't bring any additional benefit.
-	VACUUM_JOBS=25
-	# If the number of CPUs is less than 25, then we set the vacuum job
-	# number to that number of CPUs.
-	if [ -f "/proc/stat" ]; then
-		CPUS=$(grep cpu /proc/stat | wc -l)
-		CPUS=$(( $CPUS - 1 ))
-		if [ $CPUS -lt $VACUUM_JOBS ]; then
-			VACUUM_JOBS=$CPUS
-		fi
-	fi
-fi
-
-VACUUM_OPTS="-z -F"
-
-# Use vacuumdb's -j option only if VACUUM_JOBS is greater than 1.
-if [ $VACUUM_JOBS -gt 1 ]; then
-	VACUUM_OPTS="$VACUUM_OPTS -j $VACUUM_JOBS"
-fi
-
-dbt7-pgsql-time-statistics -s -n VACUUM
+dbt7-pgsql-time-statistics -s -n ANALYZE
 ${PSQL} << __EOF__
-VACUUM (PARALLEL ${VACUUM_JOBS}) VERBOSE ANALYZE;
+ANALYZE VERBOSE;
 __EOF__
-dbt7-pgsql-time-statistics -e -n VACUUM
+dbt7-pgsql-time-statistics -e -n ANALYZE
