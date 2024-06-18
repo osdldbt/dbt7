@@ -1,6 +1,7 @@
 vX.Y.Z (YYYY-MM-DD)
 
 - pgsql: ANALYZE but do not VACUUM for the load test
+- Adopt Artistic License 2.0
 
 v0.6.2 (2024-04-11)
 
