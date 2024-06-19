@@ -189,7 +189,7 @@ if [ "x${INDIR}" = "x" ]; then
 fi
 
 find "${INDIR}" -type d -name dbstat | while IFS= read -r DBDIR; do
-	ts-plot-pgsql -d dbt7 -i "${DBDIR}"
+	ts plot-pgsql -d dbt7 -i "${DBDIR}"
 done
 
 cat << __EOF__

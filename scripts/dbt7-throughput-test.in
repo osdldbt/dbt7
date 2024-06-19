@@ -258,14 +258,14 @@ dbt7-${DATABASE}-time-statistics -c
 
 if [ "${STATS}" -eq 1 ]; then
 	# Start collecting system statistics.
-	ts-sysstat -o "${OUTPUT_DIR}/sysstat"
+	ts sysstat -o "${OUTPUT_DIR}/sysstat"
 
 	# Start collecting database statistics.
-	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat"
+	eval "ts ${DATABASE}-stat -d ${DBT7DBNAME} -o ${OUTPUT_DIR}/dbstat"
 fi
 
 if [ $PROFILE -eq 1 ]; then
-	ts-profile -o "${OUTPUT_DIR}/profile" sleep 1
+	ts profile -o "${OUTPUT_DIR}/profile" sleep 1
 fi
 
 # Execute the throughput and data maintenance tests.
@@ -276,8 +276,8 @@ done
 
 if [ "${STATS}" -eq 1 ]; then
 	# Stop collecting system statistics.
-	ts-sysstat -o "${OUTPUT_DIR}/sysstat" -s
-	eval "ts-${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
+	ts sysstat -o "${OUTPUT_DIR}/sysstat" -s
+	eval "ts ${DATABASE}-stat -o ${OUTPUT_DIR}/dbstat -s"
 fi
 
 dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
@@ -289,5 +289,5 @@ fi
 
 if [ $PROFILE -eq 1 ]; then
 	echo "Generating Linux perf reports for throughput test..."
-	ts-profile -o "${OUTPUT_DIR}/profile" -p
+	ts profile -o "${OUTPUT_DIR}/profile" -p
 fi
