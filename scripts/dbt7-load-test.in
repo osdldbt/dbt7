@@ -146,7 +146,7 @@ if [ ! -d "$DS_DATA" ]; then
 	DGENSEED=`date +%-m%d%H%M%S`
 	echo "data generation seed: $DGENSEED"
 	mkdir -p $DS_DATA
-	for I in `seq 1 $I`; do
+    for I in $(seq 1 ${CPUS}); do
 		eval "${DSTOOLS}/dsdgen \
 				-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
 				-DIR $DS_DATA \

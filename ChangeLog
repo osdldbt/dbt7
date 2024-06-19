@@ -2,6 +2,8 @@ vX.Y.Z (YYYY-MM-DD)
 
 - pgsql: ANALYZE but do not VACUUM for the load test
 - Adopt Artistic License 2.0
+- Fix logic for generating all of the chunks when parallelizing data generation
+  for loading
 
 v0.6.2 (2024-04-11)
 
