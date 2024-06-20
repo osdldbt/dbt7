@@ -18,6 +18,13 @@ usage()
 	echo "  -o PATH          output directory"
 }
 
+cleanup()
+{
+	if [ "${TMPDIR}" = "" ]; then
+		rm -rf "${TMPDIR}"
+	fi
+}
+
 get_time()
 {
 	NAME=$1
@@ -33,6 +40,9 @@ get_time()
 	fi
 	echo $V
 }
+
+TMPDIR=""
+trap cleanup INT QUIT ABRT TERM
 
 while getopts "i:o:" OPT; do
 	case $OPT in
@@ -297,4 +307,4 @@ cat << EOF >> "${SUMMARY}"
 ==  =======  =======  =======  ========  =======  =======  =======  ========  =======  =======
 EOF
 
-rm -rf "${TMPDIR}"
+cleanup

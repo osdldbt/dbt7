@@ -18,6 +18,20 @@ usage()
 	echo "  -o PATH    output directory"
 }
 
+cleanup()
+{
+	if [ "${DATAFILE}" = "" ]; then
+		rm -f "${DATAFILE}"
+	fi
+	if [ "${TMPDIR}" = "" ]; then
+		rm -rf "${TMPDIR}"
+	fi
+}
+
+DATAFILE=""
+TMPDIR=""
+trap cleanup INT QUIT ABRT TERM
+
 OUTDIR="."
 while getopts "hi:o:" OPT; do
 	case $OPT in
@@ -82,4 +96,4 @@ set style fill solid
 plot '${DATAFILE}' using 2:xtic(1) title 'Power'
 EOF
 
-rm -rf "${TMPDIR}" "${DATAFILE}"
+cleanup
