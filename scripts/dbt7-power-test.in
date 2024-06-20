@@ -7,6 +7,7 @@
 # Copyright The DBT-7 Authors
 
 PRIVILEGED=1
+QUALIFY_ARG=""
 RESTART=0
 STATS=0
 
@@ -118,6 +119,12 @@ if [ "x${DIALECT}" = "x" ]; then
 	DIALECT=$DATABASE
 fi
 
+# If this is a scale factor of 1, perform query validation Clause 7.3.
+if [ "${SCALE}" -eq 1 ]; then
+    echo "running power test as query validation test since scale factor is 1"
+	QUALIFY_ARG="-QUALIFY Y"
+fi
+
 echo "**`date` power test prep**"
 
 # If a seed file wasn't provided per spec, then don't specify one.
@@ -147,6 +154,7 @@ eval "${DSTOOLS}/dsqgen \
 		-STREAMS 1 \
 		$INPUT_ARG \
 		$TEMPLATE_ARG \
+		${QUALIFY_ARG} \
 		${RNGSEED_ARG}" \
 		> ${OUTPUT_DIR}/dsqgen.txt 2>&1 || exit 1
 

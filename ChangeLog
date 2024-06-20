@@ -4,6 +4,8 @@ vX.Y.Z (YYYY-MM-DD)
 - Adopt Artistic License 2.0
 - Fix logic for generating all of the chunks when parallelizing data generation
   for loading
+- Power test now runs query validation test when scale factor is 1, a specific
+  way to run the power test
 
 v0.6.2 (2024-04-11)
 
