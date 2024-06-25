@@ -7,6 +7,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Power test now runs query validation test when scale factor is 1, a specific
   way to run the power test
 - Clean up sqlite temp files when exiting unexpectedly
+- Run data validation test immediately after load test
 
 v0.6.2 (2024-04-11)
 

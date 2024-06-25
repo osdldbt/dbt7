@@ -2,6 +2,7 @@ foreach (SCRIPT dbt7-pgsql-create-db
                 dbt7-pgsql-create-tables
                 dbt7-pgsql-create-indexes
                 dbt7-pgsql-data-maintenance
+                dbt7-pgsql-data-validation
                 dbt7-pgsql-drop-tables
                 dbt7-pgsql-get-query-time
                 dbt7-pgsql-load-data
@@ -19,6 +20,7 @@ install (
              ${CMAKE_BINARY_DIR}/dbt7-pgsql-create-tables
              ${CMAKE_BINARY_DIR}/dbt7-pgsql-create-indexes
              ${CMAKE_BINARY_DIR}/dbt7-pgsql-data-maintenance
+             ${CMAKE_BINARY_DIR}/dbt7-pgsql-data-validation
              ${CMAKE_BINARY_DIR}/dbt7-pgsql-drop-tables
              ${CMAKE_BINARY_DIR}/dbt7-pgsql-get-query-time
              ${CMAKE_BINARY_DIR}/dbt7-pgsql-load-data

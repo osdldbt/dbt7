@@ -158,6 +158,21 @@ if [ ! -d "$DS_DATA" ]; then
 				2> /dev/null &
 	done
 	wait
+
+	VALDIR="${DS_DATA}/validation"
+	echo "generating data validate in ${VALDIR}"
+
+	# Determine number of processors for parallelism.
+	mkdir -p "${VALDIR}"
+	eval "${DSTOOLS}/dsdgen \
+			-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+			-DIR $VALDIR \
+			-SCALE 1 \
+			-TERMINATE N \
+			-RNGSEED $DGENSEED" \
+			-VALIDATE \
+			-VCOUNT 50 \
+			2> /dev/null &
 else
 	echo "skipping data generation, directory exists: ${DS_DATA}"
 fi
@@ -207,3 +222,6 @@ dbt7-${DATABASE}-get-query-time -o $OUTPUT_DIR
 if [ $PROFILE -eq 1 ]; then
 	ts profile -o "${OUTPUT_DIR}/profile" -p
 fi
+
+# Run data validation test. Clause 3.5.
+eval "dbt7-${DATABASE}-data-validation" > "${OUTPUT_DIR}/data-validation.txt"
