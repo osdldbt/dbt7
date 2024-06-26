@@ -1,4 +1,8 @@
-v0.6. (2024-06-25)
+vX.Y.Z (YYYY-MM-DD)
+
+- Refactor layout of postgresql template files in dsgen patches
+
+v0.6.3 (2024-06-25)
 
 - pgsql: ANALYZE but do not VACUUM for the load test
 - Adopt Artistic License 2.0

@@ -1,698 +1,698 @@
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery1.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery1.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery10.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery10.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery11.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery11.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery12.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery12.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery13.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery13.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery14.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery14.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery15.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery15.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery16.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery16.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery17.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery17.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery18.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery18.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery19.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery19.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery2.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery2.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery20.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery20.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery21.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery21.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery22.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery22.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery23.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery23.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery24.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery24.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery25.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery25.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery26.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery26.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery27.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery27.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery28.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery28.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery29.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery29.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery3.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery3.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery30.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery30.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery31.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery31.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery32.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery32.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery33.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery33.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery34.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery34.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery35.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery35.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery36.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery36.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery37.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery37.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery38.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery38.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery39.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery39.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery4.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery4.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery40.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery40.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery41.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery41.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery42.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery42.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery43.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery43.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery44.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery44.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery45.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery45.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery46.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery46.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery47.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery47.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery48.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery48.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery49.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery49.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery5.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery5.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery50.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery50.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery51.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery51.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery52.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery52.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery53.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery53.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery54.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery54.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery55.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery55.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery56.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery56.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery57.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery57.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery58.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery58.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery59.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery59.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery6.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery6.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery60.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery60.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery61.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery61.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery62.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery62.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery63.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery63.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery64.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery64.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery65.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery65.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery66.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery66.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery67.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery67.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery68.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery68.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery69.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery69.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery7.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery7.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery70.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery70.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery71.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery71.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery72.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery72.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery73.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery73.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery74.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery74.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery75.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery75.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery76.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery76.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery77.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery77.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery78.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery78.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery79.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery79.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery8.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery8.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery80.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery80.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery81.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery81.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery82.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery82.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery83.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery83.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery84.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery84.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery85.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery85.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery86.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery86.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery87.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery87.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery88.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery88.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery89.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery89.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery9.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery9.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery90.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery90.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery91.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery91.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery92.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery92.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery93.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery93.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery94.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery94.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery95.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery95.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery96.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery96.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery97.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery97.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery98.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery98.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery99.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/pgtestquery99.tpl
-@@ -0,0 +1 @@
-+select pg_sleep(1);
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql-test.lst
 ===================================================================
 --- /dev/null
 +++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql-test.lst
 @@ -0,0 +1,99 @@
-+pgtestquery1.tpl
-+pgtestquery2.tpl
-+pgtestquery3.tpl
-+pgtestquery4.tpl
-+pgtestquery5.tpl
-+pgtestquery6.tpl
-+pgtestquery7.tpl
-+pgtestquery8.tpl
-+pgtestquery9.tpl
-+pgtestquery10.tpl
-+pgtestquery11.tpl
-+pgtestquery12.tpl
-+pgtestquery13.tpl
-+pgtestquery14.tpl
-+pgtestquery15.tpl
-+pgtestquery16.tpl
-+pgtestquery17.tpl
-+pgtestquery18.tpl
-+pgtestquery19.tpl
-+pgtestquery20.tpl
-+pgtestquery21.tpl
-+pgtestquery22.tpl
-+pgtestquery23.tpl
-+pgtestquery24.tpl
-+pgtestquery25.tpl
-+pgtestquery26.tpl
-+pgtestquery27.tpl
-+pgtestquery28.tpl
-+pgtestquery29.tpl
-+pgtestquery30.tpl
-+pgtestquery31.tpl
-+pgtestquery32.tpl
-+pgtestquery33.tpl
-+pgtestquery34.tpl
-+pgtestquery35.tpl
-+pgtestquery36.tpl
-+pgtestquery37.tpl
-+pgtestquery38.tpl
-+pgtestquery39.tpl
-+pgtestquery40.tpl
-+pgtestquery41.tpl
-+pgtestquery42.tpl
-+pgtestquery43.tpl
-+pgtestquery44.tpl
-+pgtestquery45.tpl
-+pgtestquery46.tpl
-+pgtestquery47.tpl
-+pgtestquery48.tpl
-+pgtestquery49.tpl
-+pgtestquery50.tpl
-+pgtestquery51.tpl
-+pgtestquery52.tpl
-+pgtestquery53.tpl
-+pgtestquery54.tpl
-+pgtestquery55.tpl
-+pgtestquery56.tpl
-+pgtestquery57.tpl
-+pgtestquery58.tpl
-+pgtestquery59.tpl
-+pgtestquery60.tpl
-+pgtestquery61.tpl
-+pgtestquery62.tpl
-+pgtestquery63.tpl
-+pgtestquery64.tpl
-+pgtestquery65.tpl
-+pgtestquery66.tpl
-+pgtestquery67.tpl
-+pgtestquery68.tpl
-+pgtestquery69.tpl
-+pgtestquery70.tpl
-+pgtestquery71.tpl
-+pgtestquery72.tpl
-+pgtestquery73.tpl
-+pgtestquery74.tpl
-+pgtestquery75.tpl
-+pgtestquery76.tpl
-+pgtestquery77.tpl
-+pgtestquery78.tpl
-+pgtestquery79.tpl
-+pgtestquery80.tpl
-+pgtestquery81.tpl
-+pgtestquery82.tpl
-+pgtestquery83.tpl
-+pgtestquery84.tpl
-+pgtestquery85.tpl
-+pgtestquery86.tpl
-+pgtestquery87.tpl
-+pgtestquery88.tpl
-+pgtestquery89.tpl
-+pgtestquery90.tpl
-+pgtestquery91.tpl
-+pgtestquery92.tpl
-+pgtestquery93.tpl
-+pgtestquery94.tpl
-+pgtestquery95.tpl
-+pgtestquery96.tpl
-+pgtestquery97.tpl
-+pgtestquery98.tpl
-+pgtestquery99.tpl
++../query_postgresql_test/query1.tpl
++../query_postgresql_test/query2.tpl
++../query_postgresql_test/query3.tpl
++../query_postgresql_test/query4.tpl
++../query_postgresql_test/query5.tpl
++../query_postgresql_test/query6.tpl
++../query_postgresql_test/query7.tpl
++../query_postgresql_test/query8.tpl
++../query_postgresql_test/query9.tpl
++../query_postgresql_test/query10.tpl
++../query_postgresql_test/query11.tpl
++../query_postgresql_test/query12.tpl
++../query_postgresql_test/query13.tpl
++../query_postgresql_test/query14.tpl
++../query_postgresql_test/query15.tpl
++../query_postgresql_test/query16.tpl
++../query_postgresql_test/query17.tpl
++../query_postgresql_test/query18.tpl
++../query_postgresql_test/query19.tpl
++../query_postgresql_test/query20.tpl
++../query_postgresql_test/query21.tpl
++../query_postgresql_test/query22.tpl
++../query_postgresql_test/query23.tpl
++../query_postgresql_test/query24.tpl
++../query_postgresql_test/query25.tpl
++../query_postgresql_test/query26.tpl
++../query_postgresql_test/query27.tpl
++../query_postgresql_test/query28.tpl
++../query_postgresql_test/query29.tpl
++../query_postgresql_test/query30.tpl
++../query_postgresql_test/query31.tpl
++../query_postgresql_test/query32.tpl
++../query_postgresql_test/query33.tpl
++../query_postgresql_test/query34.tpl
++../query_postgresql_test/query35.tpl
++../query_postgresql_test/query36.tpl
++../query_postgresql_test/query37.tpl
++../query_postgresql_test/query38.tpl
++../query_postgresql_test/query39.tpl
++../query_postgresql_test/query40.tpl
++../query_postgresql_test/query41.tpl
++../query_postgresql_test/query42.tpl
++../query_postgresql_test/query43.tpl
++../query_postgresql_test/query44.tpl
++../query_postgresql_test/query45.tpl
++../query_postgresql_test/query46.tpl
++../query_postgresql_test/query47.tpl
++../query_postgresql_test/query48.tpl
++../query_postgresql_test/query49.tpl
++../query_postgresql_test/query50.tpl
++../query_postgresql_test/query51.tpl
++../query_postgresql_test/query52.tpl
++../query_postgresql_test/query53.tpl
++../query_postgresql_test/query54.tpl
++../query_postgresql_test/query55.tpl
++../query_postgresql_test/query56.tpl
++../query_postgresql_test/query57.tpl
++../query_postgresql_test/query58.tpl
++../query_postgresql_test/query59.tpl
++../query_postgresql_test/query60.tpl
++../query_postgresql_test/query61.tpl
++../query_postgresql_test/query62.tpl
++../query_postgresql_test/query63.tpl
++../query_postgresql_test/query64.tpl
++../query_postgresql_test/query65.tpl
++../query_postgresql_test/query66.tpl
++../query_postgresql_test/query67.tpl
++../query_postgresql_test/query68.tpl
++../query_postgresql_test/query69.tpl
++../query_postgresql_test/query70.tpl
++../query_postgresql_test/query71.tpl
++../query_postgresql_test/query72.tpl
++../query_postgresql_test/query73.tpl
++../query_postgresql_test/query74.tpl
++../query_postgresql_test/query75.tpl
++../query_postgresql_test/query76.tpl
++../query_postgresql_test/query77.tpl
++../query_postgresql_test/query78.tpl
++../query_postgresql_test/query79.tpl
++../query_postgresql_test/query80.tpl
++../query_postgresql_test/query81.tpl
++../query_postgresql_test/query82.tpl
++../query_postgresql_test/query83.tpl
++../query_postgresql_test/query84.tpl
++../query_postgresql_test/query85.tpl
++../query_postgresql_test/query86.tpl
++../query_postgresql_test/query87.tpl
++../query_postgresql_test/query88.tpl
++../query_postgresql_test/query89.tpl
++../query_postgresql_test/query90.tpl
++../query_postgresql_test/query91.tpl
++../query_postgresql_test/query92.tpl
++../query_postgresql_test/query93.tpl
++../query_postgresql_test/query94.tpl
++../query_postgresql_test/query95.tpl
++../query_postgresql_test/query96.tpl
++../query_postgresql_test/query97.tpl
++../query_postgresql_test/query98.tpl
++../query_postgresql_test/query99.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query1.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query1.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query10.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query10.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query11.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query11.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query12.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query12.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query13.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query13.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query14.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query14.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query15.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query15.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query16.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query16.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query17.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query17.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query18.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query18.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query19.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query19.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query2.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query2.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query20.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query20.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query21.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query21.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query22.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query22.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query23.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query23.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query24.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query24.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query25.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query25.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query26.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query26.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query27.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query27.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query28.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query28.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query29.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query29.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query3.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query3.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query30.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query30.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query31.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query31.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query32.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query32.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query33.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query33.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query34.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query34.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query35.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query35.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query36.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query36.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query37.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query37.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query38.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query38.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query39.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query39.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query4.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query4.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query40.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query40.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query41.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query41.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query42.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query42.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query43.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query43.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query44.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query44.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query45.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query45.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query46.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query46.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query47.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query47.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query48.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query48.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query49.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query49.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query5.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query5.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query50.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query50.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query51.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query51.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query52.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query52.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query53.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query53.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query54.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query54.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query55.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query55.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query56.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query56.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query57.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query57.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query58.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query58.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query59.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query59.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query6.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query6.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query60.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query60.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query61.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query61.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query62.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query62.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query63.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query63.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query64.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query64.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query65.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query65.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query66.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query66.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query67.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query67.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query68.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query68.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query69.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query69.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query7.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query7.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query70.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query70.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query71.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query71.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query72.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query72.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query73.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query73.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query74.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query74.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query75.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query75.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query76.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query76.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query77.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query77.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query78.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query78.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query79.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query79.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query8.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query8.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query80.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query80.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query81.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query81.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query82.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query82.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query83.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query83.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query84.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query84.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query85.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query85.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query86.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query86.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query87.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query87.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query88.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query88.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query89.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query89.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query9.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query9.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query90.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query90.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query91.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query91.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query92.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query92.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query93.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query93.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query94.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query94.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query95.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query95.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query96.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query96.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query97.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query97.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query98.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query98.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query99.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql_test/query99.tpl
+@@ -0,0 +1 @@
++SELECT pg_sleep(1);

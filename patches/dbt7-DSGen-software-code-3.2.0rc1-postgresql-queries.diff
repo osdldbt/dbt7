@@ -4,28 +4,28 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql.ls
 +++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql.lst
 @@ -0,0 +1,99 @@
 +query1.tpl
-+query2postgresql.tpl
++../query_postgresql/query2.tpl
 +query3.tpl
 +query4.tpl
-+query5postgresql.tpl
++../query_postgresql/query5.tpl
 +query6.tpl
 +query7.tpl
 +query8.tpl
 +query9.tpl
 +query10.tpl
 +query11.tpl
-+query12postgresql.tpl
++../query_postgresql/query12.tpl
 +query13.tpl
-+query14postgresql.tpl
++../query_postgresql/query14.tpl
 +query15.tpl
-+query16postgresql.tpl
++../query_postgresql/query16.tpl
 +query17.tpl
 +query18.tpl
 +query19.tpl
-+query20postgresql.tpl
-+query21postgresql.tpl
++../query_postgresql/query20.tpl
++../query_postgresql/query21.tpl
 +query22.tpl
-+query23postgresql.tpl
++../query_postgresql/query23.tpl
 +query24.tpl
 +query25.tpl
 +query26.tpl
@@ -34,15 +34,15 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql.ls
 +query29.tpl
 +query30.tpl
 +query31.tpl
-+query32postgresql.tpl
++../query_postgresql/query32.tpl
 +query33.tpl
 +query34.tpl
 +query35.tpl
-+query36a.tpl
-+query37postgresql.tpl
++../query_variants/query36a.tpl
++../query_postgresql/query37.tpl
 +query38.tpl
 +query39.tpl
-+query40postgresql.tpl
++../query_postgresql/query40.tpl
 +query41.tpl
 +query42.tpl
 +query43.tpl
@@ -51,7 +51,7 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql.ls
 +query46.tpl
 +query47.tpl
 +query48.tpl
-+query49postgresql.tpl
++../query_postgresql/query49.tpl
 +query50.tpl
 +query51.tpl
 +query52.tpl
@@ -72,35 +72,35 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/templates-postgresql.ls
 +query67.tpl
 +query68.tpl
 +query69.tpl
-+query70postgresql.tpl
++../query_postgresql/query70.tpl
 +query71.tpl
 +query72.tpl
 +query73.tpl
 +query74.tpl
 +query75.tpl
 +query76.tpl
-+query77postgresql.tpl
++../query_postgresql/query77.tpl
 +query78.tpl
 +query79.tpl
-+query80postgresql.tpl
++../query_postgresql/query80.tpl
 +query81.tpl
-+query82postgresql.tpl
++../query_postgresql/query82.tpl
 +query83.tpl
 +query84.tpl
 +query85.tpl
-+query86postgresql.tpl
++../query_postgresql/query86.tpl
 +query87.tpl
 +query88.tpl
 +query89.tpl
 +query90.tpl
 +query91.tpl
-+query92postgresql.tpl
++../query_postgresql/query92.tpl
 +query93.tpl
-+query94postgresql.tpl
-+query95postgresql.tpl
++../query_postgresql/query94.tpl
++../query_postgresql/query95.tpl
 +query96.tpl
 +query97.tpl
-+query98postgresql.tpl
++../query_postgresql/query98.tpl
 +query99.tpl
 Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresql.tpl
 ===================================================================
@@ -112,10 +112,107 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresql.tpl
 +define __LIMITC = "limit %d";
 +define _BEGIN = "INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqle.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqle.tpl
+@@ -0,0 +1,5 @@
++define __LIMITA = "";
++define __LIMITB = "";
++define __LIMITC = "limit %d";
++define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
++define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqlea.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqlea.tpl
+@@ -0,0 +1,5 @@
++define __LIMITA = "";
++define __LIMITB = "";
++define __LIMITC = "limit %d";
++define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
++define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query12.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query12.tpl
+@@ -0,0 +1,72 @@
++--
++-- Legal Notice 
++-- 
++-- This document and associated source code (the "Work") is a part of a 
++-- benchmark specification maintained by the TPC. 
++-- 
++-- The TPC reserves all right, title, and interest to the Work as provided 
++-- under U.S. and international laws, including without limitation all patent 
++-- and trademark rights therein. 
++-- 
++-- No Warranty 
++-- 
++-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
++--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
++--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
++--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
++--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
++--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
++--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
++--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
++--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
++--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
++--     WITH REGARD TO THE WORK. 
++-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
++--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
++--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
++--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
++--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
++--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
++--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
++--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
++-- 
++-- Contributors:
++-- 
++
++define YEAR=random(1998,2002,uniform);
++define SDATE=date([YEAR]+"-01-01",[YEAR]+"-07-01",sales);
++define CATEGORY=ulist(dist(categories,1,1),3);
++define _LIMIT=100;
++
++[_LIMITA] select [_LIMITB] i_item_id
++      ,i_item_desc 
++      ,i_category 
++      ,i_class 
++      ,i_current_price
++      ,sum(ws_ext_sales_price) as itemrevenue 
++      ,sum(ws_ext_sales_price)*100/sum(sum(ws_ext_sales_price)) over
++          (partition by i_class) as revenueratio
++from	
++	web_sales
++    	,item 
++    	,date_dim
++where 
++	ws_item_sk = i_item_sk 
++  	and i_category in ('[CATEGORY.1]', '[CATEGORY.2]', '[CATEGORY.3]')
++  	and ws_sold_date_sk = d_date_sk
++	and d_date between cast('[SDATE]' as date) 
++				and (cast('[SDATE]' as date) + INTERVAL '30 days')
++group by 
++	i_item_id
++        ,i_item_desc 
++        ,i_category
++        ,i_class
++        ,i_current_price
++order by 
++	i_category
++        ,i_class
++        ,i_item_id
++        ,i_item_desc
++        ,revenueratio
++[_LIMITC];
++
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query14.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query14.tpl
 @@ -0,0 +1,247 @@
 +--
 +-- Legal Notice 
@@ -364,10 +461,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query14postgresql.tpl
 + order by this_year.channel, this_year.i_brand_id, this_year.i_class_id, this_year.i_category_id
 + [_LIMITC];
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query16postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query16.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query16postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query16.tpl
 @@ -0,0 +1,76 @@
 +--
 +-- Legal Notice 
@@ -445,159 +542,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query16postgresql.tpl
 +[_LIMITC];
 +
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query23postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query2.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query23postgresql.tpl
-@@ -0,0 +1,144 @@
-+--
-+-- Legal Notice 
-+-- 
-+-- This document and associated source code (the "Work") is a part of a 
-+-- benchmark specification maintained by the TPC. 
-+-- 
-+-- The TPC reserves all right, title, and interest to the Work as provided 
-+-- under U.S. and international laws, including without limitation all patent 
-+-- and trademark rights therein. 
-+-- 
-+-- No Warranty 
-+-- 
-+-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
-+--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
-+--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
-+--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
-+--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
-+--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
-+--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
-+--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
-+--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
-+--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
-+--     WITH REGARD TO THE WORK. 
-+-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
-+--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
-+--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
-+--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
-+--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
-+--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
-+--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
-+--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
-+-- 
-+-- Contributors:
-+-- 
-+ define YEAR= random(1998, 2000, uniform); 
-+ define MONTH = random(1,7,uniform); 
-+ define TOPPERCENT=random(95,95,uniform); 
-+ define _LIMIT=100;
-+ 
-+ with frequent_ss_items as 
-+ (select substr(i_item_desc,1,30) itemdesc,i_item_sk item_sk,d_date solddate,count(*) cnt
-+  from store_sales
-+      ,date_dim 
-+      ,item
-+  where ss_sold_date_sk = d_date_sk
-+    and ss_item_sk = i_item_sk 
-+    and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3)
-+  group by substr(i_item_desc,1,30),i_item_sk,d_date
-+  having count(*) >4),
-+ max_store_sales as
-+ (select max(csales) tpcds_cmax 
-+  from (select c_customer_sk,sum(ss_quantity*ss_sales_price) csales
-+        from store_sales
-+            ,customer
-+            ,date_dim 
-+        where ss_customer_sk = c_customer_sk
-+         and ss_sold_date_sk = d_date_sk
-+         and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3) 
-+        group by c_customer_sk) x),
-+ best_ss_customer as
-+ (select c_customer_sk,sum(ss_quantity*ss_sales_price) ssales
-+  from store_sales
-+      ,customer
-+  where ss_customer_sk = c_customer_sk
-+  group by c_customer_sk
-+  having sum(ss_quantity*ss_sales_price) > ([TOPPERCENT]/100.0) * (select
-+  *
-+from
-+ max_store_sales))
-+ [_LIMITA] select [_LIMITB] sum(sales)
-+ from (select cs_quantity*cs_list_price sales
-+       from catalog_sales
-+           ,date_dim 
-+       where d_year = [YEAR] 
-+         and d_moy = [MONTH] 
-+         and cs_sold_date_sk = d_date_sk 
-+         and cs_item_sk in (select item_sk from frequent_ss_items)
-+         and cs_bill_customer_sk in (select c_customer_sk from best_ss_customer)
-+      union all
-+      select ws_quantity*ws_list_price sales
-+       from web_sales 
-+           ,date_dim 
-+       where d_year = [YEAR] 
-+         and d_moy = [MONTH] 
-+         and ws_sold_date_sk = d_date_sk 
-+         and ws_item_sk in (select item_sk from frequent_ss_items)
-+         and ws_bill_customer_sk in (select c_customer_sk from best_ss_customer)) y 
-+ [_LIMITC]; 
-+ 
-+ with frequent_ss_items as
-+ (select substr(i_item_desc,1,30) itemdesc,i_item_sk item_sk,d_date solddate,count(*) cnt
-+  from store_sales
-+      ,date_dim
-+      ,item
-+  where ss_sold_date_sk = d_date_sk
-+    and ss_item_sk = i_item_sk
-+    and d_year in ([YEAR],[YEAR] + 1,[YEAR] + 2,[YEAR] + 3)
-+  group by substr(i_item_desc,1,30),i_item_sk,d_date
-+  having count(*) >4),
-+ max_store_sales as
-+ (select max(csales) tpcds_cmax
-+  from (select c_customer_sk,sum(ss_quantity*ss_sales_price) csales
-+        from store_sales
-+            ,customer
-+            ,date_dim 
-+        where ss_customer_sk = c_customer_sk
-+         and ss_sold_date_sk = d_date_sk
-+         and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3)
-+        group by c_customer_sk) x),
-+ best_ss_customer as
-+ (select c_customer_sk,sum(ss_quantity*ss_sales_price) ssales
-+  from store_sales
-+      ,customer
-+  where ss_customer_sk = c_customer_sk
-+  group by c_customer_sk
-+  having sum(ss_quantity*ss_sales_price) > ([TOPPERCENT]/100.0) * (select
-+  *
-+ from max_store_sales))
-+ [_LIMITA] select [_LIMITB] c_last_name,c_first_name,sales
-+ from (select c_last_name,c_first_name,sum(cs_quantity*cs_list_price) sales
-+        from catalog_sales
-+            ,customer
-+            ,date_dim 
-+        where d_year = [YEAR] 
-+         and d_moy = [MONTH] 
-+         and cs_sold_date_sk = d_date_sk 
-+         and cs_item_sk in (select item_sk from frequent_ss_items)
-+         and cs_bill_customer_sk in (select c_customer_sk from best_ss_customer)
-+         and cs_bill_customer_sk = c_customer_sk 
-+       group by c_last_name,c_first_name
-+      union all
-+      select c_last_name,c_first_name,sum(ws_quantity*ws_list_price) sales
-+       from web_sales
-+           ,customer
-+           ,date_dim 
-+       where d_year = [YEAR] 
-+         and d_moy = [MONTH] 
-+         and ws_sold_date_sk = d_date_sk 
-+         and ws_item_sk in (select item_sk from frequent_ss_items)
-+         and ws_bill_customer_sk in (select c_customer_sk from best_ss_customer)
-+         and ws_bill_customer_sk = c_customer_sk
-+       group by c_last_name,c_first_name) y 
-+     order by c_last_name,c_first_name,sales
-+  [_LIMITC];
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query2postgresql.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query2postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query2.tpl
 @@ -0,0 +1,94 @@
 +--
 +-- Legal Notice 
@@ -693,10 +641,152 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query2postgresql.tpl
 +        d_year = [YEAR]+1) z
 + where d_week_seq1=d_week_seq2-53
 + order by d_week_seq1;
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query32postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query20.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query32postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query20.tpl
+@@ -0,0 +1,67 @@
++--
++-- Legal Notice 
++-- 
++-- This document and associated source code (the "Work") is a part of a 
++-- benchmark specification maintained by the TPC. 
++-- 
++-- The TPC reserves all right, title, and interest to the Work as provided 
++-- under U.S. and international laws, including without limitation all patent 
++-- and trademark rights therein. 
++-- 
++-- No Warranty 
++-- 
++-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
++--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
++--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
++--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
++--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
++--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
++--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
++--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
++--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
++--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
++--     WITH REGARD TO THE WORK. 
++-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
++--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
++--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
++--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
++--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
++--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
++--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
++--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
++-- 
++-- Contributors:
++-- 
++ define YEAR=random(1998,2002,uniform);
++ define SDATE=date([YEAR]+"-01-01",[YEAR]+"-07-01",sales);
++ define CATEGORY=ulist(dist(categories,1,1),3);
++ define _LIMIT=100; 
++
++ [_LIMITA] select [_LIMITB] i_item_id
++       ,i_item_desc 
++       ,i_category 
++       ,i_class 
++       ,i_current_price
++       ,sum(cs_ext_sales_price) as itemrevenue 
++       ,sum(cs_ext_sales_price)*100/sum(sum(cs_ext_sales_price)) over
++           (partition by i_class) as revenueratio
++ from	catalog_sales
++     ,item 
++     ,date_dim
++ where cs_item_sk = i_item_sk 
++   and i_category in ('[CATEGORY.1]', '[CATEGORY.2]', '[CATEGORY.3]')
++   and cs_sold_date_sk = d_date_sk
++ and d_date between cast('[SDATE]' as date) 
++ 				and (cast('[SDATE]' as date) + INTERVAL '30 days')
++ group by i_item_id
++         ,i_item_desc 
++         ,i_category
++         ,i_class
++         ,i_current_price
++ order by i_category
++         ,i_class
++         ,i_item_id
++         ,i_item_desc
++         ,revenueratio
++[_LIMITC];
++
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query21.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query21.tpl
+@@ -0,0 +1,65 @@
++--
++-- Legal Notice 
++-- 
++-- This document and associated source code (the "Work") is a part of a 
++-- benchmark specification maintained by the TPC. 
++-- 
++-- The TPC reserves all right, title, and interest to the Work as provided 
++-- under U.S. and international laws, including without limitation all patent 
++-- and trademark rights therein. 
++-- 
++-- No Warranty 
++-- 
++-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
++--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
++--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
++--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
++--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
++--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
++--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
++--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
++--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
++--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
++--     WITH REGARD TO THE WORK. 
++-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
++--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
++--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
++--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
++--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
++--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
++--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
++--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
++-- 
++-- Contributors:
++-- 
++ define YEAR=random(1998,2002,uniform);
++ define SALES_DATE=date([YEAR]+"-01-31",[YEAR]+"-7-01",sales);
++ define _LIMIT=100;
++ 
++ [_LIMITA] select [_LIMITB] *
++ from(select w_warehouse_name
++            ,i_item_id
++            ,sum(case when (cast(d_date as date) < cast ('[SALES_DATE]' as date))
++	                then inv_quantity_on_hand 
++                      else 0 end) as inv_before
++            ,sum(case when (cast(d_date as date) >= cast ('[SALES_DATE]' as date))
++                      then inv_quantity_on_hand 
++                      else 0 end) as inv_after
++   from inventory
++       ,warehouse
++       ,item
++       ,date_dim
++   where i_current_price between 0.99 and 1.49
++     and i_item_sk          = inv_item_sk
++     and inv_warehouse_sk   = w_warehouse_sk
++     and inv_date_sk    = d_date_sk
++     and d_date between (cast ('[SALES_DATE]' as date) - INTERVAL '30 days')
++                    and (cast ('[SALES_DATE]' as date) + INTERVAL '30 days')
++   group by w_warehouse_name, i_item_id) x
++ where (case when inv_before > 0 
++             then inv_after / inv_before 
++             else null
++             end) between 2.0/3.0 and 3.0/2.0
++ order by w_warehouse_name
++         ,i_item_id
++ [_LIMITC];
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query32.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query32.tpl
 @@ -0,0 +1,65 @@
 +--
 +-- Legal Notice 
@@ -763,10 +853,72 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query32postgresql.tpl
 +      ) 
 +[_LIMITC]; 
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query40postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query37.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query40postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query37.tpl
+@@ -0,0 +1,57 @@
++--
++-- Legal Notice 
++-- 
++-- This document and associated source code (the "Work") is a part of a 
++-- benchmark specification maintained by the TPC. 
++-- 
++-- The TPC reserves all right, title, and interest to the Work as provided 
++-- under U.S. and international laws, including without limitation all patent 
++-- and trademark rights therein. 
++-- 
++-- No Warranty 
++-- 
++-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
++--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
++--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
++--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
++--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
++--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
++--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
++--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
++--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
++--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
++--     WITH REGARD TO THE WORK. 
++-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
++--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
++--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
++--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
++--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
++--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
++--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
++--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
++-- 
++-- Contributors:
++-- 
++ define YEAR=random(1998,2002,uniform);
++ define INVDATE=date([YEAR]+"-01-01",[YEAR]+"-07-24",sales);
++ define MANUFACT_ID=ulist(random(667,1000,uniform),4);
++ define PRICE=random(10,70,uniform);
++ define _LIMIT=100;
++  
++ [_LIMITA] select [_LIMITB] i_item_id
++       ,i_item_desc
++       ,i_current_price
++ from item, inventory, date_dim, catalog_sales
++ where i_current_price between [PRICE] and [PRICE] + 30
++ and inv_item_sk = i_item_sk
++ and d_date_sk=inv_date_sk
++ and d_date between cast('[INVDATE]' as date) and (cast('[INVDATE]' as date) +  INTERVAL '60 days')
++ and i_manufact_id in ([MANUFACT_ID.1],[MANUFACT_ID.2],[MANUFACT_ID.3],[MANUFACT_ID.4])
++ and inv_quantity_on_hand between 100 and 500
++ and cs_item_sk = i_item_sk
++ group by i_item_id,i_item_desc,i_current_price
++ order by i_item_id
++ [_LIMITC];
++ 
++ 
++
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query40.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query40.tpl
 @@ -0,0 +1,63 @@
 +--
 +-- Legal Notice 
@@ -831,10 +983,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query40postgresql.tpl
 +    w_state,i_item_id
 + order by w_state,i_item_id
 +[_LIMITC];
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query49postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query49.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query49postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query49.tpl
 @@ -0,0 +1,164 @@
 +--
 +-- Legal Notice 
@@ -1000,10 +1152,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query49postgresql.tpl
 + ) query49
 + order by 1,4,5,2
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query5postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query5.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query5postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query5.tpl
 @@ -0,0 +1,165 @@
 +--
 +-- Legal Notice 
@@ -1170,10 +1322,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query5postgresql.tpl
 + [_LIMITC];
 + 
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query70postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query70.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query70postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query70.tpl
 @@ -0,0 +1,77 @@
 +--
 +-- Legal Notice 
@@ -1252,10 +1404,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query70postgresql.tpl
 +  ,rank_within_parent
 + [_LIMITC];
 + 
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query77postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query77.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query77postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query77.tpl
 @@ -0,0 +1,145 @@
 +--
 +-- Legal Notice 
@@ -1402,10 +1554,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query77postgresql.tpl
 + [_LIMITC];
 + 
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query80postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query80.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query80postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query80.tpl
 @@ -0,0 +1,131 @@
 +--
 +-- Legal Notice 
@@ -1538,10 +1690,71 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query80postgresql.tpl
 + order by channel
 +         ,id
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query86postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query82.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query86postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query82.tpl
+@@ -0,0 +1,56 @@
++--
++-- Legal Notice 
++-- 
++-- This document and associated source code (the "Work") is a part of a 
++-- benchmark specification maintained by the TPC. 
++-- 
++-- The TPC reserves all right, title, and interest to the Work as provided 
++-- under U.S. and international laws, including without limitation all patent 
++-- and trademark rights therein. 
++-- 
++-- No Warranty 
++-- 
++-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
++--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
++--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
++--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
++--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
++--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
++--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
++--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
++--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
++--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
++--     WITH REGARD TO THE WORK. 
++-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
++--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
++--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
++--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
++--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
++--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
++--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
++--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
++-- 
++-- Contributors:
++-- 
++ define YEAR=random(1998,2002,uniform);
++ define PRICE=random(0,90,uniform);
++ define INVDATE=date([YEAR]+"-01-01",[YEAR]+"-07-24",sales);
++ define MANUFACT_ID=ulist(random(1,1000,uniform),4);
++ define _LIMIT=100;
++ 
++ [_LIMITA] select [_LIMITB] i_item_id
++       ,i_item_desc
++       ,i_current_price
++ from item, inventory, date_dim, store_sales
++ where i_current_price between [PRICE] and [PRICE]+30
++ and inv_item_sk = i_item_sk
++ and d_date_sk=inv_date_sk
++ and d_date between cast('[INVDATE]' as date) and (cast('[INVDATE]' as date) + interval '60 days')
++ and i_manufact_id in ([MANUFACT_ID.1],[MANUFACT_ID.2],[MANUFACT_ID.3],[MANUFACT_ID.4])
++ and inv_quantity_on_hand between 100 and 500
++ and ss_item_sk = i_item_sk
++ group by i_item_id,i_item_desc,i_current_price
++ order by i_item_id
++ [_LIMITC];
++ 
++
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query86.tpl
+===================================================================
+--- /dev/null
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query86.tpl
 @@ -0,0 +1,69 @@
 +--
 +-- Legal Notice 
@@ -1612,10 +1825,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query86postgresql.tpl
 +   case when lochierarchy = 0 then i_category end,
 +   rank_within_parent 
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query92postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query92.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query92postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query92.tpl
 @@ -0,0 +1,68 @@
 +--
 +-- Legal Notice 
@@ -1685,10 +1898,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query92postgresql.tpl
 +order by sum(ws_ext_discount_amt)
 +[_LIMITC]; 
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query94postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query94.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query94postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query94.tpl
 @@ -0,0 +1,67 @@
 +--
 +-- Legal Notice 
@@ -1757,10 +1970,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query94postgresql.tpl
 +order by count(distinct ws_order_number)
 +[_LIMITC];
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query95postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query95.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query95postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query95.tpl
 @@ -0,0 +1,71 @@
 +--
 +-- Legal Notice 
@@ -1833,10 +2046,10 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query95postgresql.tpl
 +[_LIMITC];
 +
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query98postgresql.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query98.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query98postgresql.tpl
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query98.tpl
 @@ -0,0 +1,70 @@
 +--
 +-- Legal Notice 
@@ -1908,31 +2121,11 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query98postgresql.tpl
 +        ,i_item_desc
 +        ,revenueratio;
 +
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqle.tpl
+Index: dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query23.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqle.tpl
-@@ -0,0 +1,5 @@
-+define __LIMITA = "";
-+define __LIMITB = "";
-+define __LIMITC = "limit %d";
-+define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
-+define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqlea.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/postgresqlea.tpl
-@@ -0,0 +1,5 @@
-+define __LIMITA = "";
-+define __LIMITB = "";
-+define __LIMITC = "limit %d";
-+define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
-+define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
-@@ -0,0 +1,56 @@
++++ dbt7/DSGen-software-code-3.2.0rc1/query_postgresql/query23.tpl
+@@ -0,0 +1,144 @@
 +--
 +-- Legal Notice 
 +-- 
@@ -1967,397 +2160,113 @@ Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query82postgresql.tpl
 +-- 
 +-- Contributors:
 +-- 
-+ define YEAR=random(1998,2002,uniform);
-+ define PRICE=random(0,90,uniform);
-+ define INVDATE=date([YEAR]+"-01-01",[YEAR]+"-07-24",sales);
-+ define MANUFACT_ID=ulist(random(1,1000,uniform),4);
++ define YEAR= random(1998, 2000, uniform); 
++ define MONTH = random(1,7,uniform); 
++ define TOPPERCENT=random(95,95,uniform); 
 + define _LIMIT=100;
 + 
-+ [_LIMITA] select [_LIMITB] i_item_id
-+       ,i_item_desc
-+       ,i_current_price
-+ from item, inventory, date_dim, store_sales
-+ where i_current_price between [PRICE] and [PRICE]+30
-+ and inv_item_sk = i_item_sk
-+ and d_date_sk=inv_date_sk
-+ and d_date between cast('[INVDATE]' as date) and (cast('[INVDATE]' as date) + interval '60 days')
-+ and i_manufact_id in ([MANUFACT_ID.1],[MANUFACT_ID.2],[MANUFACT_ID.3],[MANUFACT_ID.4])
-+ and inv_quantity_on_hand between 100 and 500
-+ and ss_item_sk = i_item_sk
-+ group by i_item_id,i_item_desc,i_current_price
-+ order by i_item_id
-+ [_LIMITC];
++ with frequent_ss_items as 
++ (select substr(i_item_desc,1,30) itemdesc,i_item_sk item_sk,d_date solddate,count(*) cnt
++  from store_sales
++      ,date_dim 
++      ,item
++  where ss_sold_date_sk = d_date_sk
++    and ss_item_sk = i_item_sk 
++    and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3)
++  group by substr(i_item_desc,1,30),i_item_sk,d_date
++  having count(*) >4),
++ max_store_sales as
++ (select max(csales) tpcds_cmax 
++  from (select c_customer_sk,sum(ss_quantity*ss_sales_price) csales
++        from store_sales
++            ,customer
++            ,date_dim 
++        where ss_customer_sk = c_customer_sk
++         and ss_sold_date_sk = d_date_sk
++         and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3) 
++        group by c_customer_sk) x),
++ best_ss_customer as
++ (select c_customer_sk,sum(ss_quantity*ss_sales_price) ssales
++  from store_sales
++      ,customer
++  where ss_customer_sk = c_customer_sk
++  group by c_customer_sk
++  having sum(ss_quantity*ss_sales_price) > ([TOPPERCENT]/100.0) * (select
++  *
++from
++ max_store_sales))
++ [_LIMITA] select [_LIMITB] sum(sales)
++ from (select cs_quantity*cs_list_price sales
++       from catalog_sales
++           ,date_dim 
++       where d_year = [YEAR] 
++         and d_moy = [MONTH] 
++         and cs_sold_date_sk = d_date_sk 
++         and cs_item_sk in (select item_sk from frequent_ss_items)
++         and cs_bill_customer_sk in (select c_customer_sk from best_ss_customer)
++      union all
++      select ws_quantity*ws_list_price sales
++       from web_sales 
++           ,date_dim 
++       where d_year = [YEAR] 
++         and d_moy = [MONTH] 
++         and ws_sold_date_sk = d_date_sk 
++         and ws_item_sk in (select item_sk from frequent_ss_items)
++         and ws_bill_customer_sk in (select c_customer_sk from best_ss_customer)) y 
++ [_LIMITC]; 
 + 
-+
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query20postgresql.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query20postgresql.tpl
-@@ -0,0 +1,67 @@
-+--
-+-- Legal Notice 
-+-- 
-+-- This document and associated source code (the "Work") is a part of a 
-+-- benchmark specification maintained by the TPC. 
-+-- 
-+-- The TPC reserves all right, title, and interest to the Work as provided 
-+-- under U.S. and international laws, including without limitation all patent 
-+-- and trademark rights therein. 
-+-- 
-+-- No Warranty 
-+-- 
-+-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
-+--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
-+--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
-+--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
-+--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
-+--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
-+--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
-+--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
-+--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
-+--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
-+--     WITH REGARD TO THE WORK. 
-+-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
-+--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
-+--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
-+--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
-+--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
-+--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
-+--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
-+--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
-+-- 
-+-- Contributors:
-+-- 
-+ define YEAR=random(1998,2002,uniform);
-+ define SDATE=date([YEAR]+"-01-01",[YEAR]+"-07-01",sales);
-+ define CATEGORY=ulist(dist(categories,1,1),3);
-+ define _LIMIT=100; 
-+
-+ [_LIMITA] select [_LIMITB] i_item_id
-+       ,i_item_desc 
-+       ,i_category 
-+       ,i_class 
-+       ,i_current_price
-+       ,sum(cs_ext_sales_price) as itemrevenue 
-+       ,sum(cs_ext_sales_price)*100/sum(sum(cs_ext_sales_price)) over
-+           (partition by i_class) as revenueratio
-+ from	catalog_sales
-+     ,item 
-+     ,date_dim
-+ where cs_item_sk = i_item_sk 
-+   and i_category in ('[CATEGORY.1]', '[CATEGORY.2]', '[CATEGORY.3]')
-+   and cs_sold_date_sk = d_date_sk
-+ and d_date between cast('[SDATE]' as date) 
-+ 				and (cast('[SDATE]' as date) + INTERVAL '30 days')
-+ group by i_item_id
-+         ,i_item_desc 
-+         ,i_category
-+         ,i_class
-+         ,i_current_price
-+ order by i_category
-+         ,i_class
-+         ,i_item_id
-+         ,i_item_desc
-+         ,revenueratio
-+[_LIMITC];
-+
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query21postgresql.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query21postgresql.tpl
-@@ -0,0 +1,65 @@
-+--
-+-- Legal Notice 
-+-- 
-+-- This document and associated source code (the "Work") is a part of a 
-+-- benchmark specification maintained by the TPC. 
-+-- 
-+-- The TPC reserves all right, title, and interest to the Work as provided 
-+-- under U.S. and international laws, including without limitation all patent 
-+-- and trademark rights therein. 
-+-- 
-+-- No Warranty 
-+-- 
-+-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
-+--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
-+--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
-+--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
-+--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
-+--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
-+--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
-+--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
-+--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
-+--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
-+--     WITH REGARD TO THE WORK. 
-+-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
-+--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
-+--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
-+--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
-+--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
-+--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
-+--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
-+--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
-+-- 
-+-- Contributors:
-+-- 
-+ define YEAR=random(1998,2002,uniform);
-+ define SALES_DATE=date([YEAR]+"-01-31",[YEAR]+"-7-01",sales);
-+ define _LIMIT=100;
-+ 
-+ [_LIMITA] select [_LIMITB] *
-+ from(select w_warehouse_name
-+            ,i_item_id
-+            ,sum(case when (cast(d_date as date) < cast ('[SALES_DATE]' as date))
-+	                then inv_quantity_on_hand 
-+                      else 0 end) as inv_before
-+            ,sum(case when (cast(d_date as date) >= cast ('[SALES_DATE]' as date))
-+                      then inv_quantity_on_hand 
-+                      else 0 end) as inv_after
-+   from inventory
-+       ,warehouse
-+       ,item
-+       ,date_dim
-+   where i_current_price between 0.99 and 1.49
-+     and i_item_sk          = inv_item_sk
-+     and inv_warehouse_sk   = w_warehouse_sk
-+     and inv_date_sk    = d_date_sk
-+     and d_date between (cast ('[SALES_DATE]' as date) - INTERVAL '30 days')
-+                    and (cast ('[SALES_DATE]' as date) + INTERVAL '30 days')
-+   group by w_warehouse_name, i_item_id) x
-+ where (case when inv_before > 0 
-+             then inv_after / inv_before 
-+             else null
-+             end) between 2.0/3.0 and 3.0/2.0
-+ order by w_warehouse_name
-+         ,i_item_id
-+ [_LIMITC];
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query36a.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query36a.tpl
-@@ -0,0 +1,86 @@
-+--
-+-- Legal Notice 
-+-- 
-+-- This document and associated source code (the "Work") is a part of a 
-+-- benchmark specification maintained by the TPC. 
-+-- 
-+-- The TPC reserves all right, title, and interest to the Work as provided 
-+-- under U.S. and international laws, including without limitation all patent 
-+-- and trademark rights therein. 
-+-- 
-+-- No Warranty 
-+-- 
-+-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
-+--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
-+--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
-+--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
-+--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
-+--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
-+--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
-+--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
-+--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
-+--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
-+--     WITH REGARD TO THE WORK. 
-+-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
-+--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
-+--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
-+--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
-+--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
-+--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
-+--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
-+--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
-+-- 
-+-- Contributors:
-+-- 
-+ define YEAR=random(1998,2002,uniform);
-+ define STATENUMBER=list(random(1, rowcount("active_states", "store"), uniform),8);
-+ define STATE_A=distmember(fips_county,[STATENUMBER.1], 3);
-+ define STATE_B=distmember(fips_county,[STATENUMBER.2], 3);
-+ define STATE_C=distmember(fips_county,[STATENUMBER.3], 3);
-+ define STATE_D=distmember(fips_county,[STATENUMBER.4], 3);
-+ define STATE_E=distmember(fips_county,[STATENUMBER.5], 3);
-+ define STATE_F=distmember(fips_county,[STATENUMBER.6], 3);
-+ define STATE_G=distmember(fips_county,[STATENUMBER.7], 3);
-+ define STATE_H=distmember(fips_county,[STATENUMBER.8], 3);
-+ define _LIMIT=100;
-+ 
-+ with results as
-+ (select 
-+    sum(ss_net_profit) as ss_net_profit, sum(ss_ext_sales_price) as ss_ext_sales_price,
-+    sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin
-+   ,i_category
-+   ,i_class
-+   ,0 as g_category, 0 as g_class
-+ from
-+    store_sales
-+   ,date_dim       d1
-+   ,item
-+   ,store
-+ where
-+    d1.d_year = [YEAR] 
-+    and d1.d_date_sk = ss_sold_date_sk
-+    and i_item_sk  = ss_item_sk 
-+    and s_store_sk  = ss_store_sk
-+    and s_state in ('[STATE_A]','[STATE_B]','[STATE_C]','[STATE_D]',
-+                 '[STATE_E]','[STATE_F]','[STATE_G]','[STATE_H]')
-+ group by i_category,i_class)
-+ ,
-+ results_rollup as
-+ (select gross_margin ,i_category ,i_class,0 as t_category, 0 as t_class, 0 as lochierarchy from results
-+ union
-+ select sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin,
-+   i_category, NULL AS i_class, 0 as t_category, 1 as t_class, 1 as lochierarchy from results group by i_category
-+ union
-+ select sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin,
-+   NULL AS i_category ,NULL AS i_class, 1 as t_category, 1 as t_class, 2 as lochierarchy from results)
-+ [_LIMITA] select [_LIMITB]
-+  gross_margin ,i_category ,i_class, lochierarchy,rank() over (
-+ 	partition by lochierarchy, case when t_class = 0 then i_category end 
-+ 	order by gross_margin asc) as rank_within_parent
-+ from results_rollup
-+ order by
-+   lochierarchy desc
-+  ,case when lochierarchy = 0 then i_category end
-+  ,rank_within_parent
++ with frequent_ss_items as
++ (select substr(i_item_desc,1,30) itemdesc,i_item_sk item_sk,d_date solddate,count(*) cnt
++  from store_sales
++      ,date_dim
++      ,item
++  where ss_sold_date_sk = d_date_sk
++    and ss_item_sk = i_item_sk
++    and d_year in ([YEAR],[YEAR] + 1,[YEAR] + 2,[YEAR] + 3)
++  group by substr(i_item_desc,1,30),i_item_sk,d_date
++  having count(*) >4),
++ max_store_sales as
++ (select max(csales) tpcds_cmax
++  from (select c_customer_sk,sum(ss_quantity*ss_sales_price) csales
++        from store_sales
++            ,customer
++            ,date_dim 
++        where ss_customer_sk = c_customer_sk
++         and ss_sold_date_sk = d_date_sk
++         and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3)
++        group by c_customer_sk) x),
++ best_ss_customer as
++ (select c_customer_sk,sum(ss_quantity*ss_sales_price) ssales
++  from store_sales
++      ,customer
++  where ss_customer_sk = c_customer_sk
++  group by c_customer_sk
++  having sum(ss_quantity*ss_sales_price) > ([TOPPERCENT]/100.0) * (select
++  *
++ from max_store_sales))
++ [_LIMITA] select [_LIMITB] c_last_name,c_first_name,sales
++ from (select c_last_name,c_first_name,sum(cs_quantity*cs_list_price) sales
++        from catalog_sales
++            ,customer
++            ,date_dim 
++        where d_year = [YEAR] 
++         and d_moy = [MONTH] 
++         and cs_sold_date_sk = d_date_sk 
++         and cs_item_sk in (select item_sk from frequent_ss_items)
++         and cs_bill_customer_sk in (select c_customer_sk from best_ss_customer)
++         and cs_bill_customer_sk = c_customer_sk 
++       group by c_last_name,c_first_name
++      union all
++      select c_last_name,c_first_name,sum(ws_quantity*ws_list_price) sales
++       from web_sales
++           ,customer
++           ,date_dim 
++       where d_year = [YEAR] 
++         and d_moy = [MONTH] 
++         and ws_sold_date_sk = d_date_sk 
++         and ws_item_sk in (select item_sk from frequent_ss_items)
++         and ws_bill_customer_sk in (select c_customer_sk from best_ss_customer)
++         and ws_bill_customer_sk = c_customer_sk
++       group by c_last_name,c_first_name) y 
++     order by c_last_name,c_first_name,sales
 +  [_LIMITC];
-+
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query37postgresql.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query37postgresql.tpl
-@@ -0,0 +1,57 @@
-+--
-+-- Legal Notice 
-+-- 
-+-- This document and associated source code (the "Work") is a part of a 
-+-- benchmark specification maintained by the TPC. 
-+-- 
-+-- The TPC reserves all right, title, and interest to the Work as provided 
-+-- under U.S. and international laws, including without limitation all patent 
-+-- and trademark rights therein. 
-+-- 
-+-- No Warranty 
-+-- 
-+-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
-+--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
-+--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
-+--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
-+--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
-+--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
-+--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
-+--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
-+--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
-+--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
-+--     WITH REGARD TO THE WORK. 
-+-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
-+--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
-+--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
-+--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
-+--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
-+--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
-+--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
-+--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
-+-- 
-+-- Contributors:
-+-- 
-+ define YEAR=random(1998,2002,uniform);
-+ define INVDATE=date([YEAR]+"-01-01",[YEAR]+"-07-24",sales);
-+ define MANUFACT_ID=ulist(random(667,1000,uniform),4);
-+ define PRICE=random(10,70,uniform);
-+ define _LIMIT=100;
-+  
-+ [_LIMITA] select [_LIMITB] i_item_id
-+       ,i_item_desc
-+       ,i_current_price
-+ from item, inventory, date_dim, catalog_sales
-+ where i_current_price between [PRICE] and [PRICE] + 30
-+ and inv_item_sk = i_item_sk
-+ and d_date_sk=inv_date_sk
-+ and d_date between cast('[INVDATE]' as date) and (cast('[INVDATE]' as date) +  INTERVAL '60 days')
-+ and i_manufact_id in ([MANUFACT_ID.1],[MANUFACT_ID.2],[MANUFACT_ID.3],[MANUFACT_ID.4])
-+ and inv_quantity_on_hand between 100 and 500
-+ and cs_item_sk = i_item_sk
-+ group by i_item_id,i_item_desc,i_current_price
-+ order by i_item_id
-+ [_LIMITC];
-+ 
-+ 
-+
-Index: dbt7/DSGen-software-code-3.2.0rc1/query_templates/query12postgresql.tpl
-===================================================================
---- /dev/null
-+++ dbt7/DSGen-software-code-3.2.0rc1/query_templates/query12postgresql.tpl
-@@ -0,0 +1,72 @@
-+--
-+-- Legal Notice 
-+-- 
-+-- This document and associated source code (the "Work") is a part of a 
-+-- benchmark specification maintained by the TPC. 
-+-- 
-+-- The TPC reserves all right, title, and interest to the Work as provided 
-+-- under U.S. and international laws, including without limitation all patent 
-+-- and trademark rights therein. 
-+-- 
-+-- No Warranty 
-+-- 
-+-- 1.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE INFORMATION 
-+--     CONTAINED HEREIN IS PROVIDED "AS IS" AND WITH ALL FAULTS, AND THE 
-+--     AUTHORS AND DEVELOPERS OF THE WORK HEREBY DISCLAIM ALL OTHER 
-+--     WARRANTIES AND CONDITIONS, EITHER EXPRESS, IMPLIED OR STATUTORY, 
-+--     INCLUDING, BUT NOT LIMITED TO, ANY (IF ANY) IMPLIED WARRANTIES, 
-+--     DUTIES OR CONDITIONS OF MERCHANTABILITY, OF FITNESS FOR A PARTICULAR 
-+--     PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OF 
-+--     WORKMANLIKE EFFORT, OF LACK OF VIRUSES, AND OF LACK OF NEGLIGENCE. 
-+--     ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, 
-+--     QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT 
-+--     WITH REGARD TO THE WORK. 
-+-- 1.2 IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THE WORK BE LIABLE TO 
-+--     ANY OTHER PARTY FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO THE 
-+--     COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS 
-+--     OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, 
-+--     INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY,
-+--     OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT 
-+--     RELATING TO THE WORK, WHETHER OR NOT SUCH AUTHOR OR DEVELOPER HAD 
-+--     ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES. 
-+-- 
-+-- Contributors:
-+-- 
-+
-+define YEAR=random(1998,2002,uniform);
-+define SDATE=date([YEAR]+"-01-01",[YEAR]+"-07-01",sales);
-+define CATEGORY=ulist(dist(categories,1,1),3);
-+define _LIMIT=100;
-+
-+[_LIMITA] select [_LIMITB] i_item_id
-+      ,i_item_desc 
-+      ,i_category 
-+      ,i_class 
-+      ,i_current_price
-+      ,sum(ws_ext_sales_price) as itemrevenue 
-+      ,sum(ws_ext_sales_price)*100/sum(sum(ws_ext_sales_price)) over
-+          (partition by i_class) as revenueratio
-+from	
-+	web_sales
-+    	,item 
-+    	,date_dim
-+where 
-+	ws_item_sk = i_item_sk 
-+  	and i_category in ('[CATEGORY.1]', '[CATEGORY.2]', '[CATEGORY.3]')
-+  	and ws_sold_date_sk = d_date_sk
-+	and d_date between cast('[SDATE]' as date) 
-+				and (cast('[SDATE]' as date) + INTERVAL '30 days')
-+group by 
-+	i_item_id
-+        ,i_item_desc 
-+        ,i_category
-+        ,i_class
-+        ,i_current_price
-+order by 
-+	i_category
-+        ,i_class
-+        ,i_item_id
-+        ,i_item_desc
-+        ,revenueratio
-+[_LIMITC];
-+
