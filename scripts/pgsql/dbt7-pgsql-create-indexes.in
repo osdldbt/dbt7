@@ -450,7 +450,7 @@ ${PSQL} <<- EOF &
 	CREATE INDEX i_cs_sold_date_sk
 	ON catalog_sales (cs_sold_date_sk)
 	WITH (fillfactor = 100)
-	${i_cs_sold_date_sk_tablespace}
+	${I_CS_SOLD_DATE_SK_TABLESPACE}
 	;
 EOF
 
