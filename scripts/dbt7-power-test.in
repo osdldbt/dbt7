@@ -152,6 +152,7 @@ eval "${DSTOOLS}/dsqgen \
 		-SCALE $SCALE \
 		-DIRECTORY $DSQUERY \
 		-STREAMS 1 \
+		-LOG ${OUTPUT_DIR}/query-pamaeter.log \
 		$INPUT_ARG \
 		$TEMPLATE_ARG \
 		${QUALIFY_ARG} \

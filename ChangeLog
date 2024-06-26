@@ -1,6 +1,7 @@
 vX.Y.Z (YYYY-MM-DD)
 
 - Refactor layout of postgresql template files in dsgen patches
+- Capture dsqgen query parameter log when generating queries
 
 v0.6.3 (2024-06-25)
 

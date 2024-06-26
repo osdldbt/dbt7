@@ -211,6 +211,7 @@ eval "${DSTOOLS}/dsqgen \
 		-SCALE $SCALE \
 		-DIRECTORY $DSQUERY \
 		-STREAMS $TOTAL_STREAMS \
+		-LOG ${OUTPUT_DIR}/query-parameter.log \
 		$INPUT_ARG \
 		$TEMPLATE_ARG \
 		${RNGSEED_ARG}" \
