@@ -91,7 +91,7 @@ Processor Statistics
 
 __EOF__
 
-	find "${OUTDIR}/${TEST}/sar" -name "sar-cpu?*.png" | \
+	find "${OUTDIR}/${TEST}/sysstat/sar" -name "sar-cpu?*.png" | \
 			while IFS= read -r PNGFILE; do
 		cat <<- __EOF__
 			.. image:: ${TEST}/sar/$(basename "${PNGFILE}")
@@ -106,7 +106,7 @@ Block Device Statistics
 
 __EOF__
 
-	find "${OUTDIR}/${TEST}/sar" -name "sar-blockdev-*-*.png" | \
+	find "${OUTDIR}/${TEST}/sysstat/sar" -name "sar-blockdev-*-*.png" | \
 			while IFS= read -r PNGFILE; do
 		cat <<- __EOF__
 			.. image:: ${TEST}/sar/$(basename "${PNGFILE}")
