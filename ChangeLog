@@ -3,6 +3,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Refactor layout of postgresql template files in dsgen patches
 - Capture dsqgen query parameter log when generating queries
 - pgsql: fix use of i_cs_sold_date_sk index tablespace
+- pgsql: remove varchar limit in time_statistics table
 
 v0.6.3 (2024-06-25)
 

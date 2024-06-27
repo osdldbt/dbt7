@@ -692,7 +692,7 @@ ${TIME_DIM_TABLESPACE}
 CREATE TABLE time_statistics (
     stream INTEGER NOT NULL,
     query INTEGER NOT NULL,
-    template VARCHAR(22) NOT NULL,
+    template TEXT NOT NULL,
     seed BIGINT NOT NULL,
     s_time TIMESTAMP,
     e_time TIMESTAMP
