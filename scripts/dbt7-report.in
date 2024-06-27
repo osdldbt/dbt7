@@ -173,24 +173,20 @@ dbt7-plot-results -i ${INDIR}/power/time_statistics.csv -o ${OUTDIR} \
 for DIR in load power throughput; do
 	SARDIR="${OUTDIR}/${DIR}/sysstat/sar"
 	if [ -d "${SARDIR}" ]; then
-		ts plot-sar -i "${SARDIR}"
+		ts plot-sar -i "${SARDIR}" &
 	fi
 done
+wait
 
 for DIR in load power throughput; do
 	PIDSTATFILE="${OUTDIR}/${DIR}/sysstat/pidstat.txt"
 	if [ -f "${PIDSTATFILE}" ]; then
-		ts process-pidstat -i "${PIDSTATFILE}"
+		(ts process-pidstat -i "${PIDSTATFILE}" && \
+				ts plot-pidstat -i "${OUTDIR}/${DIR}/sysstat/pidstat.csv" \
+				-o "${OUTDIR}/${DIR}/sysstat/pidstat") &
 	fi
 done
-
-for DIR in load power throughput; do
-	PIDSTATFILE="${OUTDIR}/${DIR}/sysstat/pidstat.csv"
-	if [ -f "${PIDSTATFILE}" ]; then
-		ts plot-pidstat -i "${PIDSTATFILE}" \
-				-o "${OUTDIR}/${DIR}/sysstat/pidstat"
-	fi
-done
+wait
 
 SUMMARY="${INDIR}/summary.rst"
 if [ ! -f "$SUMMARY" ]; then

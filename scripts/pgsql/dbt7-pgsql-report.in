@@ -188,9 +188,13 @@ if [ "x${INDIR}" = "x" ]; then
 	exit 1
 fi
 
-find "${INDIR}" -type d -name dbstat | while IFS= read -r DBDIR; do
-	ts plot-pgsql -d dbt7 -i "${DBDIR}"
+for TEST in load power throughput; do
+	DBDIR="${INDIR}/dbstat"
+	if [ -d "${DBDIR}" ]; then
+		ts plot-pgsql -d dbt7 -i "${DBDIR}" &
+	fi
 done
+wait
 
 cat << __EOF__
 PostgreSQL Report

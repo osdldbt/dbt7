@@ -4,6 +4,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Capture dsqgen query parameter log when generating queries
 - pgsql: fix use of i_cs_sold_date_sk index tablespace
 - pgsql: remove varchar limit in time_statistics table
+- Process and plot charts for each test in parallel
 
 v0.6.3 (2024-06-25)
 
