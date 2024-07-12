@@ -20,7 +20,7 @@ usage()
 
 cleanup()
 {
-	if [ "${TMPDIR}" = "" ]; then
+	if [ ! "${TMPDIR}" = "" ]; then
 		rm -rf "${TMPDIR}"
 	fi
 }

@@ -1,3 +1,7 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- Fix logic for removing temp directory in post-process
+
 v0.6.4 (2024-06-27)
 
 - Refactor layout of postgresql template files in dsgen patches
