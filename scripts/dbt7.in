@@ -49,7 +49,7 @@ display_version()
 
 version()
 {
-	echo "$(basename "${0}") (Database Test 3) v@PROJECT_VERSION@"
+	echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
 
 	if [ $VERBOSE -eq 0 ]; then
 		return
