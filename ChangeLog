@@ -1,6 +1,7 @@
 vX.Y.Z (YYYY-MM-DD)
 
 - Fix logic for removing temp directory in post-process
+- Revert linuxdeploy and update AppImage creation to use appimagetool
 
 v0.6.4 (2024-06-27)
 
