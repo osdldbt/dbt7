@@ -1,5 +1,6 @@
 add_subdirectory (pgsql)
 
+set (SCRIPTS "")
 foreach (SCRIPT dbt7
                 dbt7-build-dsgen
                 dbt7-get-config
@@ -12,18 +13,7 @@ foreach (SCRIPT dbt7
                 dbt7-throughput-test
         )
     configure_file(${SCRIPT}.in ${CMAKE_BINARY_DIR}/${SCRIPT} @ONLY)
+    set (SCRIPTS ${SCRIPTS} ${CMAKE_BINARY_DIR}/${SCRIPT})
 endforeach (SCRIPT)
 
-install (
-    PROGRAMS ${CMAKE_BINARY_DIR}/dbt7
-             ${CMAKE_BINARY_DIR}/dbt7-build-dsgen
-             ${CMAKE_BINARY_DIR}/dbt7-get-config
-             ${CMAKE_BINARY_DIR}/dbt7-load-test
-             ${CMAKE_BINARY_DIR}/dbt7-plot-results
-             ${CMAKE_BINARY_DIR}/dbt7-post-process
-             ${CMAKE_BINARY_DIR}/dbt7-power-test
-             ${CMAKE_BINARY_DIR}/dbt7-report
-             ${CMAKE_BINARY_DIR}/dbt7-run
-             ${CMAKE_BINARY_DIR}/dbt7-throughput-test
-    DESTINATION "bin"
-)
+install (PROGRAMS ${SCRIPTS} DESTINATION "bin")
