@@ -6,7 +6,7 @@
 #
 # Copyright The DBT-7 Authors
 
-PRIVILEGED=1
+PRIVILEGED_ARG=""
 PROFILE=0
 SCALE=1
 STATS=0
@@ -77,7 +77,6 @@ while [ "${#}" -gt 0 ] ; do
 		TABLESPACES_ARG="--tablespaces"
 		;;
 	(-U)
-		PRIVILEGED=0
 		PRIVILEGED_ARG="-U"
 		;;
 	(-V | --version)
@@ -182,10 +181,8 @@ if [ "${STATS}" -eq 1 ]; then
 	ts sysstat -o "${OUTPUT_DIR}/sysstat"
 fi
 
-if [ "${PRIVILEGED}" -eq 1 ]; then
-	eval "dbt7-${DATABASE}-create-db -o $OUTPUT_DIR $PARAMETERS_ARG \
-			${PRIVILEGED_ARG}" >> $OUTPUTFILE 2>&1
-fi
+eval "dbt7-${DATABASE}-create-db -o ${OUTPUT_DIR} ${PARAMETERS_ARG} \
+		${PRIVILEGED_ARG}" >> "${OUTPUTFILE}" 2>&1
 
 dbt7-${DATABASE}-drop-tables >> $OUTPUTFILE 2>&1 || bailout
 eval dbt7-${DATABASE}-create-tables ${TABLESPACES_ARG} \

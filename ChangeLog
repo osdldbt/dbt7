@@ -3,6 +3,8 @@ vX.Y.Z (YYYY-MM-DD)
 - run: do not calculate the metric unless all tests are run, since the metric
   depends on all tests being run
 - Add run-query script to aid in testing and analyzing individual queries
+- Update load-test script to enable individual create-db scripts to decide
+  whether a CREATE DATABASE command needs to be executed when running a test
 
 v0.6.5 (2024-08-15)
 
