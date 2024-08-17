@@ -1,3 +1,9 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- run: do not calculate the metric unless all tests are run, since the metric
+  depends on all tests being run
+- Add run-query script to aid in testing and analyzing individual queries
+
 v0.6.5 (2024-08-15)
 
 - Fix logic for removing temp directory in post-process

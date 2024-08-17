@@ -1,0 +1,313 @@
+#!/bin/bash
+@SHELLOPTIONS@
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright The DBT-7 Authors
+
+usage()
+{
+	cat << EOF
+$(basename "${0}") is the DBT-7 Individual Query Runner
+
+Usage:
+  $(basename "${0}") [OPTIONS] QUERY DBMS [DIRECTORY]
+
+Generate options:
+  --db-name       databse name, default ${DBNAME}
+  -d DIALECT, --dialect=DIALECT
+                  dialect override, default matches DBMS
+  -i INPUT, --input=INPUT
+                  input override, default
+                  DSHOME/query_templates/templates-DBMS.lst
+  -s SCALE, --scale-factor=SCALE
+                  database scale factor, default 1
+  --profile       collect software profile
+  --seed=SEED     seed to use, default random
+  --stats         enable system and database stats collection
+  --tpcdstools=DSHOME
+                  DSHOME is the directory location of the TPC-DS Tools
+  -V, --version   output version information, then exit
+  -?, --help      this help message
+
+QUERY is the query number to run.
+
+DBMS options are:
+  pgsql           PostgreSQL
+
+PostgreSQL specific options:
+  --explain       capture EXPLAIN ANALYZE output as part of the query results
+
+DIRECTORY is the path to save query results, if specified.  Required if
+collecting system, database statistics, or profiling data.
+
+@HOMEPAGE@
+EOF
+}
+
+stop_procs() {
+	if [ ! "${OUTDIR}" = "" ]; then
+		if command -v ts > /dev/null 2>&1; then
+			ts sysstat -o "${OUTDIR}/sysstat" -s &
+		fi
+		if command -v ts > /dev/null 2>&1; then
+			eval "ts ${DATABASE}-stat -o ${OUTDIR}/dbstat -s &"
+		fi
+	fi
+}
+trap 'stop_procs' INT TERM
+
+if [ ! "${APPDIR}" = "" ]; then
+	DSHOME="${APPDIR}/opt/dsgen"
+fi
+
+DBNAME="dbt7"
+DIALECT_ARG=""
+EXPLAIN=0
+PROFILE=0
+SCALE=1
+STATS=0
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(--db-name)
+		shift
+		DBNAME="${1}"
+		;;
+	(--db-name=?*)
+		DBNAME="${1#*--db-name=}"
+		;;
+	(-d | --dialect)
+		shift
+		DIALECT_ARG="-DIALECT ${1}"
+		;;
+	(--dialect=?*)
+		DIALECT_ARG="-DIALECT ${1#*--dialect=}"
+		;;
+	(--explain)
+		EXPLAIN=1
+		;;
+	(-i | --input)
+		shift
+		INPUT="${1}"
+		;;
+	(--input=?*)
+		INPUT="${1#*--input=}"
+		;;
+	(--profile)
+		PROFILE=1
+		;;
+	(--seed)
+		shift
+		RNGSEED_ARG="-RNGSEED $1"
+		;;
+	(--seed=?*)
+		RNGSEED_ARG="-RNGSEED ${1#*--seed=}"
+		;;
+	(--stats)
+		STATS=1
+		;;
+	(-s | --scale-factor)
+		shift
+		SCALE="${1}"
+		;;
+	(-s?*)
+		SCALE="${1#*-f}"
+		;;
+	(--scale-factor=?*)
+		SCALE="${1#*--scale-factor=}"
+		;;
+   (--tpcdstools)
+		shift
+		DSHOME="${1}"
+		;;
+   (--tpcdstools=?*)
+		DSHOME="${1#*--tpcdstools=}"
+		;;
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
+done
+
+if [ $# -eq 0 ]; then
+	printf "Specify which query to test, try \"%s --help\" " \
+			"$(basename "${0}")"
+	echo "for more information."
+	exit 1
+fi
+
+Q="${1}"
+shift
+
+if [ $# -eq 0 ]; then
+	printf "Specify which DBMS system to test, try \"%s --help\" " \
+			"$(basename "${0}")"
+	echo "for more information."
+	exit 1
+fi
+
+export DATABASE="${1}"
+shift
+
+if [ $# -eq 0 ]; then
+	if [ "${PROFILE}" -eq 1 ] || [ "${STATS}" -eq 1 ]; then
+		echo "Specify the location to save test results, where directory does "
+		printf "not exist yet, try \"%s --help\" " "$(basename "${0}")"
+		echo "for more information."
+		exit 1
+	fi
+	OUTDIR=""
+else
+	OUTDIR="${1}"
+	if [ -d "${OUTDIR}" ]; then
+		>&2 echo "Error: stopping to prevent overwriting existing directory"
+		exit 1
+	fi
+	mkdir -p "${OUTDIR}"
+fi
+
+# Set up environment based on $DSHOME
+
+if [ "${DSHOME}" = "" ]; then
+	printf "Specify DSHOME directory, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
+	exit 1
+fi
+export DSHOME
+if [ ! -d "${DSHOME}" ]; then
+	>&2 echo "ERROR: DSHOME dir does not exist: ${DSHOME}"
+	exit 2
+fi
+export DSTOOLS="${DSHOME}/tools"
+export DSQUERY="${DSHOME}/query_templates"
+export DSDISTRIBUTIONS="${DSTOOLS}/tpcds.idx"
+
+# Set up arguments depending on DBMS.
+
+if [ "${DATABASE}" = "monetdb" ]; then
+	DBCMD="mclient -e -d ${DBNAME}"
+elif [ "${DATABASE}" = "pgsql" ] || [ "${DATABASE}" = "pgxl" ]; then
+	DBCMD="psql -v ON_ERROR_STOP=1 -X -e -d ${DBNAME}"
+	if [ "${EXPLAIN}" -eq 1 ]; then
+		DIALECT_ARG="-DIALECT postgresqlea"
+	fi
+	export PGDATABASE="${DBNAME}"
+elif [ "${DATABASE}" = "mysql" ]; then
+	DBCMD="mysql -u root -D ${DBNAME}"
+elif [ "${DATABASE}" = "virtuoso" ]; then
+	DBCMD="isql PROMPT=OFF ERRORS=STDOUT ECHO=ON VERBOSE=OFF"
+else
+	echo "Unsupported database system"
+	exit 1
+fi
+
+if [ "${DIALECT_ARG}" = "" ]; then
+	if [ "${DATABASE}"  = "pgsql" ]; then
+		DIALECT_ARG="-DIALECT postgresql"
+	else
+		prints "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
+				"$(basename "${0}")" 1>&2
+		echo "for more information." 1>&2
+		exit 1
+	fi
+fi
+if [ "${INPUT}" = "" ]; then
+	if [ "${DATABASE}"  = "pgsql" ]; then
+		INPUT="${DSQUERY}/templates-postgresql.lst"
+	else
+		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
+				"$(basename "${0}")" 1>&2
+		echo "for more information." 1>&2
+		exit 1
+	fi
+fi
+
+TEMPLATE=$(sed -n "${Q}p" "${INPUT}")
+
+if [ ${STATS} -eq 1 ]; then
+	# Start collecting system statistics.
+	if ! command -v ts > /dev/null 2>&1; then
+		echo "WARNING: ts not found for system stats collection"
+	else
+		ts sysstat -o "${OUTDIR}/sysstat" &
+	fi
+
+	# Collect database statistics
+	if ! command -v ts > /dev/null 2>&1; then
+		echo "WARNING: ts not found for database stats collection"
+	else
+		eval "ts ${DATABASE}-stat -o ${OUTDIR}/dbstat &"
+	fi
+fi
+
+PROFILEDIR="${OUTDIR}/profile"
+if [ ${PROFILE} -eq 1 ]; then
+	ts profile -o "${PROFILEDIR}"
+fi
+
+S_TIME=$(date +%s.%N)
+OUTPUT="$(eval "${DBCMD}" <<- __EOF__ 2>&1
+	$(eval "${DSTOOLS}/dsqgen \
+			${DIALECT_ARG} \
+			-DIRECTORY ${DSQUERY} \
+			-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+			-FILTER Y \
+			-QUIET Y \
+			-SCALE ${SCALE} \
+			-STREAMS 1 \
+			-TEMPLATE ${TEMPLATE} \
+			${RNGSEED_ARG}")
+__EOF__
+)"
+E_TIME=$(date +%s.%N)
+
+if [ ${PROFILE} -eq 1 ]; then
+	ts profile -o "${PROFILEDIR}" -s
+fi
+
+echo "${OUTPUT}"
+if [ ! "${OUTDIR}" = "" ]; then
+	echo "${OUTPUT}" > "${OUTDIR}/results.log"
+fi
+
+if [ ${STATS} -eq 1 ]; then
+	stop_procs
+fi
+
+printf "\nQuery ${Q} executed in %0.3f second(s).\n" \
+		"$(bc <<< "${E_TIME} - ${S_TIME}")"
+
+if [ ${STATS} -eq 1 ]; then
+	echo
+	echo "Plotting system and database statistics..."
+	if command -v ts > /dev/null 2>&1; then
+		ts plot-sar -i "${OUTDIR}/sysstat/sar" &
+		ts "plot-${DATABASE}" -d "${DBNAME}" -i "${OUTDIR}/dbstat" &
+	fi
+fi
+
+if [ ${PROFILE} -eq 1 ]; then
+	echo
+	echo "Processing profile data..."
+	if command -v ts > /dev/null 2>&1; then
+		ts profile -o "${PROFILEDIR}" -p &
+	fi
+fi
+wait

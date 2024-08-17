@@ -137,3 +137,51 @@ use in DBT-7 requires up to 3 steps:
    analysis with the DBT-7 kit.
 3. Create a new dialect file that contains proper syntax for transaction
    control statements, and limit handling.  e.g. `postgresql.tpl`
+
+Testing Individual Queries
+==========================
+
+Running the individual parts of the benchmark, i.e. the Power Test of the
+Throughput Test, much less the entire benchmark, don't lend it itself to making
+it easy to evaluate individual query performance.  There may be times when the
+developer wants to focus on an individual query to evaluate the effects of a
+different index, or database system parameters.
+
+The *run-query* script is intended to allow a developer to generate and execute
+1 query at a time.
+
+A database needs to be created first, but only needs to be loaded once if
+testing individual queries.  This can be done with the run script using the
+`--load` flag.  A PostgreSQL example::
+
+    dbt7 run --load pgsql load-results
+
+Then any query can be tested.  For example running Query 4::
+
+    dbt7 run-query 55 pgsql
+
+Here is an example of the output query output, the results, and the execution
+time::
+
+    select  i_brand_id brand_id, i_brand brand,
+ 	    sum(ss_ext_sales_price) ext_price
+     from date_dim, store_sales, item
+     where d_date_sk = ss_sold_date_sk
+ 	    and ss_item_sk = i_item_sk
+ 	    and i_manager_id=36
+ 	    and d_moy=12
+ 	    and d_year=2001
+     group by i_brand, i_brand_id
+     order by ext_price desc, i_brand_id
+    limit 100 ;
+     brand_id |                       brand                        |     ext_price
+    ----------+----------------------------------------------------+--------------------
+      3002002 | importoexporti #2                                  |           94269.68
+    ...
+
+    (68 rows)
+
+    Query 55 executed in 0.155 second(s).
+
+Additional flags can be used to capture system statistics (`--stats`), software
+profiles (`--profile`), or explain plans (`--explain`).

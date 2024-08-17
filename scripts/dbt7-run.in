@@ -14,8 +14,6 @@ killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' TERM
 COMMENT=""
 DIALECT_ARG=""
 DSHOME=""
-FLAG_POWER_TEST=""
-FLAG_THROUGHPUT_TEST=""
 INPUT_ARG=""
 PRIVILEGED=0
 PRIVILEGED_ARG="-U"
@@ -132,7 +130,6 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(--power)
 		RUN_POWER_TEST=1
-		FLAG_POWER_TEST="-2"
 		RUN_ALL_TESTS=0
 		;;
 	(--profile)
@@ -191,7 +188,6 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(--throughput)
 		RUN_THROUGHPUT_TEST=1
-		FLAG_THROUGHPUT_TEST="-3"
 		RUN_ALL_TESTS=0
 		;;
 	(-V | --version)
@@ -288,8 +284,10 @@ if [ $RUN_ALL_TESTS -eq 1 ]; then
 	RUN_LOAD_TEST=1
 	RUN_POWER_TEST=1
 	RUN_THROUGHPUT_TEST=1
-	FLAG_POWER_TEST="-2"
-	FLAG_THROUGHPUT_TEST="-3"
+fi
+if [ ${RUN_LOAD_TEST} -eq 1 ] && [ ${RUN_POWER_TEST} -eq 1 ] && \
+		[ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
+	RUN_ALL_TESTS=1
 fi
 
 if [ "x${COMMENT}" != "x" ]; then
@@ -388,10 +386,13 @@ if [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db
 fi
 
-echo "Processing results... "
-dbt7-post-process -i "${OUTPUT_DIR}" -o "${OUTPUT_DIR}"
+# Don't attempt to calculate the score unless all tests are run.
+if [ ${RUN_ALL_TESTS} -eq 1 ]; then
+	echo "Processing results... "
+	dbt7-post-process -i "${OUTPUT_DIR}" -o "${OUTPUT_DIR}"
 
-echo ""
-echo "Queries per Hour: $(cat ${OUTPUT_DIR}/qph)"
-echo ""
-echo "See query summary in: ${OUTPUT_DIR}/summary.rst"
+	echo ""
+	echo "Queries per Hour: $(cat "${OUTPUT_DIR}/qph")"
+	echo ""
+	echo "See query summary in: ${OUTPUT_DIR}/summary.rst"
+fi

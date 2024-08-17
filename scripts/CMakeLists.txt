@@ -10,6 +10,7 @@ foreach (SCRIPT dbt7
                 dbt7-power-test
                 dbt7-report
                 dbt7-run
+                dbt7-run-query
                 dbt7-throughput-test
         )
     configure_file(${SCRIPT}.in ${CMAKE_BINARY_DIR}/${SCRIPT} @ONLY)
