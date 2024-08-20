@@ -42,14 +42,14 @@ Options:
   -i INPUT, --input=INPUT
                    input override, default
                    DSHOME/query_templates/templates-DBMS.lst
-  --load          run load test, default run load, power and throughput,
-                  selecting individual tests disables the other tests unless
-                  explicitly specified again
+  --load           run load test, default run load, power and throughput,
+                   selecting individual tests disables the other tests unless
+                   explicitly specified again
   -n STREAMS, --streams=STREAMS
                    number of throughput streams, default $STREAMS
-  --power         run power test, default run load, power and throughput,
-                  selecting individual tests disables the other tests unless
-                  explicitly specified again
+  --power          run power test, default run load, power and throughput,
+                   selecting individual tests disables the other tests unless
+                   explicitly specified again
   --privileged     run test as a privileged user
   --profile        enable profiling (Linux only)
   -s SCALE_FACTOR, --scale-factor=SCALE_FACTOR
@@ -58,9 +58,9 @@ Options:
   --stats          enable system and database stats collection
   --tpcdstools=DSHOME
                    DSHOME is the directory location of the TPC-DS Tools
-  --throughput    run throughput test, default run load, power and throughput,
-                  selecting individual tests disables the other tests unless
-                  explicitly specified again
+  --throughput     run throughput test, default run load, power and throughput,
+                   selecting individual tests disables the other tests unless
+                   explicitly specified again
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
 
