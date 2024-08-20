@@ -40,6 +40,8 @@ OPTIONS
         individual tests disables the other tests unless explicitly specified
         again.
 -n STREAMS, --streams=STREAMS  Number of throughput STREAMS, default 1.
+--parallel CHUNKS  Parallelize the load into CHUNKS parts, default detected
+        number of logical processors
 --performance  Run performance test, default run load and performance tests.
         Selecting individual tests disables the other test unless explicitly
         specified again.

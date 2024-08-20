@@ -6,6 +6,9 @@
 #
 # Copyright The DBT-7 Authors
 
+CHUNKS=""
+DSGEN_ARGS=""
+LOAD_ARGS=""
 PRIVILEGED_ARG=""
 PROFILE=0
 SCALE=1
@@ -22,6 +25,9 @@ Usage:
 Options:
   -a DBMS          DBMS: pgsql
   -o PATH          PATH to save results
+  --parallel CHUNKS
+                   parallelize the load into CHUNKS parts,
+                   default detected number of logical processors
   -s SCALE         scale factor, default $SCALE
   --stats          enable system and database stats collection
   --tablespaces    use tablespaces
@@ -65,6 +71,13 @@ while [ "${#}" -gt 0 ] ; do
 	(-p)
 		shift
 		PARAMETERS_ARG="-p \"$1\""
+		;;
+	(--parallel)
+		shift
+		CHUNKS="${1}"
+		;;
+	(--parallel=?*)
+		CHUNKS="${1#*--parallel=}"
 		;;
 	(-s)
 		shift
@@ -113,6 +126,22 @@ if [ "x$OUTPUT_DIR" = "x" ]; then
 	exit 1
 fi
 
+if [ "${CHUNKS}" = "" ]; then
+	# Determine number of processors for parallelism.
+	if command -v nproc > /dev/null 2>&1; then
+		CHUNKS=$(nproc)
+		echo "detected ${CHUNKS} processors for parallel data generation and loading"
+	else
+		CHUNKS=1
+		echo "could not detected processors, parallelizing for 1"
+	fi
+
+fi
+if [ "${CHUNKS}" -gt 1 ]; then
+	DSGEN_ARGS="-PARALLEL ${CHUNKS}"
+fi
+LOAD_ARGS="--parallel=${CHUNKS}"
+
 echo "**`date` load test prep**"
 
 OUTPUTFILE="${OUTPUT_DIR}/output.txt"
@@ -129,29 +158,17 @@ eval "${DSTOOLS}/dsdgen \
 if [ ! -d "$DS_DATA" ]; then
 	echo "generating data in ${DS_DATA}"
 
-	# Determine number of processors for parallelism.
-	CPUS=1
-	if [ -f "/proc/stat" ]; then
-		CPUS=`grep cpu /proc/stat | wc -l`
-		CPUS=$(( $CPUS - 1 ))
-		echo "detected $CPUS processors for parallel data generation and loading"
-	fi
-	PARALLEL_ARG=""
-	if [ "${CPUS}" -gt 1 ]; then
-		PARALLEL_ARG="-PARALLEL ${CPUS}"
-	fi
-
 	# Use a random seed for generating data
 	DGENSEED=`date +%-m%d%H%M%S`
 	echo "data generation seed: $DGENSEED"
 	mkdir -p $DS_DATA
-    for I in $(seq 1 ${CPUS}); do
+    for I in $(seq 1 ${CHUNKS}); do
 		eval "${DSTOOLS}/dsdgen \
 				-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
 				-DIR $DS_DATA \
 				-SCALE $SCALE \
 				-TERMINATE N \
-				${PARALLEL_ARG} \
+				${DSGEN_ARGS} \
 				-CHILD $I \
 				-RNGSEED $DGENSEED" \
 				2> /dev/null &
@@ -202,7 +219,7 @@ S_TIME=`date +%s`
 dbt7-${DATABASE}-time-statistics -s -n LOADTEST || bailout
 
 eval "$PERFCOMMAND dbt7-${DATABASE}-load-data -s $SCALE ${TABLESPACES_ARG} \
-		$PRIVILEGED_ARG" >> $OUTPUTFILE 2>&1 || bailout
+		${LOAD_ARGS} ${PRIVILEGED_ARG}" >> "${OUTPUTFILE}" 2>&1 || bailout
 
 dbt7-${DATABASE}-time-statistics -e -n LOADTEST || bailout
 E_TIME=`date +%s`

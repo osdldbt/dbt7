@@ -11,6 +11,7 @@ killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' INT
 trap 'echo "Test was interrupted. Got TERM signal."; \
 killall sar sadc pidstat ts-${DATABASE}-stat > /dev/null 2>&1' TERM
 
+PARALLEL_ARG=""
 COMMENT=""
 DIALECT_ARG=""
 DSHOME=""
@@ -47,6 +48,9 @@ Options:
                    explicitly specified again
   -n STREAMS, --streams=STREAMS
                    number of throughput streams, default $STREAMS
+  --parallel CHUNKS
+                   parallelize the load into CHUNKS parts,
+                   default detected number of logical processors
   --power          run power test, default run load, power and throughput,
                    selecting individual tests disables the other tests unless
                    explicitly specified again
@@ -127,6 +131,13 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(--streams=?*)
 		STREAMS="${1#*--streams=}"
+		;;
+	(--parallel)
+		shift
+		PARALLEL_ARG="--parallel=${1}"
+		;;
+	(--parallel=?*)
+		PARALLEL_ARG="--parallel=${1#*--parallel=}"
 		;;
 	(--power)
 		RUN_POWER_TEST=1
@@ -316,7 +327,8 @@ if [ $RUN_LOAD_TEST -eq 1 ]; then
 			$PROFILE_FLAG \
 			$PRIVILEGED_ARG \
 			${TABLESPACES_ARG} \
-			${STATS_ARG}" \
+			${STATS_ARG} \
+			${PARALLEL_ARG}" \
 			|| exit 1
 elif [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-start-db -o $OUTPUT_DIR

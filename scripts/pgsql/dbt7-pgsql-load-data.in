@@ -17,12 +17,15 @@ Usage:
 Options:
   -s SCALE_FACTOR, --scale-factor=SCALE_FACTOR
                    set the scale factor
+  --parallel CHUNKS
+                   parallelize the load into CHUNKS parts
   --tablespaces    create and use tablespaces
   -U               run test as an unprivileged user
   -?, --help       show this help, then exit
 EOF
 }
 
+CHUNKS=""
 CPUS=1
 PSQL="psql -v ON_ERROR_STOP=1 -X -d $DBT7DBNAME"
 PRIVILEGED=1
@@ -81,6 +84,13 @@ while [ "${#}" -gt 0 ] ; do
 		shift
 		SCALE="${1}"
 		;;
+	(--parallel)
+		shift
+		CHUNKS="${1}"
+		;;
+	(--parallel=?*)
+		CHUNKS="${1#*--parallel=}"
+		;;
 	(--scale-factor=?*)
 		SCALE="${1#*--scale-factor=}"
 		;;
@@ -116,11 +126,16 @@ if [ "x$SCALE" = "x" ]; then
 	exit 3
 fi
 
-# Determine number of processors for parallelism.
-if [ -f "/proc/stat" ]; then
-	CPUS=`grep cpu /proc/stat | wc -l`
-	CPUS=$(( $CPUS - 1 ))
-	echo "detected $CPUS processors for parallel data generation and loading"
+if [ "${CHUNKS}" = "" ]; then
+	# Determine number of processors for parallelism.
+	if command -v nproc > /dev/null 2>&1; then
+		CPUS=$(nproc)
+		echo "detected ${CPUS} logical processors for parallel loading"
+	else
+		echo "could not detect number of processors, parallelizing for ${CPUS}"
+	fi
+else
+	CPUS=${CHUNKS}
 fi
 
 dbt7-pgsql-time-statistics -s -n TABLE
