@@ -101,6 +101,11 @@ RUN mkdir -p \
     cp -p /usr/share/doc/libpixman-1-0/copyright \
        /usr/local/share/licenses/pixman-$(dpkg-query -W -f='${Version}\n' libpixman-1-0)/
 
+RUN mkdir -p \
+          /usr/local/share/licenses/perl-$(dpkg-query -W -f='${Version}\n' perl) && \
+    cp -p /usr/share/doc/perl/copyright \
+       /usr/local/share/licenses/perl-$(dpkg-query -W -f='${Version}\n' perl)/
+
 ARG PYTHONMVER="3.11"
 ARG PYTHONVER="${PYTHONMVER}.1"
 RUN curl -o /tmp/Python-${PYTHONVER}.tgz -SsOL \
@@ -111,6 +116,8 @@ RUN ./configure --silent --prefix=/usr/local \
                 --with-openssl-rpath=/usr/local/lib && \
     make -s -j$(nproc) && \
     make -s install
+RUN mkdir -p /usr/local/AppDir/lib && \
+    cp -pr /usr/local/lib/python${PYTHONMVER} /usr/local/AppDir/lib
 RUN mkdir -p /usr/local/share/licenses/python-${PYTHONVER} && \
     cp -p LICENSE /usr/local/share/licenses/python-${PYTHONVER}/
 
