@@ -6,9 +6,6 @@
 #
 # Copyright The DBT-7 Authors
 
-PSQL="psql -v ON_ERROR_STOP=1 -X -d ${DBT7DBNAME}"
-VALDIR="${DS_DATA}/validation"
-
 usage()
 {
 	cat << EOF
@@ -170,6 +167,17 @@ while [ "${#}" -gt 0 ] ; do
 	esac
 	shift
 done
+
+if [ "${DS_DATA}" = "" ]; then
+	DS_DATA="/tmp/dbt7data"
+fi
+
+if [ "${DBT7DBNAME}" = "" ]; then
+	DBT7DBNAME="dbt7"
+fi
+
+PSQL="psql -v ON_ERROR_STOP=1 -X -d ${DBT7DBNAME}"
+VALDIR="${DS_DATA}/validation"
 
 cat <<- __EOF__
 ===========================================================================

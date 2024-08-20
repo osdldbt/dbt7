@@ -11,6 +11,8 @@ vX.Y.Z (YYYY-MM-DD)
   removed in v0.6.5
 - Add --parallel flags at various level to limit parallelism in data generation
   and database loading
+- pgsql-data-validation: defaults DS_DATA and DBT7DBNAME to /tmp/dbt7data and
+  dbt7, resp., like run script
 
 v0.6.5 (2024-08-15)
 
