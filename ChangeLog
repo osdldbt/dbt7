@@ -5,6 +5,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Add run-query script to aid in testing and analyzing individual queries
 - Update load-test script to enable individual create-db scripts to decide
   whether a CREATE DATABASE command needs to be executed when running a test
+- Update man page make rules to match docutils v0.21.1 set since v0.6.5
 
 v0.6.5 (2024-08-15)
 

@@ -11,7 +11,7 @@ foreach (MANPAGE dbt7 dbt7-load-test dbt7-power-test dbt7-report dbt7-run
     )
 
     execute_process(
-        COMMAND rst2man.py ${CMAKE_BINARY_DIR}/man/man1/${MANPAGE}.1.rst
+        COMMAND rst2man ${CMAKE_BINARY_DIR}/man/man1/${MANPAGE}.1.rst
         OUTPUT_FILE ${CMAKE_BINARY_DIR}/man/man1/${MANPAGE}.1
     )
 endforeach(MANPAGE)
