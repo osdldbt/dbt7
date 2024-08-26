@@ -43,27 +43,28 @@ load_table()
 {
 	TABLE=$1
 
+	echo "loading table: ${TABLE}"
+
 	$PSQL << __EOF__
 ALTER TABLE $TABLE
 SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
 __EOF__
 
-	for I in `seq 1 $CPUS`; do
-		if [ "${CPUS}" -eq 1 ]; then
-			FILENAME="${DS_DATA}/${TABLE}.dat"
-		else
-			FILENAME="${DS_DATA}/${TABLE}_${I}_${CPUS}.dat"
-		fi
-		if [ ! -f "$FILENAME" ]; then
-			# Smaller scale factors may not generate as many data files as there
-			# are available processors.
-			continue
-		fi
+	FILENAME="${DS_DATA}/${TABLE}.dat"
+	TOTAL_ROWS="$(wc -l "${FILENAME}" | cut -d " " -f 1)"
+	if [ "${TOTAL_ROWS}" -lt "${CPUS}" ]; then
+		ROWS_PER_COMMIT=${TOTAL_ROWS}
+	else
+		ROWS_PER_COMMIT=$(( TOTAL_ROWS / CPUS ))
+	fi
+	N=$(( (TOTAL_ROWS + ROWS_PER_COMMIT - 1) / ROWS_PER_COMMIT ))
+
+	for I in $(seq 1 "${N}"); do
 		if [ $PRIVILEGED -ne 1 ]; then
 			COPYPREFIX="\\"
 		fi
 		$PSQL << __EOF__ &
-${COPYPREFIX}COPY $TABLE FROM '$FILENAME' WITH (DELIMITER '|', NULL '');
+${COPYPREFIX}COPY ${TABLE} FROM PROGRAM 'split -n l/${I}/${N} ${FILENAME}' WITH (DELIMITER '|', NULL '');
 __EOF__
 	done
 

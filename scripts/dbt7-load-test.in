@@ -137,9 +137,6 @@ if [ "${CHUNKS}" = "" ]; then
 	fi
 
 fi
-if [ "${CHUNKS}" -gt 1 ]; then
-	DSGEN_ARGS="-PARALLEL ${CHUNKS}"
-fi
 LOAD_ARGS="--parallel=${CHUNKS}"
 
 echo "**`date` load test prep**"
@@ -162,16 +159,19 @@ if [ ! -d "$DS_DATA" ]; then
 	DGENSEED=`date +%-m%d%H%M%S`
 	echo "data generation seed: $DGENSEED"
 	mkdir -p $DS_DATA
-    for I in $(seq 1 ${CHUNKS}); do
-		eval "${DSTOOLS}/dsdgen \
+	# Hard code the sequence to 1 and don't use -PARALLEL command line argument
+	# until we can figure out why chunked data generation produces data that
+	# fails the data validation test.
+    for I in $(seq 1 1); do
+		"${DSTOOLS}/dsdgen" \
 				-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
 				-DIR $DS_DATA \
 				-SCALE $SCALE \
 				-TERMINATE N \
 				${DSGEN_ARGS} \
 				-CHILD $I \
-				-RNGSEED $DGENSEED" \
-				2> /dev/null &
+				-RNGSEED "${DGENSEED}" \
+				> "${OUTPUT_DIR}/dsdgen-${I}.out" 2>&1 &
 	done
 	wait
 
