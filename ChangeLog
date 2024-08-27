@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.6.7 (2024-08-26)
 
 - AppImage: bump touchstone-tools version to v0.9.1
 - Stop chunking data generation, it currently produces data that fails
