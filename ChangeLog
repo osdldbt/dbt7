@@ -3,6 +3,7 @@ vX.Y.Z (YYYY-MM-DD)
 - AppImage: bump touchstone-tools version to v0.9.1
 - Stop chunking data generation, it currently produces data that fails
   validation test while so just create a single data file per table
+- pgsql: fix sorting in data-validation test
 
 v0.6.6 (2024-08-21)
 
