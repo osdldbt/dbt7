@@ -20,10 +20,10 @@ usage()
 
 cleanup()
 {
-	if [ "${DATAFILE}" = "" ]; then
+	if [ ! "${DATAFILE}" = "" ]; then
 		rm -f "${DATAFILE}"
 	fi
-	if [ "${TMPDIR}" = "" ]; then
+	if [ ! "${TMPDIR}" = "" ]; then
 		rm -rf "${TMPDIR}"
 	fi
 }

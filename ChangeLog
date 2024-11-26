@@ -1,3 +1,7 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- Fix cleanup of temp file in plot-results script
+
 v0.6.7 (2024-08-26)
 
 - AppImage: bump touchstone-tools version to v0.9.1
