@@ -1,4 +1,4 @@
-dbt7-DSGen-software-code-3.2.0rc1.diff
-dbt7-DSGen-software-code-3.2.0rc1-utf8.diff
-dbt7-DSGen-software-code-3.2.0rc1-postgresql-queries.diff
-dbt7-DSGen-software-code-3.2.0rc1-postgresql-queries-test.diff
+dbt7-DSGen-software-code-4.0.0_final.diff
+dbt7-DSGen-software-code-4.0.0_final-warnings.diff
+dbt7-DSGen-software-code-4.0.0_final-postgresql-queries.diff
+dbt7-DSGen-software-code-4.0.0_final-postgresql-queries-test.diff

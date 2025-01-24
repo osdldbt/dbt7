@@ -1,0 +1,106 @@
+Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/netezza.tpl
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/query_templates/netezza.tpl
++++ dbt7/DSGen-software-code-4.0.0_final/query_templates/netezza.tpl
+@@ -35,3 +35,5 @@
+ define __LIMITA = "";
+ define __LIMITB = "";
+ define __LIMITC = "limit %d";
++define _BEGIN = "-- start query " + [_QUERY] + " in stream " + [_STREAM] + " using template " + [_TEMPLATE];
++define _END = "-- end query " + [_QUERY] + " in stream " + [_STREAM] + " using template " + [_TEMPLATE];
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/makefile
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/makefile
++++ dbt7/DSGen-software-code-4.0.0_final/tools/makefile
+@@ -55,11 +55,11 @@ CC		= $($(OS)_CC)
+ # CFLAGS
+ AIX_CFLAGS		= -q64 -O3 -D_LARGE_FILES
+ HPUX_CFLAGS		= -O3 -Wall
+-LINUX_CFLAGS	= -g -Wall
++LINUX_CFLAGS	= -g -Wall -Wno-unused-but-set-variable -Wno-misleading-indentation -Wno-unused-function
+ NCR_CFLAGS		= -g 
+ SOLARIS_CFLAGS	= -O3 -Wall
+ SOL86_CFLAGS	= -O3 
+-BASE_CFLAGS    = -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DYYDEBUG #-maix64 -DMEM_TEST 
++BASE_CFLAGS    = -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE #-DYYDEBUG -maix64 -DMEM_TEST 
+ CFLAGS			= $(BASE_CFLAGS) -D$(OS) $($(OS)_CFLAGS)
+ # EXE
+ AIX_EXE	= 
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_purchase.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+@@ -52,7 +52,7 @@
+ struct S_PURCHASE_TBL g_s_purchase;
+ struct S_PURCHASE_LINEITEM_TBL g_s_purchase_lineitem;
+ struct S_STORE_RETURNS_TBL g_s_store_return;
+-int nItemIndex;
++extern int nItemIndex;
+ 
+ /*
+ * Routine: 
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+@@ -53,7 +53,7 @@
+ struct S_WEB_ORDER_TBL g_s_web_order;
+ struct S_WEB_ORDER_LINEITEM_TBL g_s_web_order_lineitem;
+ struct S_WEB_RETURNS_TBL g_s_web_return;
+-int nItemIndex = -1;
++extern int nItemIndex;
+ 
+ 	/* now build/print the lineitems for this order */
+ 	/* for each lineitem, randomly determine if it is to be returned */
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+@@ -51,7 +51,7 @@
+ #include "scaling.h"
+ #include "scd.h"
+ 
+-struct S_WEB_ORDER_LINEITEM_TBL g_s_web_order_lineitem;
++extern struct S_WEB_ORDER_LINEITEM_TBL g_s_web_order_lineitem;
+ extern struct S_WEB_ORDER_TBL g_s_web_order;
+ extern int nItemIndex;
+ 
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
+@@ -49,7 +49,7 @@
+ #include "nulls.h"
+ #include "tdefs.h"
+ 
+-struct CATALOG_PAGE_TBL g_w_catalog_page;
++extern struct CATALOG_PAGE_TBL g_w_catalog_page;
+ 
+ /*
+ * Routine: mk_catalog_page()
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+@@ -50,7 +50,7 @@
+ #include "nulls.h"
+ #include "tdefs.h"
+ 
+-struct W_WAREHOUSE_TBL g_w_warehouse;
++extern struct W_WAREHOUSE_TBL g_w_warehouse;
+ 
+ /*
+ * mk_warehouse
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_site.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+@@ -56,7 +56,7 @@
+ #include "tdefs.h"
+ #include "scd.h"
+ 
+-struct W_WEB_SITE_TBL g_w_web_site;
++extern struct W_WEB_SITE_TBL g_w_web_site;
+ static struct W_WEB_SITE_TBL g_OldValues;
+ 
+ /*
