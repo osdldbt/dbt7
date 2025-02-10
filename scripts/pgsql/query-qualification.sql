@@ -3,11 +3,11 @@
 with customer_total_return as
 (select sr_customer_sk as ctr_customer_sk
 ,sr_store_sk as ctr_store_sk
-,sum(SR_FEE) as ctr_total_return
+,sum(SR_RETURN_AMT) as ctr_total_return
 from store_returns
 ,date_dim
 where sr_returned_date_sk = d_date_sk
-and d_year =2002
+and d_year = 2000
 group by sr_customer_sk
 ,sr_store_sk)
  select  c_customer_id

@@ -4,6 +4,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Fix get-config help description
 - Update patches for TPC-DS v4.0.0
 - pgsql: Add NOT NULL constraints to d_date and t_time
+- pgsql: A couple of corrections to query qualification script
 
 v0.6.7 (2024-08-26)
 
