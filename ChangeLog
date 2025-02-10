@@ -3,6 +3,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Fix cleanup of temp file in plot-results script
 - Fix get-config help description
 - Update patches for TPC-DS v4.0.0
+- pgsql: Add NOT NULL constraints to d_date and t_time
 
 v0.6.7 (2024-08-26)
 

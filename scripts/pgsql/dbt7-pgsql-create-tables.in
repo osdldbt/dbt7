@@ -556,7 +556,7 @@ ${CUSTOMER_DEMOGRAPHICS_TABLESPACE}
 CREATE TABLE date_dim (
     d_date_sk BIGINT NOT NULL,
     d_date_id CHAR(16) NOT NULL,
-    d_date DATE,
+    d_date DATE NOT NULL,
     d_month_seq INTEGER,
     d_week_seq INTEGER,
     d_quarter_seq INTEGER,
@@ -677,7 +677,7 @@ ${SHIP_MODE_TABLESPACE}
 CREATE TABLE time_dim (
     t_time_sk BIGINT NOT NULL,
     t_time_id CHAR(16) NOT NULL,
-    t_time INTEGER,
+    t_time INTEGER NOT NULL,
     t_hour INTEGER,
     t_minute INTEGER,
     t_second INTEGER,
