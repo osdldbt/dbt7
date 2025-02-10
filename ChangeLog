@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.7.0 (2025-02-10)
 
 - Fix cleanup of temp file in plot-results script
 - Fix get-config help description
