@@ -27,52 +27,52 @@ EOF
 
 create_sar_page()
 {
-	local TITLE=$1
-	local TAG=$2
-	local DIR=$3
-	local ODIR=$4
+	TITLE=${1}
+	STATNAME=${2}
+	SARPLOTDIR=${3}
+	ODIR=${4}
 
 	mkdir -p $ODIR
 
 	cat > ${ODIR}/index.rst << __EOF__
 ================================================================================
-Database Test 7 $TITLE $TAG Charts
+Database Test 7 ${TITLE} ${STATNAME} Charts
 ================================================================================
 
-$(show_images $DIR $TAG)
+$(show_images "${SARPLOTDIR}" "${STATNAME}")
 __EOF__
 }
 
 sar_links() {
-	TESTDIR=$1
+	TESTNAME=${1}
 
-	THISDIR="${INDIR}/${TESTDIR}"
-	if [ ! -f "${THISDIR}/sysstat/sar.datafile" ]; then
+	TESTDIR="${INDIR}/${TESTNAME}"
+	if [ ! -f "${TESTDIR}/sysstat/sar.datafile" ]; then
 		return
 	fi
 
 	cat << __EOF__
-\`CPU <${TESTDIR}/cpu/>\`__ \`Memory <${TESTDIR}/mem/>\`__ \`Blockdev <${TESTDIR}/blockdev/>\`__ \`Network <${TESTDIR}/net/>\`__ \`Paging <${TESTDIR}/paging/>\`__ \`Swap <${TESTDIR}/swap/>\`__
+\`CPU <${TESTNAME}/sysstat/report/cpu/>\`__ \`Memory <${TESTNAME}/sysstat/report/mem/>\`__ \`Blockdev <${TESTNAME}/sysstat/report/blockdev/>\`__ \`Network <${TESTNAME}/sysstat/report/net/>\`__ \`Paging <${TESTNAME}/sysstat/report/paging/>\`__ \`Swap <${TESTNAME}/sysstat/report/swap/>\`__
 __EOF__
 
-	create_sar_page $TESTDIR cpu $THISDIR ${THISDIR}/cpu
-	create_sar_page $TESTDIR mem $THISDIR ${THISDIR}/mem
-	create_sar_page $TESTDIR blockdev $THISDIR ${THISDIR}/blockdev
-	create_sar_page $TESTDIR net $THISDIR ${THISDIR}/net
-	create_sar_page $TESTDIR paging $THISDIR ${THISDIR}/paging
-	create_sar_page $TESTDIR swap $THISDIR ${THISDIR}/swap
+	for STATNAME in cpu mem blockdev net paging swap; do
+		create_sar_page "${TESTNAME}" "${STATNAME}" \
+				"${TESTDIR}/sysstat/sar/plots" \
+				"${TESTDIR}/sysstat/report/${STATNAME}"
+	done
 }
 
 show_images()
 {
-	DIR=$1
-	TAG=$2
+	SARPLOTDIR=${1}
+	STATNAME=$2
 
-	find "${DIR}" -name "sar-${TAG}*.png" | sort -n | while IFS= read -r CHART
+	find "${SARPLOTDIR}" -name "sar-${STATNAME}*.png" | sort -n | \
+			while IFS= read -r CHART
 	do
 		FNAME=$(basename "${CHART}")
-		echo ".. image:: ../sysstat/sar/${TAG}/${FNAME}"
-		echo "   :target: ../sysstat/sar/${TAG}/${FNAME}"
+		echo ".. image:: ../../sar/plots/${STATNAME}/${FNAME}"
+		echo "   :target: ../../sar/plots/${STATNAME}/${FNAME}"
 		echo "   :width: 100%"
 		echo ""
 	done
@@ -173,7 +173,7 @@ dbt7-plot-results -i ${INDIR}/power/time_statistics.csv -o ${OUTDIR} \
 for DIR in load power throughput; do
 	SARDIR="${OUTDIR}/${DIR}/sysstat/sar"
 	if [ -d "${SARDIR}" ]; then
-		ts plot-sar -i "${SARDIR}" &
+		ts plot-sar -i "${SARDIR}" -o "${SARDIR}/plots" &
 	fi
 done
 wait

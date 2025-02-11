@@ -1,3 +1,7 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- report: fix links to sar plots
+
 v0.7.0 (2025-02-10)
 
 - Fix cleanup of temp file in plot-results script
