@@ -21,7 +21,7 @@ create_stat_page()
 {
 	TAG=$1
 
-	OUTDIR="${PIDSTATDIR}/$TAG"
+	OUTDIR="${PIDSTATDIR}/report/${TAG}"
 	mkdir -p $OUTDIR
 
 	cat > ${OUTDIR}/index.rst << __EOF__
@@ -94,7 +94,8 @@ list_processes()
 	for T in autovacuum bgwriter checkpointer logger logical statscollector \
 			walwriter; do
 		create_stat_page $T
-		printf " \`%s <%s/sysstat/%s/>\`__" "${T}" "${DIRECTORY}" "${T}"
+		printf " \`%s <%s/sysstat/report/%s/>\`__" "${T}" \
+				"${DIRECTORY}" "${T}"
 	done
 	echo ""
 }
@@ -153,15 +154,15 @@ show_images()
 {
 	TAG=$1
 
-	TAGPIDS=$(grep "${TAG}" "${PIDSTATDIR}/pidstat-index.txt" | \
+	TAGPIDS=$(grep "${TAG}" "${PIDSTATDIR}/${PIDPREFIX}-index.txt" | \
 			cut -d " " -f 1)
 
 	for P in ${TAGPIDS}; do
-		find "${PIDSTATDIR}" -type f -name "pidstat-${P}-*.png" | \
+		find "${PIDSTATDIR}" -type f -name "${PIDPREFIX}-${P}-*.png" | \
 				sort | while IFS= read -r CHART; do
 			BCHART="$(basename "${CHART}")"
-			echo ".. image:: ../pidstat/$BCHART"
-			echo "   :target: ../pidstat/$BCHART"
+			echo ".. image:: ../../pidstat/plots/${BCHART}"
+			echo "   :target: ../../pidstat/plots/${BCHART}"
 			echo "   :width: 100%"
 			echo ""
 		done
@@ -187,6 +188,14 @@ if [ "x${INDIR}" = "x" ]; then
 	echo "Specify dbt7 results directory with -i"
 	exit 1
 fi
+
+# Set the spar vs pidstat image file name prefix here.
+PIDPREFIX="spar"
+# shellcheck disable=SC2044
+for _ in $(find "${INDIR}" -type f -name pidstat.txt 2> /dev/null);
+do
+	PIDPREFIX="pidstat"
+done
 
 for TEST in load power throughput; do
 	DBDIR="${INDIR}/dbstat"

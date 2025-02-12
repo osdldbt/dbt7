@@ -178,12 +178,27 @@ for DIR in load power throughput; do
 done
 wait
 
+# Set the spar vs pidstat image file name prefix here.
+PIDPREFIX="spar"
+# shellcheck disable=SC2044
+for PIDSTATFILE in $(find "${INDIR}" -type f -name pidstat.txt 2> /dev/null);
+do
+	PIDPREFIX="pidstat"
+	ts process-pidstat -i "${PIDSTATFILE}" &
+done
+wait
+
 for DIR in load power throughput; do
-	PIDSTATFILE="${OUTDIR}/${DIR}/sysstat/pidstat.txt"
-	if [ -f "${PIDSTATFILE}" ]; then
-		(ts process-pidstat -i "${PIDSTATFILE}" && \
-				ts plot-pidstat -i "${OUTDIR}/${DIR}/sysstat/pidstat.csv" \
-				-o "${OUTDIR}/${DIR}/sysstat/pidstat") &
+	# Juggle filename depending on whether pidstat or spar was used.
+	PIDSTATFILE="${OUTDIR}/${DIR}/sysstat/${PIDPREFIX}.txt"
+	PIDSTATCSV="${OUTDIR}/${DIR}/sysstat/pidstat.csv"
+	if [ "${PIDPREFIX}" = "spar" ]; then
+		PIDSTATCSV="${OUTDIR}/${DIR}/sysstat/spar.txt"
+	fi
+
+	if [ -f "${PIDSTATCSV}" ]; then
+		ts plot-${PIDPREFIX} -i "${PIDSTATCSV}" \
+				-o "${OUTDIR}/${DIR}/sysstat/pidstat/plots" &
 	fi
 done
 wait
