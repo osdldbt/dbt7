@@ -214,7 +214,7 @@ if [ ! -f "$SUMMARY" ]; then
 	if [ -d "$DIRTHROUGHPUT" ]; then
 		FLAGS="$FLAGS -3 $DIRTHROUGHPUT"
 	fi
-	dbt7-post-process -s $SCALE $FLAGS -o $INDIR
+	eval "dbt7-post-process ${FLAGS} -o ${INDIR}"
 fi
 
 README="${DIRPOWER}/dbstat/readme-${DBMS}.txt"
