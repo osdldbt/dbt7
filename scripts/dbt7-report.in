@@ -16,6 +16,8 @@ Usage:
   $(basename "${0}") [OPTION] DIRECTORY
 
 Options:
+  --skip-process-plotting
+                   don't plot per process statistics
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
 
@@ -116,9 +118,14 @@ __EOF__
 	done
 }
 
+PLOT_PROCESSES=1
+
 # Custom argument handling for hopefully most portability.
 while [ "${#}" -gt 0 ] ; do
 	case "${1}" in
+	(--skip-process-plotting)
+		PLOT_PROCESSES=0
+		;;
 	(-V | --version)
 		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
 		;;
@@ -196,7 +203,7 @@ for DIR in load power throughput; do
 		PIDSTATCSV="${OUTDIR}/${DIR}/sysstat/spar.txt"
 	fi
 
-	if [ -f "${PIDSTATCSV}" ]; then
+	if [ ${PLOT_PROCESSES} -eq 1 ] && [ -f "${PIDSTATCSV}" ]; then
 		ts plot-${PIDPREFIX} -i "${PIDSTATCSV}" \
 				-o "${OUTDIR}/${DIR}/sysstat/pidstat/plots" &
 	fi
