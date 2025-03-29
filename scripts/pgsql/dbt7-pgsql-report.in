@@ -15,6 +15,8 @@ Usage:
   $(basename "${0}") [OPTION] DIRECTORY
 
 Options:
+  --skip-database-plotting
+                   don't plot database statistics
   -i PATH          results directory
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
@@ -177,9 +179,14 @@ show_images()
 	done
 }
 
+PLOT_DBSTATS=1
+
 # Custom argument handling for hopefully most portability.
 while [ "${#}" -gt 0 ] ; do
 	case "${1}" in
+	(--skip-database-plotting)
+		PLOT_DBSTATS=0
+		;;
 	(-i)
 		shift
 		INDIR="${1}"
@@ -218,7 +225,7 @@ done
 
 for TEST in load power throughput; do
 	DBDIR="${INDIR}/${TEST}/dbstat"
-	if [ -d "${DBDIR}" ]; then
+	if [ ${PLOT_DBSTATS} -eq 1 ] && [ -d "${DBDIR}" ]; then
 		ts plot-pgsql -d dbt7 -i "${DBDIR}" &
 	fi
 done
