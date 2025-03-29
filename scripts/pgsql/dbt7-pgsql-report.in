@@ -8,13 +8,21 @@
 
 usage()
 {
-	echo "`basename $0` is the DBT-7 PostgreSQL Report Generator"
-	echo ""
-	echo "Usage:"
-	echo "  `basename $0` [OPTIONS]"
-	echo ""
-	echo "General options:"
-	echo "  -i PATH          results directory"
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) PostgreSQL report generator
+
+Usage:
+  $(basename "${0}") [OPTION] DIRECTORY
+
+Options:
+  -i PATH          results directory
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+DIRECTORY is the path to DBT-7 results.
+
+@HOMEPAGE@
+EOF
 }
 
 create_stat_page()
@@ -169,19 +177,30 @@ show_images()
 	done
 }
 
-while getopts "hi:" opt; do
-	case $opt in
-	h)
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-i)
+		shift
+		INDIR="${1}"
+		;;
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
 		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
 		exit 1
 		;;
-	i)
-		INDIR="$OPTARG"
-		;;
-	\?)
-		exit 1
+	(*)
+		break
 		;;
 	esac
+	shift
 done
 
 if [ "x${INDIR}" = "x" ]; then
