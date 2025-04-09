@@ -1,0 +1,1105 @@
+#!/bin/sh
+@SHELLOPTIONS@
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright The DBT-7 Authors
+
+usage()
+{
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) PostgreSQL index creator
+
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  --tablespaces    use tablespaces
+  -?, --help       show this help, then exit
+EOF
+}
+
+create_call_center_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_call_center
+		ON call_center (cc_call_center_sk)
+		WITH (fillfactor = 100)
+		${PK_CALL_CENTER_TABLESPACE}
+		;
+
+		CREATE INDEX i_cc_call_center_id
+		ON call_center (cc_call_center_id)
+		WITH (fillfactor = 100)
+		${I_CC_CALL_CENTER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_cc_rec_end_date
+		ON call_center (cc_rec_end_date)
+		WITH (fillfactor = 100)
+		${I_CC_REC_END_DATE_TABLESPACE}
+		;
+	EOF
+}
+
+create_catalog_page_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_catalog_page
+		ON catalog_page (cp_catalog_page_sk)
+		WITH (fillfactor = 100)
+		${PK_CATALOG_PAGE_TABLESPACE}
+		;
+
+		CREATE INDEX i_cp_catalog_number
+		ON catalog_page (cp_catalog_number)
+		WITH (fillfactor = 100)
+		${I_CP_CATALOG_NUMBER_TABLESPACE}
+		;
+
+		CREATE INDEX i_cp_catalog_page_number
+		ON catalog_page (cp_catalog_page_number)
+		WITH (fillfactor = 100)
+		${I_CP_CATALOG_PAGE_NUMBER_TABLESPACE}
+		;
+
+		CREATE INDEX i_cp_catalog_page_id
+		ON catalog_page (cp_catalog_page_id)
+		WITH (fillfactor = 100)
+		${I_CP_CATALOG_PAGE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_catalog_returns_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_catalog_returns
+		ON catalog_returns (cr_item_sk, cr_order_number)
+		WITH (fillfactor = 100)
+		${PK_CATALOG_RETURNS_TABLESPACE}
+		;
+
+		CREATE INDEX i_cr_returned_date_sk
+		ON catalog_returns (cr_returned_date_sk)
+		WITH (fillfactor = 100)
+		${I_CR_RETURNED_DATE_SK_TABLESPACE}
+		;
+	EOF
+}
+
+create_catalog_sales_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_catalog_sales
+		ON catalog_sales (cs_item_sk, cs_order_number)
+		WITH (fillfactor = 100)
+		${PK_CATALOG_SALES_TABLESPACE}
+		;
+
+		CREATE INDEX i_cs_sold_date_sk
+		ON catalog_sales (cs_sold_date_sk)
+		WITH (fillfactor = 100)
+		${I_CS_SOLD_DATE_SK_TABLESPACE}
+		;
+	EOF
+}
+
+create_customer_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_customer
+		ON customer (c_customer_sk)
+		WITH (fillfactor = 100)
+		${PK_CUSTOMER_TABLESPACE}
+		;
+
+		CREATE INDEX i_c_customer_id
+		ON customer (c_customer_id)
+		WITH (fillfactor = 100)
+		${I_C_CUSTOMER_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_date_dim()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_date_dim
+		ON date_dim (d_date_sk)
+		WITH (fillfactor = 100)
+		${PK_DATE_DIM_TABLESPACE}
+		;
+
+		CREATE INDEX i_d_date
+		ON date_dim (d_date)
+		WITH (fillfactor = 100)
+		${I_D_DATE_TABLESPACE}
+		;
+	EOF
+}
+
+create_item_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_item
+		ON item (i_item_sk)
+		WITH (fillfactor = 100)
+		${PK_ITEM_TABLESPACE}
+		;
+
+		CREATE INDEX i_i_item_id
+		ON item (i_item_id)
+		WITH (fillfactor = 100)
+		${I_I_ITEM_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_i_rec_end_date
+		ON item (i_rec_end_date)
+		WITH (fillfactor = 100)
+		${I_I_REC_END_DATE_TABLESPACE}
+		;
+	EOF
+}
+
+create_promotion_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_promotion
+		ON promotion (p_promo_sk)
+		WITH (fillfactor = 100)
+		${PK_PROMOTION_TABLESPACE}
+		;
+
+		CREATE INDEX i_p_promo_id
+		ON promotion (p_promo_id)
+		WITH (fillfactor = 100)
+		${I_P_PROMO_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_reason_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_reason
+		ON reason (r_reason_sk)
+		WITH (fillfactor = 100)
+		${PK_REASON_TABLESPACE}
+		;
+
+		CREATE INDEX i_r_reason_id
+		ON reason (r_reason_id)
+		WITH (fillfactor = 100)
+		${I_R_REASON_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_catalog_order_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_catalog_order
+		ON s_catalog_order (cord_order_id)
+		WITH (fillfactor = 100)
+		${PK_S_CATALOG_ORDER_TABLESPACE}
+		;
+
+		CREATE INDEX i_cord_bill_customer_id
+		ON s_catalog_order (cord_bill_customer_id)
+		WITH (fillfactor = 100)
+		${I_CORD_BILL_CUSTOMER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_cord_ship_customer_id
+		ON s_catalog_order (cord_ship_customer_id)
+		WITH (fillfactor = 100)
+		${I_CORD_SHIP_CUSTOMER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_cord_call_center_id
+		ON s_catalog_order (cord_call_center_id)
+		WITH (fillfactor = 100)
+		${I_CORD_CALL_CENTER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_cord_order_time
+		ON s_catalog_order (cord_order_time)
+		WITH (fillfactor = 100)
+		${I_CORD_ORDER_TIME_TABLESPACE}
+		;
+
+		CREATE INDEX i_cord_ship_mode_id
+		ON s_catalog_order (cord_ship_mode_id)
+		WITH (fillfactor = 100)
+		${I_CORD_SHIP_MODE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_catalog_order_lineitem_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE INDEX i_clin_ship_date
+		ON s_catalog_order_lineitem (clin_ship_date)
+		WITH (fillfactor = 100)
+		${I_CLIN_SHIP_DATE_TABLESPACE}
+		;
+
+		CREATE INDEX i_clin_item_id
+		ON s_catalog_order_lineitem (clin_item_id)
+		WITH (fillfactor = 100)
+		${I_CLIN_ITEM_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_clin_promotion_id
+		ON s_catalog_order_lineitem (clin_promotion_id)
+		WITH (fillfactor = 100)
+		${I_CLIN_PROMOTION_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_clin_order_id
+		ON s_catalog_order_lineitem (clin_order_id)
+		WITH (fillfactor = 100)
+		${I_CLIN_ORDER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_clin_catalog_number
+		ON s_catalog_order_lineitem (clin_catalog_number)
+		WITH (fillfactor = 100)
+		${I_CLIN_CATALOG_NUMBER_TABLESPACE}
+		;
+
+		CREATE INDEX i_clin_warehouse_id
+		ON s_catalog_order_lineitem (clin_warehouse_id)
+		WITH (fillfactor = 100)
+		${I_CLIN_WAREHOUSE_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_clin_catalog_page_number
+		ON s_catalog_order_lineitem (clin_catalog_page_number)
+		WITH (fillfactor = 100)
+		${I_CLIN_CATALOG_PAGE_NUMBER_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_inventory_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_inventory
+		ON s_inventory (invn_warehouse_id, invn_item_id, invn_date)
+		WITH (fillfactor = 100)
+		${PK_S_INVENTORY_TABLESPACE}
+		;
+
+		CREATE INDEX i_invn_item_id
+		ON s_inventory (invn_item_id)
+		WITH (fillfactor = 100)
+		${I_INVN_ITEM_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_invn_date
+		ON s_inventory (invn_date)
+		WITH (fillfactor = 100)
+		${I_INVN_DATE_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_purchase_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_purchase
+		ON s_purchase (purc_purchase_id)
+		WITH (fillfactor = 100)
+		${PK_S_PURCHASE_TABLESPACE}
+		;
+
+		CREATE INDEX i_purc_customer_id
+		ON s_purchase (purc_customer_id)
+		WITH (fillfactor = 100)
+		${I_PURC_CUSTOMER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_purc_purchase_date
+		ON s_purchase (purc_purchase_date)
+		WITH (fillfactor = 100)
+		${I_PURC_PURCHASE_DATE_TABLESPACE}
+		;
+
+		CREATE INDEX i_purc_purchase_time
+		ON s_purchase (purc_purchase_time)
+		WITH (fillfactor = 100)
+		${I_PURC_PURCHASE_TIME_TABLESPACE}
+		;
+
+		CREATE INDEX i_purc_store_id
+		ON s_purchase (purc_store_id)
+		WITH (fillfactor = 100)
+		${I_PURC_STORE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_purchase_lineitem_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_purchase_lineitem
+		ON s_purchase_lineitem (plin_purchase_id, plin_line_number)
+		WITH (fillfactor = 100)
+		${PK_S_PURCHASE_LINEITEM_TABLESPACE}
+		;
+
+		CREATE INDEX i_plin_purchase_id_plin_item_id
+		ON s_purchase_lineitem (plin_purchase_id, plin_item_id)
+		WITH (fillfactor = 100)
+		${PK_S_PURCHASE_LINEITEM_TABLESPACE}
+		;
+
+		CREATE INDEX i_plin_item_id
+		ON s_purchase_lineitem (plin_item_id)
+		WITH (fillfactor = 100)
+		${I_PLIN_ITEM_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_plin_promotion_id
+		ON s_purchase_lineitem (plin_promotion_id)
+		WITH (fillfactor = 100)
+		${I_PLIN_PROMOTION_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_store_returns_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_store_returns
+		ON s_store_returns (sret_purchase_id, sret_line_number, sret_item_id)
+		WITH (fillfactor = 100)
+		${PK_S_STORE_RETURNS_TABLESPACE}
+		;
+
+		CREATE INDEX i_sret_store_id
+		ON s_store_returns (sret_store_id)
+		WITH (fillfactor = 100)
+		${I_SRET_STORE_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_sret_return_date
+		ON s_store_returns (sret_return_date)
+		WITH (fillfactor = 100)
+		${I_SRET_RETURN_DATE_TABLESPACE}
+		;
+
+		CREATE INDEX i_sret_customer_id
+		ON s_store_returns (sret_customer_id)
+		WITH (fillfactor = 100)
+		${I_SRET_CUSTOMER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_sret_reason_id
+		ON s_store_returns (sret_reason_id)
+		WITH (fillfactor = 100)
+		${I_SRET_REASON_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_web_returns_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_web_returns
+		ON s_web_returns (wret_order_id, wret_line_number, wret_item_id)
+		WITH (fillfactor = 100)
+		${PK_S_WEB_RETURNS_TABLESPACE}
+		;
+
+		CREATE INDEX i_wret_web_page_id
+		ON s_web_returns (wret_web_page_id)
+		WITH (fillfactor = 100)
+		${I_WRET_WEB_PAGE_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_wret_return_customer_id
+		ON s_web_returns (wret_return_customer_id)
+		WITH (fillfactor = 100)
+		${I_WRET_RETURN_CUSTOMER_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_web_order_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_s_web_order
+		ON s_web_order (word_order_id)
+		WITH (fillfactor = 100)
+		${PK_S_WEB_ORDER_TABLESPACE}
+		;
+
+		CREATE INDEX i_word_ship_customer_id
+		ON s_web_order (word_ship_customer_id)
+		WITH (fillfactor = 100)
+		${I_WORD_SHIP_CUSTOMER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_word_ship_mode_id
+		ON s_web_order (word_ship_mode_id)
+		WITH (fillfactor = 100)
+		${I_WORD_SHIP_MODE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_s_web_order_lineitem_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE INDEX i_wlin_warehouse_id
+		ON s_web_order_lineitem (wlin_warehouse_id)
+		WITH (fillfactor = 100)
+		${I_WLIN_WAREHOUSE_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_wlin_promotion_id
+		ON s_web_order_lineitem (wlin_promotion_id)
+		WITH (fillfactor = 100)
+		${I_WLIN_PROMOTION_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_wlin_ship_date
+		ON s_web_order_lineitem (wlin_ship_date)
+		WITH (fillfactor = 100)
+		${I_WLIN_SHIP_DATE_TABLESPACE}
+		;
+
+		CREATE INDEX i_wlin_order_id
+		ON s_web_order_lineitem (wlin_order_id)
+		WITH (fillfactor = 100)
+		${I_WLIN_ORDER_ID_TABLESPACE}
+		;
+
+		CREATE INDEX i_wlin_web_page_id
+		ON s_web_order_lineitem (wlin_web_page_id)
+		WITH (fillfactor = 100)
+		${I_WLIN_WEB_PAGE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_ship_mode_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_ship_mode
+		ON ship_mode (sm_ship_mode_sk)
+		WITH (fillfactor = 100)
+		${PK_SHIP_MODE_TABLESPACE}
+		;
+
+		CREATE INDEX i_sm_ship_mode_id
+		ON ship_mode (sm_ship_mode_id)
+		WITH (fillfactor = 100)
+		${I_SM_SHIP_MODE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_store_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_store
+		ON store (s_store_sk)
+		WITH (fillfactor = 100)
+		${PK_STORE_TABLESPACE}
+		;
+
+		CREATE INDEX i_s_store_id
+		ON store (s_store_id)
+		WITH (fillfactor = 100)
+		${I_S_STORE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_store_returns_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_store_returns
+		ON store_returns (sr_item_sk, sr_ticket_number)
+		WITH (fillfactor = 100)
+		${PK_STORE_RETURNS_TABLESPACE}
+		;
+
+		CREATE INDEX i_sr_returned_date_sk
+		ON store_returns (sr_returned_date_sk)
+		WITH (fillfactor = 100)
+		${I_SR_RETURNED_DATE_SK_TABLESPACE}
+		;
+	EOF
+}
+
+create_store_sales_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_store_sales
+		ON store_sales (ss_item_sk, ss_ticket_number)
+		WITH (fillfactor = 100)
+		${PK_STORE_SALES_TABLESPACE}
+		;
+
+		CREATE INDEX i_ss_sold_date_sk
+		ON store_sales (ss_sold_date_sk)
+		WITH (fillfactor = 100)
+		${I_SS_SOLD_DATE_SK_TABLESPACE}
+		;
+	EOF
+}
+
+create_web_returns_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_web_returns
+		ON web_returns (wr_item_sk, wr_order_number)
+		WITH (fillfactor = 100)
+		${PK_WEB_RETURNS_TABLESPACE}
+		;
+
+		CREATE INDEX i_wr_returned_date_sk
+		ON web_returns (wr_returned_date_sk)
+		WITH (fillfactor = 100)
+		${I_WR_RETURNED_DATE_SK_TABLESPACE}
+		;
+	EOF
+}
+
+create_time_dim_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_time_dim
+		ON time_dim (t_time_sk)
+		WITH (fillfactor = 100)
+		${PK_TIME_DIM_TABLESPACE}
+		;
+
+		CREATE INDEX i_t_time
+		ON time_dim (t_time)
+		WITH (fillfactor = 100)
+		${I_T_TIME_TABLESPACE}
+		;
+	EOF
+}
+
+create_warehouse_indexes()
+{
+	${PSQL} <<- EOF &
+		CREATE UNIQUE INDEX pk_warehouse
+		ON warehouse (w_warehouse_sk)
+		WITH (fillfactor = 100)
+		${PK_WAREHOUSE_TABLESPACE}
+		;
+
+		CREATE INDEX i_w_warehouse_id
+		ON warehouse (w_warehouse_id)
+		WITH (fillfactor = 100)
+		${I_W_WAREHOUSE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_web_page_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_web_page
+		ON web_page (wp_web_page_sk)
+		WITH (fillfactor = 100)
+		${PK_WEB_PAGE_TABLESPACE}
+		;
+
+		CREATE INDEX i_wp_web_page_id
+		ON web_page (wp_web_page_id)
+		WITH (fillfactor = 100)
+		${I_WP_WEB_PAGE_ID_TABLESPACE}
+		;
+	EOF
+}
+
+create_web_sales_indexes()
+{
+	${PSQL} <<- EOF
+		CREATE UNIQUE INDEX pk_web_sales
+		ON web_sales (ws_item_sk, ws_order_number)
+		WITH (fillfactor = 100)
+		${PK_WEB_SALES_TABLESPACE}
+		;
+
+		CREATE INDEX i_ws_sold_date_sk
+		ON web_sales (ws_sold_date_sk)
+		WITH (fillfactor = 100)
+		${I_WS_SOLD_DATE_SK_TABLESPACE}
+		;
+	EOF
+}
+
+TABLESPACES=0
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(--tablespaces)
+		TABLESPACES=1
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
+done
+
+if [ -z "${DBT7DBNAME}" ]; then
+	echo "Error: DBT7DBNAME environment variable not defined"
+	exit 1
+fi
+
+PSQL="psql -X -A -t -d ${DBT7DBNAME}"
+
+if [ ${TABLESPACES} -eq 1 ]; then
+	PK_STORE_SALES_DIR="${DBT7TSDIR}/pk_store_sales/ts"
+	PK_STORE_RETURNS_DIR="${DBT7TSDIR}/pk_store_returns/ts"
+	PK_CATALOG_SALES_DIR="${DBT7TSDIR}/pk_catalog_sales/ts"
+	PK_CATALOG_RETURNS_DIR="${DBT7TSDIR}/pk_catalog_returns/ts"
+	PK_WEB_SALES_DIR="${DBT7TSDIR}/pk_web_sales/ts"
+	PK_WEB_RETURNS_DIR="${DBT7TSDIR}/pk_web_returns/ts"
+	PK_INVENTORY_DIR="${DBT7TSDIR}/pk_inventory/ts"
+	PK_STORE_DIR="${DBT7TSDIR}/pk_store/ts"
+	PK_CALL_CENTER_DIR="${DBT7TSDIR}/pk_call_center/ts"
+	PK_CATALOG_PAGE_DIR="${DBT7TSDIR}/pk_catalog_page/ts"
+	PK_WEB_SITE_DIR="${DBT7TSDIR}/pk_web_site/ts"
+	PK_WEB_PAGE_DIR="${DBT7TSDIR}/pk_web_page/ts"
+	PK_WAREHOUSE_DIR="${DBT7TSDIR}/pk_warehouse/ts"
+	PK_CUSTOMER_DIR="${DBT7TSDIR}/pk_customer/ts"
+	PK_CUSTOMER_ADDRESS_DIR="${DBT7TSDIR}/pk_customer_address/ts"
+	PK_CUSTOMER_DEMOGRAPHICS_DIR="${DBT7TSDIR}/pk_customer_demographics/ts"
+	PK_DATE_DIM_DIR="${DBT7TSDIR}/pk_date_dim/ts"
+	PK_HOUSEHOLD_DEMOGRAPHICS_DIR="${DBT7TSDIR}/pk_household_demographics/ts"
+	PK_ITEM_DIR="${DBT7TSDIR}/pk_item/ts"
+	PK_INCOME_BAND_DIR="${DBT7TSDIR}/pk_income_band/ts"
+	PK_PROMOTION_DIR="${DBT7TSDIR}/pk_promotion/ts"
+	PK_REASON_DIR="${DBT7TSDIR}/pk_reason/ts"
+	PK_SHIP_MODE_DIR="${DBT7TSDIR}/pk_ship_mode/ts"
+	PK_TIME_DIM_DIR="${DBT7TSDIR}/pk_time_dim/ts"
+	PK_S_PURCHASE_DIR="${DBT7TSDIR}/pk_s_purchase/ts"
+	PK_S_CATALOG_ORDER_DIR="${DBT7TSDIR}/pk_s_catalog_order/ts"
+	PK_S_WEB_ORDER_DIR="${DBT7TSDIR}/pk_s_web_order/ts"
+	PK_S_PURCHASE_LINEITEM_DIR="${DBT7TSDIR}/pk_s_purchase_lineitem/ts"
+	PK_S_STORE_RETURNS_DIR="${DBT7TSDIR}/pk_s_store_returns/ts"
+	PK_S_WEB_RETURNS_DIR="${DBT7TSDIR}/pk_s_web_returns/ts"
+	PK_S_INVENTORY_DIR="${DBT7TSDIR}/pk_s_inventory/ts"
+
+	I_SS_SOLD_DATE_SK_DIR="${DBT7TSDIR}/i_ss_sold_date_sk/ts"
+	I_SR_RETURNED_DATE_SK_DIR="${DBT7TSDIR}/i_sr_returned_date_sk/ts"
+	I_CS_SOLD_DATE_SK_DIR="${DBT7TSDIR}/i_cs_sold_date_sk/ts"
+	I_CR_RETURNED_DATE_SK_DIR="${DBT7TSDIR}/i_cr_returned_date_sk/ts"
+	I_WS_SOLD_DATE_SK_DIR="${DBT7TSDIR}/i_ws_sold_date_sk/ts"
+	I_WR_RETURNED_DATE_SK_DIR="${DBT7TSDIR}/i_wr_returned_date_sk/ts"
+	I_S_STORE_ID_DIR="${DBT7TSDIR}/i_s_store_id/ts"
+	I_CC_CALL_CENTER_ID_DIR="${DBT7TSDIR}/i_cc_call_center_id/ts"
+	I_CC_REC_END_DATE_DIR="${DBT7TSDIR}/i_cc_rec_end_date/ts"
+	I_CP_CATALOG_NUMBER_DIR="${DBT7TSDIR}/i_cp_catalog_number/ts"
+	I_CP_CATALOG_PAGE_NUMBER_DIR="${DBT7TSDIR}/i_cp_catalog_page_number/ts"
+	I_CP_CATALOG_PAGE_ID_DIR="${DBT7TSDIR}/i_cp_catalog_page_id/ts"
+	I_WP_WEB_PAGE_ID_DIR="${DBT7TSDIR}/i_wp_web_page_id/ts"
+	I_W_WAREHOUSE_ID_DIR="${DBT7TSDIR}/i_w_warehouse_id/ts"
+	I_C_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_c_customer_id/ts"
+	I_D_DATE_DIR="${DBT7TSDIR}/i_d_date/ts"
+	I_I_ITEM_ID_DIR="${DBT7TSDIR}/i_i_item_id/ts"
+	I_I_REC_END_DATE_DIR="${DBT7TSDIR}/i_i_rec_end_date/ts"
+	I_P_PROMO_ID_DIR="${DBT7TSDIR}/i_p_promo_id/ts"
+	I_R_REASON_ID_DIR="${DBT7TSDIR}/i_r_reason_id/ts"
+	I_SM_SHIP_MODE_ID_DIR="${DBT7TSDIR}/i_sm_ship_mode_id/ts"
+	I_T_TIME_DIR="${DBT7TSDIR}/i_t_time/ts"
+	I_PURC_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_purc_customer_id/ts"
+	I_PURC_PURCHASE_DATE_DIR="${DBT7TSDIR}/i_purc_purchase_date/ts"
+	I_PURC_PURCHASE_TIME_DIR="${DBT7TSDIR}/i_purc_purchase_time/ts"
+	I_PURC_STORE_ID_DIR="${DBT7TSDIR}/i_purc_store_id/ts"
+	I_CORD_BILL_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_cord_bill_customer_id/ts"
+	I_CORD_SHIP_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_cord_ship_customer_id/ts"
+	I_CORD_CALL_CENTER_ID_DIR="${DBT7TSDIR}/i_cord_call_center_id/ts"
+	I_CORD_ORDER_TIME_DIR="${DBT7TSDIR}/i_cord_order_time/ts"
+	I_CORD_SHIP_MODE_ID_DIR="${DBT7TSDIR}/i_cord_ship_mode_id/ts"
+	I_WORD_SHIP_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_word_ship_customer_id/ts"
+	I_WORD_SHIP_MODE_ID_DIR="${DBT7TSDIR}/i_word_ship_mode_id/ts"
+	I_CLIN_SHIP_DATE_DIR="${DBT7TSDIR}/i_clin_ship_date/ts"
+	I_CLIN_ITEM_ID_DIR="${DBT7TSDIR}/i_clin_item_id/ts"
+	I_CLIN_PROMOTION_ID_DIR="${DBT7TSDIR}/i_clin_promotion_id/ts"
+	I_CLIN_ORDER_ID_DIR="${DBT7TSDIR}/i_clin_order_id/ts"
+	I_CLIN_CATALOG_NUMBER_DIR="${DBT7TSDIR}/i_clin_catalog_number/ts"
+	I_CLIN_WAREHOUSE_ID_DIR="${DBT7TSDIR}/i_clin_warehouse_id/ts"
+	I_CLIN_CATALOG_PAGE_NUMBER_DIR="${DBT7TSDIR}/i_clin_catalog_page_number/ts"
+	I_PLIN_ITEM_ID_DIR="${DBT7TSDIR}/i_plin_item_id/ts"
+	I_PLIN_PROMOTION_ID_DIR="${DBT7TSDIR}/i_plin_promotion_id/ts"
+	I_WLIN_WAREHOUSE_ID_DIR="${DBT7TSDIR}/i_wlin_warehouse_id/ts"
+	I_WLIN_PROMOTION_ID_DIR="${DBT7TSDIR}/i_wlin_promotion_id/ts"
+	I_WLIN_SHIP_DATE_DIR="${DBT7TSDIR}/i_wlin_ship_date/ts"
+	I_WLIN_ORDER_ID_DIR="${DBT7TSDIR}/i_wlin_order_id/ts"
+	I_WLIN_WEB_PAGE_ID_DIR="${DBT7TSDIR}/i_wlin_web_page_id/ts"
+	I_SRET_STORE_ID_DIR="${DBT7TSDIR}/i_sret_store_id/ts"
+	I_SRET_RETURN_DATE_DIR="${DBT7TSDIR}/i_sret_return_date/ts"
+	I_SRET_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_sret_customer_id/ts"
+	I_SRET_REASON_ID_DIR="${DBT7TSDIR}/i_sret_reason_id/ts"
+	I_WRET_WEB_PAGE_ID_DIR="${DBT7TSDIR}/i_wret_web_page_id/ts"
+	I_WRET_RETURN_CUSTOMER_ID_DIR="${DBT7TSDIR}/i_wret_return_customer_id/ts"
+	I_INVN_ITEM_ID_DIR="${DBT7TSDIR}/i_invn_item_id/ts"
+	I_INVN_DATE_DIR="${DBT7TSDIR}/i_invn_date/ts"
+
+	mkdir -p \
+			"${PK_STORE_SALES_DIR}" \
+			"${PK_STORE_RETURNS_DIR}" \
+			"${PK_CATALOG_SALES_DIR}" \
+			"${PK_CATALOG_RETURNS_DIR}" \
+			"${PK_WEB_SALES_DIR}" \
+			"${PK_WEB_RETURNS_DIR}" \
+			"${PK_INVENTORY_DIR}" \
+			"${PK_STORE_DIR}" \
+			"${PK_CALL_CENTER_DIR}" \
+			"${PK_CATALOG_PAGE_DIR}" \
+			"${PK_WEB_SITE_DIR}" \
+			"${PK_WEB_PAGE_DIR}" \
+			"${PK_WAREHOUSE_DIR}" \
+			"${PK_CUSTOMER_DIR}" \
+			"${PK_CUSTOMER_ADDRESS_DIR}" \
+			"${PK_CUSTOMER_DEMOGRAPHICS_DIR}" \
+			"${PK_DATE_DIM_DIR}" \
+			"${PK_HOUSEHOLD_DEMOGRAPHICS_DIR}" \
+			"${PK_ITEM_DIR}" \
+			"${PK_INCOME_BAND_DIR}" \
+			"${PK_PROMOTION_DIR}" \
+			"${PK_REASON_DIR}" \
+			"${PK_SHIP_MODE_DIR}" \
+			"${PK_TIME_DIM_DIR}" \
+			"${PK_S_PURCHASE_DIR}" \
+			"${PK_S_CATALOG_ORDER_DIR}" \
+			"${PK_S_WEB_ORDER_DIR}" \
+			"${PK_S_PURCHASE_LINEITEM_DIR}" \
+			"${PK_S_STORE_RETURNS_DIR}" \
+			"${PK_S_WEB_RETURNS_DIR}" \
+			"${PK_S_INVENTORY_DIR}" \
+			"${I_SS_SOLD_DATE_SK_DIR}" \
+			"${I_SR_RETURNED_DATE_SK_DIR}" \
+			"${I_CS_SOLD_DATE_SK_DIR}" \
+			"${I_CR_RETURNED_DATE_SK_DIR}" \
+			"${I_WS_SOLD_DATE_SK_DIR}" \
+			"${I_WR_RETURNED_DATE_SK_DIR}" \
+			"${I_S_STORE_ID_DIR}" \
+			"${I_CC_CALL_CENTER_ID_DIR}" \
+			"${I_CC_REC_END_DATE_DIR}" \
+			"${I_CP_CATALOG_NUMBER_DIR}" \
+			"${I_CP_CATALOG_PAGE_NUMBER_DIR}" \
+			"${I_CP_CATALOG_PAGE_ID_DIR}" \
+			"${I_WP_WEB_PAGE_ID_DIR}" \
+			"${I_W_WAREHOUSE_ID_DIR}" \
+			"${I_C_CUSTOMER_ID_DIR}" \
+			"${I_D_DATE_DIR}" \
+			"${I_I_ITEM_ID_DIR}" \
+			"${I_I_REC_END_DATE_DIR}" \
+			"${I_P_PROMO_ID_DIR}" \
+			"${I_R_REASON_ID_DIR}" \
+			"${I_SM_SHIP_MODE_ID_DIR}" \
+			"${I_T_TIME_DIR}" \
+			"${I_PURC_CUSTOMER_ID_DIR}" \
+			"${I_PURC_PURCHASE_DATE_DIR}" \
+			"${I_PURC_PURCHASE_TIME_DIR}" \
+			"${I_PURC_STORE_ID_DIR}" \
+			"${I_CORD_BILL_CUSTOMER_ID_DIR}" \
+			"${I_CORD_SHIP_CUSTOMER_ID_DIR}" \
+			"${I_CORD_CALL_CENTER_ID_DIR}" \
+			"${I_CORD_ORDER_TIME_DIR}" \
+			"${I_CORD_SHIP_MODE_ID_DIR}" \
+			"${I_WORD_SHIP_CUSTOMER_ID_DIR}" \
+			"${I_WORD_SHIP_MODE_ID_DIR}" \
+			"${I_CLIN_SHIP_DATE_DIR}" \
+			"${I_CLIN_ITEM_ID_DIR}" \
+			"${I_CLIN_PROMOTION_ID_DIR}" \
+			"${I_CLIN_ORDER_ID_DIR}" \
+			"${I_CLIN_CATALOG_NUMBER_DIR}" \
+			"${I_CLIN_WAREHOUSE_ID_DIR}" \
+			"${I_CLIN_CATALOG_PAGE_NUMBER_DIR}" \
+			"${I_PLIN_ITEM_ID_DIR}" \
+			"${I_PLIN_PROMOTION_ID_DIR}" \
+			"${I_WLIN_WAREHOUSE_ID_DIR}" \
+			"${I_WLIN_PROMOTION_ID_DIR}" \
+			"${I_WLIN_SHIP_DATE_DIR}" \
+			"${I_WLIN_ORDER_ID_DIR}" \
+			"${I_WLIN_WEB_PAGE_ID_DIR}" \
+			"${I_SRET_STORE_ID_DIR}" \
+			"${I_SRET_RETURN_DATE_DIR}" \
+			"${I_SRET_CUSTOMER_ID_DIR}" \
+			"${I_SRET_REASON_ID_DIR}" \
+			"${I_WRET_WEB_PAGE_ID_DIR}" \
+			"${I_WRET_RETURN_CUSTOMER_ID_DIR}" \
+			"${I_INVN_ITEM_ID_DIR}" \
+			"${I_INVN_DATE_DIR}"
+
+	PK_STORE_SALES_TABLESPACE="TABLESPACE dbt7_pk_store_sales"
+	PK_STORE_RETURNS_TABLESPACE="TABLESPACE dbt7_pk_store_returns"
+	PK_CATALOG_SALES_TABLESPACE="TABLESPACE dbt7_pk_catalog_sales"
+	PK_CATALOG_RETURNS_TABLESPACE="TABLESPACE dbt7_pk_catalog_returns"
+	PK_WEB_SALES_TABLESPACE="TABLESPACE dbt7_pk_web_sales"
+	PK_WEB_RETURNS_TABLESPACE="TABLESPACE dbt7_pk_web_returns"
+	PK_INVENTORY_TABLESPACE="TABLESPACE dbt7_pk_inventory"
+	PK_STORE_TABLESPACE="TABLESPACE dbt7_pk_store"
+	PK_CALL_CENTER_TABLESPACE="TABLESPACE dbt7_pk_call_center"
+	PK_CATALOG_PAGE_TABLESPACE="TABLESPACE dbt7_pk_catalog_page"
+	PK_WEB_SITE_TABLESPACE="TABLESPACE dbt7_pk_web_site"
+	PK_WEB_PAGE_TABLESPACE="TABLESPACE dbt7_pk_web_page"
+	PK_WAREHOUSE_TABLESPACE="TABLESPACE dbt7_pk_warehouse"
+	PK_CUSTOMER_TABLESPACE="TABLESPACE dbt7_pk_customer"
+	PK_CUSTOMER_ADDRESS_TABLESPACE="TABLESPACE dbt7_pk_customer_address"
+	PK_CUSTOMER_DEMOGRAPHICS_TABLESPACE="TABLESPACE dbt7_pk_customer_demographics"
+	PK_DATE_DIM_TABLESPACE="TABLESPACE dbt7_pk_date_dim"
+	PK_HOUSEHOLD_DEMOGRAPHICS_TABLESPACE="TABLESPACE dbt7_pk_household_demographics"
+	PK_ITEM_TABLESPACE="TABLESPACE dbt7_pk_item"
+	PK_INCOME_BAND_TABLESPACE="TABLESPACE dbt7_pk_income_band"
+	PK_PROMOTION_TABLESPACE="TABLESPACE dbt7_pk_promotion"
+	PK_REASON_TABLESPACE="TABLESPACE dbt7_pk_reason"
+	PK_SHIP_MODE_TABLESPACE="TABLESPACE dbt7_pk_ship_mode"
+	PK_TIME_DIM_TABLESPACE="TABLESPACE dbt7_pk_time_dim"
+	PK_S_PURCHASE_TABLESPACE="TABLESPACE dbt7_pk_s_purchase"
+	PK_S_CATALOG_ORDER_TABLESPACE="TABLESPACE dbt7_pk_s_catalog_order"
+	PK_S_WEB_ORDER_TABLESPACE="TABLESPACE dbt7_pk_s_web_order"
+	PK_S_PURCHASE_LINEITEM_TABLESPACE="TABLESPACE dbt7_pk_s_purchase_lineitem"
+	PK_S_STORE_RETURNS_TABLESPACE="TABLESPACE dbt7_pk_s_store_returns"
+	PK_S_WEB_RETURNS_TABLESPACE="TABLESPACE dbt7_pk_s_web_returns"
+	PK_S_INVENTORY_TABLESPACE="TABLESPACE dbt7_pk_s_inventory"
+
+	I_SS_SOLD_DATE_SK_TABLESPACE="TABLESPACE dbt7_i_ss_sold_date_sk"
+	I_SR_RETURNED_DATE_SK_TABLESPACE="TABLESPACE dbt7_i_sr_returned_date_sk"
+	I_CS_SOLD_DATE_SK_TABLESPACE="TABLESPACE dbt7_i_cs_sold_date_sk"
+	I_CR_RETURNED_DATE_SK_TABLESPACE="TABLESPACE dbt7_i_cr_returned_date_sk"
+	I_WS_SOLD_DATE_SK_TABLESPACE="TABLESPACE dbt7_i_ws_sold_date_sk"
+	I_WR_RETURNED_DATE_SK_TABLESPACE="TABLESPACE dbt7_i_wr_returned_date_sk"
+	I_S_STORE_ID_TABLESPACE="TABLESPACE dbt7_i_s_store_id"
+	I_CC_CALL_CENTER_ID_TABLESPACE="TABLESPACE dbt7_i_cc_call_center_id"
+	I_CC_REC_END_DATE_TABLESPACE="TABLESPACE dbt7_i_cc_rec_end_date"
+	I_CP_CATALOG_NUMBER_TABLESPACE="TABLESPACE dbt7_i_cp_catalog_number"
+	I_CP_CATALOG_PAGE_NUMBER_TABLESPACE="TABLESPACE dbt7_i_cp_catalog_page_number"
+	I_CP_CATALOG_PAGE_ID_TABLESPACE="TABLESPACE dbt7_i_cp_catalog_page_id"
+	I_WP_WEB_PAGE_ID_TABLESPACE="TABLESPACE dbt7_i_wp_web_page_id"
+	I_W_WAREHOUSE_ID_TABLESPACE="TABLESPACE dbt7_i_w_warehouse_id"
+	I_C_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_c_customer_id"
+	I_D_DATE_TABLESPACE="TABLESPACE dbt7_i_d_date"
+	I_I_ITEM_ID_TABLESPACE="TABLESPACE dbt7_i_i_item_id"
+	I_I_REC_END_DATE_TABLESPACE="TABLESPACE dbt7_i_i_rec_end_date"
+	I_P_PROMO_ID_TABLESPACE="TABLESPACE dbt7_i_p_promo_id"
+	I_R_REASON_ID_TABLESPACE="TABLESPACE dbt7_i_r_reason_id"
+	I_SM_SHIP_MODE_ID_TABLESPACE="TABLESPACE dbt7_i_sm_ship_mode_id"
+	I_T_TIME_TABLESPACE="TABLESPACE dbt7_i_t_time"
+	I_PURC_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_purc_customer_id"
+	I_PURC_PURCHASE_DATE_TABLESPACE="TABLESPACE dbt7_i_purc_purchase_date"
+	I_PURC_PURCHASE_TIME_TABLESPACE="TABLESPACE dbt7_i_purc_purchase_time"
+	I_PURC_STORE_ID_TABLESPACE="TABLESPACE dbt7_i_purc_store_id"
+	I_CORD_BILL_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_cord_bill_customer_id"
+	I_CORD_SHIP_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_cord_ship_customer_id"
+	I_CORD_CALL_CENTER_ID_TABLESPACE="TABLESPACE dbt7_i_cord_call_center_id"
+	I_CORD_ORDER_TIME_TABLESPACE="TABLESPACE dbt7_i_cord_order_time"
+	I_CORD_SHIP_MODE_ID_TABLESPACE="TABLESPACE dbt7_i_cord_ship_mode_id"
+	I_WORD_SHIP_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_word_ship_customer_id"
+	I_WORD_SHIP_MODE_ID_TABLESPACE="TABLESPACE dbt7_i_word_ship_mode_id"
+	I_CLIN_SHIP_DATE_TABLESPACE="TABLESPACE dbt7_i_clin_ship_date"
+	I_CLIN_ITEM_ID_TABLESPACE="TABLESPACE dbt7_i_clin_item_id"
+	I_CLIN_PROMOTION_ID_TABLESPACE="TABLESPACE dbt7_i_clin_promotion_id"
+	I_CLIN_ORDER_ID_TABLESPACE="TABLESPACE dbt7_i_clin_order_id"
+	I_CLIN_CATALOG_NUMBER_TABLESPACE="TABLESPACE dbt7_i_clin_catalog_number"
+	I_CLIN_WAREHOUSE_ID_TABLESPACE="TABLESPACE dbt7_i_clin_warehouse_id"
+	I_CLIN_CATALOG_PAGE_NUMBER_TABLESPACE="TABLESPACE dbt7_i_clin_catalog_page_number"
+	I_PLIN_ITEM_ID_TABLESPACE="TABLESPACE dbt7_i_plin_item_id"
+	I_PLIN_PROMOTION_ID_TABLESPACE="TABLESPACE dbt7_i_plin_promotion_id"
+	I_WLIN_WAREHOUSE_ID_TABLESPACE="TABLESPACE dbt7_i_wlin_warehouse_id"
+	I_WLIN_PROMOTION_ID_TABLESPACE="TABLESPACE dbt7_i_wlin_promotion_id"
+	I_WLIN_SHIP_DATE_TABLESPACE="TABLESPACE dbt7_i_wlin_ship_date"
+	I_WLIN_ORDER_ID_TABLESPACE="TABLESPACE dbt7_i_wlin_order_id"
+	I_WLIN_WEB_PAGE_ID_TABLESPACE="TABLESPACE dbt7_i_wlin_web_page_id"
+	I_SRET_STORE_ID_TABLESPACE="TABLESPACE dbt7_i_sret_store_id"
+	I_SRET_RETURN_DATE_TABLESPACE="TABLESPACE dbt7_i_sret_return_date"
+	I_SRET_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_sret_customer_id"
+	I_SRET_REASON_ID_TABLESPACE="TABLESPACE dbt7_i_sret_reason_id"
+	I_WRET_WEB_PAGE_ID_TABLESPACE="TABLESPACE dbt7_i_wret_web_page_id"
+	I_WRET_RETURN_CUSTOMER_ID_TABLESPACE="TABLESPACE dbt7_i_wret_return_customer_id"
+	I_INVN_ITEM_ID_TABLESPACE="TABLESPACE dbt7_i_invn_item_id"
+	I_INVN_DATE_TABLESPACE="TABLESPACE dbt7_i_invn_date"
+
+	${PSQL} <<- EOF
+		CREATE ${PK_STORE_SALES_TABLESPACE} LOCATION '${PK_STORE_SALES_DIR}';
+		CREATE ${PK_STORE_RETURNS_TABLESPACE} LOCATION '${PK_STORE_RETURNS_DIR}';
+		CREATE ${PK_CATALOG_SALES_TABLESPACE} LOCATION '${PK_CATALOG_SALES_DIR}';
+		CREATE ${PK_CATALOG_RETURNS_TABLESPACE} LOCATION '${PK_CATALOG_RETURNS_DIR}';
+		CREATE ${PK_WEB_SALES_TABLESPACE} LOCATION '${PK_WEB_SALES_DIR}';
+		CREATE ${PK_WEB_RETURNS_TABLESPACE} LOCATION '${PK_WEB_RETURNS_DIR}';
+		CREATE ${PK_INVENTORY_TABLESPACE} LOCATION '${PK_INVENTORY_DIR}';
+		CREATE ${PK_STORE_TABLESPACE} LOCATION '${PK_STORE_DIR}';
+		CREATE ${PK_CALL_CENTER_TABLESPACE} LOCATION '${PK_CALL_CENTER_DIR}';
+		CREATE ${PK_CATALOG_PAGE_TABLESPACE} LOCATION '${PK_CATALOG_PAGE_DIR}';
+		CREATE ${PK_WEB_SITE_TABLESPACE} LOCATION '${PK_WEB_SITE_DIR}';
+		CREATE ${PK_WEB_PAGE_TABLESPACE} LOCATION '${PK_WEB_PAGE_DIR}';
+		CREATE ${PK_WAREHOUSE_TABLESPACE} LOCATION '${PK_WAREHOUSE_DIR}';
+		CREATE ${PK_CUSTOMER_TABLESPACE} LOCATION '${PK_CUSTOMER_DIR}';
+		CREATE ${PK_CUSTOMER_ADDRESS_TABLESPACE} LOCATION '${PK_CUSTOMER_ADDRESS_DIR}';
+		CREATE ${PK_CUSTOMER_DEMOGRAPHICS_TABLESPACE} LOCATION '${PK_CUSTOMER_DEMOGRAPHICS_DIR}';
+		CREATE ${PK_DATE_DIM_TABLESPACE} LOCATION '${PK_DATE_DIM_DIR}';
+		CREATE ${PK_HOUSEHOLD_DEMOGRAPHICS_TABLESPACE} LOCATION '${PK_HOUSEHOLD_DEMOGRAPHICS_DIR}';
+		CREATE ${PK_ITEM_TABLESPACE} LOCATION '${PK_ITEM_DIR}';
+		CREATE ${PK_INCOME_BAND_TABLESPACE} LOCATION '${PK_INCOME_BAND_DIR}';
+		CREATE ${PK_PROMOTION_TABLESPACE} LOCATION '${PK_PROMOTION_DIR}';
+		CREATE ${PK_REASON_TABLESPACE} LOCATION '${PK_REASON_DIR}';
+		CREATE ${PK_SHIP_MODE_TABLESPACE} LOCATION '${PK_SHIP_MODE_DIR}';
+		CREATE ${PK_TIME_DIM_TABLESPACE} LOCATION '${PK_TIME_DIM_DIR}';
+		CREATE ${PK_S_PURCHASE_TABLESPACE} LOCATION '${PK_S_PURCHASE_DIR}';
+		CREATE ${PK_S_CATALOG_ORDER_TABLESPACE} LOCATION '${PK_S_CATALOG_ORDER_DIR}';
+		CREATE ${PK_S_WEB_ORDER_TABLESPACE} LOCATION '${PK_S_WEB_ORDER_DIR}';
+		CREATE ${PK_S_PURCHASE_LINEITEM_TABLESPACE} LOCATION '${PK_S_PURCHASE_LINEITEM_DIR}';
+		CREATE ${PK_S_STORE_RETURNS_TABLESPACE} LOCATION '${PK_S_STORE_RETURNS_DIR}';
+		CREATE ${PK_S_WEB_RETURNS_TABLESPACE} LOCATION '${PK_S_WEB_RETURNS_DIR}';
+		CREATE ${PK_S_INVENTORY_TABLESPACE} LOCATION '${PK_S_INVENTORY_DIR}';
+		CREATE ${I_SS_SOLD_DATE_SK_TABLESPACE} LOCATION '${I_SS_SOLD_DATE_SK_DIR}';
+		CREATE ${I_SR_RETURNED_DATE_SK_TABLESPACE} LOCATION '${I_SR_RETURNED_DATE_SK_DIR}';
+		CREATE ${I_CS_SOLD_DATE_SK_TABLESPACE} LOCATION '${I_CS_SOLD_DATE_SK_DIR}';
+		CREATE ${I_CR_RETURNED_DATE_SK_TABLESPACE} LOCATION '${I_CR_RETURNED_DATE_SK_DIR}';
+		CREATE ${I_WS_SOLD_DATE_SK_TABLESPACE} LOCATION '${I_WS_SOLD_DATE_SK_DIR}';
+		CREATE ${I_WR_RETURNED_DATE_SK_TABLESPACE} LOCATION '${I_WR_RETURNED_DATE_SK_DIR}';
+		CREATE ${I_S_STORE_ID_TABLESPACE} LOCATION '${I_S_STORE_ID_DIR}';
+		CREATE ${I_CC_CALL_CENTER_ID_TABLESPACE} LOCATION '${I_CC_CALL_CENTER_ID_DIR}';
+		CREATE ${I_CC_REC_END_DATE_TABLESPACE} LOCATION '${I_CC_REC_END_DATE_DIR}';
+		CREATE ${I_CP_CATALOG_NUMBER_TABLESPACE} LOCATION '${I_CP_CATALOG_NUMBER_DIR}';
+		CREATE ${I_CP_CATALOG_PAGE_NUMBER_TABLESPACE} LOCATION '${I_CP_CATALOG_PAGE_NUMBER_DIR}';
+		CREATE ${I_CP_CATALOG_PAGE_ID_TABLESPACE} LOCATION '${I_CP_CATALOG_PAGE_ID_DIR}';
+		CREATE ${I_WP_WEB_PAGE_ID_TABLESPACE} LOCATION '${I_WP_WEB_PAGE_ID_DIR}';
+		CREATE ${I_W_WAREHOUSE_ID_TABLESPACE} LOCATION '${I_W_WAREHOUSE_ID_DIR}';
+		CREATE ${I_C_CUSTOMER_ID_TABLESPACE} LOCATION '${I_C_CUSTOMER_ID_DIR}';
+		CREATE ${I_D_DATE_TABLESPACE} LOCATION '${I_D_DATE_DIR}';
+		CREATE ${I_I_ITEM_ID_TABLESPACE} LOCATION '${I_I_ITEM_ID_DIR}';
+		CREATE ${I_I_REC_END_DATE_TABLESPACE} LOCATION '${I_I_REC_END_DATE_DIR}';
+		CREATE ${I_P_PROMO_ID_TABLESPACE} LOCATION '${I_P_PROMO_ID_DIR}';
+		CREATE ${I_R_REASON_ID_TABLESPACE} LOCATION '${I_R_REASON_ID_DIR}';
+		CREATE ${I_SM_SHIP_MODE_ID_TABLESPACE} LOCATION '${I_SM_SHIP_MODE_ID_DIR}';
+		CREATE ${I_T_TIME_TABLESPACE} LOCATION '${I_T_TIME_DIR}';
+		CREATE ${I_PURC_CUSTOMER_ID_TABLESPACE} LOCATION '${I_PURC_CUSTOMER_ID_DIR}';
+		CREATE ${I_PURC_PURCHASE_DATE_TABLESPACE} LOCATION '${I_PURC_PURCHASE_DATE_DIR}';
+		CREATE ${I_PURC_PURCHASE_TIME_TABLESPACE} LOCATION '${I_PURC_PURCHASE_TIME_DIR}';
+		CREATE ${I_PURC_STORE_ID_TABLESPACE} LOCATION '${I_PURC_STORE_ID_DIR}';
+		CREATE ${I_CORD_BILL_CUSTOMER_ID_TABLESPACE} LOCATION '${I_CORD_BILL_CUSTOMER_ID_DIR}';
+		CREATE ${I_CORD_SHIP_CUSTOMER_ID_TABLESPACE} LOCATION '${I_CORD_SHIP_CUSTOMER_ID_DIR}';
+		CREATE ${I_CORD_CALL_CENTER_ID_TABLESPACE} LOCATION '${I_CORD_CALL_CENTER_ID_DIR}';
+		CREATE ${I_CORD_ORDER_TIME_TABLESPACE} LOCATION '${I_CORD_ORDER_TIME_DIR}';
+		CREATE ${I_CORD_SHIP_MODE_ID_TABLESPACE} LOCATION '${I_CORD_SHIP_MODE_ID_DIR}';
+		CREATE ${I_WORD_SHIP_CUSTOMER_ID_TABLESPACE} LOCATION '${I_WORD_SHIP_CUSTOMER_ID_DIR}';
+		CREATE ${I_WORD_SHIP_MODE_ID_TABLESPACE} LOCATION '${I_WORD_SHIP_MODE_ID_DIR}';
+		CREATE ${I_CLIN_SHIP_DATE_TABLESPACE} LOCATION '${I_CLIN_SHIP_DATE_DIR}';
+		CREATE ${I_CLIN_ITEM_ID_TABLESPACE} LOCATION '${I_CLIN_ITEM_ID_DIR}';
+		CREATE ${I_CLIN_PROMOTION_ID_TABLESPACE} LOCATION '${I_CLIN_PROMOTION_ID_DIR}';
+		CREATE ${I_CLIN_ORDER_ID_TABLESPACE} LOCATION '${I_CLIN_ORDER_ID_DIR}';
+		CREATE ${I_CLIN_CATALOG_NUMBER_TABLESPACE} LOCATION '${I_CLIN_CATALOG_NUMBER_DIR}';
+		CREATE ${I_CLIN_WAREHOUSE_ID_TABLESPACE} LOCATION '${I_CLIN_WAREHOUSE_ID_DIR}';
+		CREATE ${I_CLIN_CATALOG_PAGE_NUMBER_TABLESPACE} LOCATION '${I_CLIN_CATALOG_PAGE_NUMBER_DIR}';
+		CREATE ${I_PLIN_ITEM_ID_TABLESPACE} LOCATION '${I_PLIN_ITEM_ID_DIR}';
+		CREATE ${I_PLIN_PROMOTION_ID_TABLESPACE} LOCATION '${I_PLIN_PROMOTION_ID_DIR}';
+		CREATE ${I_WLIN_WAREHOUSE_ID_TABLESPACE} LOCATION '${I_WLIN_WAREHOUSE_ID_DIR}';
+		CREATE ${I_WLIN_PROMOTION_ID_TABLESPACE} LOCATION '${I_WLIN_PROMOTION_ID_DIR}';
+		CREATE ${I_WLIN_SHIP_DATE_TABLESPACE} LOCATION '${I_WLIN_SHIP_DATE_DIR}';
+		CREATE ${I_WLIN_ORDER_ID_TABLESPACE} LOCATION '${I_WLIN_ORDER_ID_DIR}';
+		CREATE ${I_WLIN_WEB_PAGE_ID_TABLESPACE} LOCATION '${I_WLIN_WEB_PAGE_ID_DIR}';
+		CREATE ${I_SRET_STORE_ID_TABLESPACE} LOCATION '${I_SRET_STORE_ID_DIR}';
+		CREATE ${I_SRET_RETURN_DATE_TABLESPACE} LOCATION '${I_SRET_RETURN_DATE_DIR}';
+		CREATE ${I_SRET_CUSTOMER_ID_TABLESPACE} LOCATION '${I_SRET_CUSTOMER_ID_DIR}';
+		CREATE ${I_SRET_REASON_ID_TABLESPACE} LOCATION '${I_SRET_REASON_ID_DIR}';
+		CREATE ${I_WRET_WEB_PAGE_ID_TABLESPACE} LOCATION '${I_WRET_WEB_PAGE_ID_DIR}';
+		CREATE ${I_WRET_RETURN_CUSTOMER_ID_TABLESPACE} LOCATION '${I_WRET_RETURN_CUSTOMER_ID_DIR}';
+		CREATE ${I_INVN_ITEM_ID_TABLESPACE} LOCATION '${I_INVN_ITEM_ID_DIR}';
+		CREATE ${I_INVN_DATE_TABLESPACE} LOCATION '${I_INVN_DATE_DIR}';
+	EOF
+fi
+
+create_call_center_indexes &
+create_catalog_page_indexes &
+create_catalog_returns_indexes &
+create_catalog_sales_indexes &
+create_customer_indexes &
+create_date_dim &
+create_item_indexes &
+create_promotion_indexes &
+create_reason_indexes &
+create_s_catalog_order_indexes &
+create_s_catalog_order_lineitem_indexes &
+create_s_inventory_indexes &
+create_s_purchase_indexes &
+create_s_purchase_lineitem_indexes &
+create_s_store_returns_indexes &
+create_s_web_returns_indexes &
+create_s_web_order_indexes &
+create_s_web_order_lineitem_indexes &
+create_ship_mode_indexes &
+create_store_indexes &
+create_store_returns_indexes &
+create_store_sales_indexes &
+create_time_dim_indexes &
+create_warehouse_indexes &
+create_web_page_indexes &
+create_web_sales_indexes &
+
+${PSQL} <<- EOF &
+	CREATE UNIQUE INDEX pk_inventory
+	ON inventory (inv_date_sk, inv_item_sk, inv_warehouse_sk)
+	WITH (fillfactor = 100)
+	${PK_INVENTORY_TABLESPACE}
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE UNIQUE INDEX pk_web_site
+	ON web_site (web_site_sk)
+	WITH (fillfactor = 100)
+	${PK_WEB_SITE_TABLESPACE}
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE UNIQUE INDEX pk_customer_address
+	ON customer_address (ca_address_sk)
+	WITH (fillfactor = 100)
+	${PK_CUSTOMER_ADDRESS_TABLESPACE}
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE UNIQUE INDEX pk_customer_demographics
+	ON customer_demographics (cd_demo_sk)
+	WITH (fillfactor = 100)
+	${PK_CUSTOMER_DEMOGRAPHICS_TABLESPACE}
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE UNIQUE INDEX pk_household_demographics
+	ON household_demographics (hd_demo_sk)
+	WITH (fillfactor = 100)
+	${PK_HOUSEHOLD_DEMOGRAPHICS_TABLESPACE}
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE UNIQUE INDEX pk_income_band
+	ON income_band (ib_income_band_sk)
+	WITH (fillfactor = 100)
+	${PK_INCOME_BAND_TABLESPACE}
+	;
+EOF
+
+wait

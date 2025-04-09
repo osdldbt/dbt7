@@ -20,7 +20,7 @@ Usage:
   $(basename "${0}") [OPTION]
 
 Options:
-  -a DBMS          database management system: pgsql
+  -a DBMS          see DBMS options below
   -d DIALECT       dialect override
   -o PATH          path to save results
   -i INPUT         input override, default $INPUT
@@ -32,6 +32,10 @@ Options:
   -V, --version    output version information, then exit
   -Y               enable profiling"
   -?, --help       show this help, then exit
+
+DBMS options:
+  gp               Greenplum
+  pgsql            PostgreSQL
 
 PostgreSQL options (pgsql):
   -p PARAMETERS    PostgreSQL parameters

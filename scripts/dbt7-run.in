@@ -68,7 +68,8 @@ Options:
   -V, --version    output version information, then exit
   -?, --help       show this help, then exit
 
-DBMS options are:
+DBMS options:
+  gp               Greenplum
   pgsql            PostgreSQL
 
 DIRECTORY is the path to save test results.
@@ -256,7 +257,7 @@ if [ "${#}" -eq 0 ]; then
 fi
 
 if [ "${DIALECT_ARG}" = "" ]; then
-	if [ "${DATABASE}"  = "pgsql" ]; then
+	if [ "${DATABASE}"  = "gp" ] || [ "${DATABASE}"  = "pgsql" ]; then
 		DIALECT_ARG="-d postgresql"
 	else
 		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
@@ -266,7 +267,7 @@ if [ "${DIALECT_ARG}" = "" ]; then
 	fi
 fi
 if [ "${INPUT_ARG}" = "" ]; then
-	if [ "${DATABASE}"  = "pgsql" ]; then
+	if [ "${DATABASE}"  = "gp" ] || [ "${DATABASE}"  = "pgsql" ]; then
 		INPUT_ARG="-i ${DSQUERY}/templates-postgresql.lst"
 	else
 		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \

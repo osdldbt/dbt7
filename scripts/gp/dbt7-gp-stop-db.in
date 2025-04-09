@@ -1,0 +1,48 @@
+#!/bin/sh
+@SHELLOPTIONS@
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright The DBT-7 Authors
+
+usage()
+{
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) Greenplum database stop script"
+
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  -o PATH          custom PATH to save database log
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+@HOMEPAGE@
+EOF
+}
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
+done
+
+gpstop -M fast -a

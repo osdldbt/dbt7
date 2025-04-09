@@ -23,7 +23,7 @@ Usage:
   $(basename "${0}") [OPTION]
 
 Options:
-  -a DBMS          DBMS: pgsql
+  -a DBMS          see DBMS options below
   -o PATH          PATH to save results
   --parallel CHUNKS
                    parallelize the load into CHUNKS parts,
@@ -36,7 +36,8 @@ Options:
   -Y               enable profiling
   -?, --help       show this help, then exit
 
-DBMS options are:
+DBMS options:
+  gp               Greenplum
   pgsql            PostgreSQL
 
 PostgreSQL options (pgsql):

@@ -20,7 +20,7 @@ Usage:
   $(basename "${0}") [OPTION]
 
 Options:
-  -a DBMS          database management system: pgsql
+  -a DBMS          see DBMS options below
   -d DIALECT       dialect override
   -o PATH          path to save results
   -r               restart database, if already running
@@ -31,7 +31,8 @@ Options:
   -Y               enable profiling"
   -?, --help       show this help, then exit
 
-DBMS options are:
+DBMS options:
+  gp               Greenplum
   pgsql            PostgreSQL
 
 PostgreSQL options (pgsql):
