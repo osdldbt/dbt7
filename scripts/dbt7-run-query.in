@@ -222,7 +222,7 @@ if [ "${DIALECT_ARG}" = "" ]; then
 	if [ "${DATABASE}"  = "pgsql" ]; then
 		DIALECT_ARG="-DIALECT postgresql"
 	else
-		prints "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
+		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
 				"$(basename "${0}")" 1>&2
 		echo "for more information." 1>&2
 		exit 1
