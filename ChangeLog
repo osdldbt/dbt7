@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.7.2 (2025-04-09)
 
 - report: add --skip-process-plotting to optionally speed up report generation
   by not visualizing per process statistics
