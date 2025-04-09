@@ -171,6 +171,7 @@ CREATE TABLE store_sales (
     ss_net_paid_inc_tax DOUBLE PRECISION,
     ss_net_profit DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${STORE_SALES_TABLESPACE}
 ;
 
@@ -196,6 +197,7 @@ CREATE TABLE store_returns (
     sr_store_credit DOUBLE PRECISION,
     sr_net_loss DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${STORE_RETURNS_TABLESPACE}
 ;
 
@@ -235,6 +237,7 @@ CREATE TABLE catalog_sales (
     cs_net_paid_inc_ship_tax DOUBLE PRECISION,
     cs_net_profit DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${CATALOG_SALES_TABLESPACE}
 ;
 
@@ -267,6 +270,7 @@ CREATE TABLE catalog_returns (
     cr_store_credit DOUBLE PRECISION,
     cr_net_loss DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${CATALOG_RETURNS_TABLESPACE}
 ;
 
@@ -306,6 +310,7 @@ CREATE TABLE web_sales (
     ws_net_paid_inc_ship_tax DOUBLE PRECISION,
     ws_net_profit DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${WEB_SALES_TABLESPACE}
 ;
 
@@ -335,6 +340,7 @@ CREATE TABLE web_returns (
     wr_account_credit DOUBLE PRECISION,
     wr_net_loss DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${WEB_RETURNS_TABLESPACE}
 ;
 
@@ -344,6 +350,7 @@ CREATE TABLE inventory (
     inv_warehouse_sk BIGINT NOT NULL,
     inv_quantity_on_hand INTEGER
 )
+WITH (orientation=column, appendonly=true)
 ${INVENTORY_TABLESPACE}
 ;
 
@@ -378,6 +385,7 @@ CREATE TABLE store (
     s_gmt_offset DOUBLE PRECISION,
     s_tax_percentage DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${STORE_TABLESPACE}
 ;
 
@@ -414,6 +422,7 @@ CREATE TABLE call_center (
     cc_gmt_offset DOUBLE PRECISION,
     cc_tax_percentage DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${CALL_CENTER_TABLESPACE}
 ;
 
@@ -428,6 +437,7 @@ CREATE TABLE catalog_page (
     cp_description VARCHAR(100),
     cp_type VARCHAR(100)
 )
+WITH (orientation=column, appendonly=true)
 ${CATALOG_PAGE_TABLESPACE}
 ;
 
@@ -459,6 +469,7 @@ CREATE TABLE web_site (
     web_gmt_offset DOUBLE PRECISION,
     web_tax_percentage DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${WEB_SITE_TABLESPACE}
 ;
 
@@ -478,6 +489,7 @@ CREATE TABLE web_page (
     wp_image_count INTEGER,
     wp_max_ad_count INTEGER
 )
+WITH (orientation=column, appendonly=true)
 ${WEB_PAGE_TABLESPACE}
 ;
 
@@ -497,6 +509,7 @@ CREATE TABLE warehouse (
     w_country VARCHAR(20),
     w_gmt_offset DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${WAREHOUSE_TABLESPACE}
 ;
 
@@ -520,6 +533,7 @@ CREATE TABLE customer (
     c_email_address CHAR(50),
     c_last_review_date_sk BIGINT
 )
+WITH (orientation=column, appendonly=true)
 ${CUSTOMER_TABLESPACE}
 ;
 
@@ -538,6 +552,7 @@ CREATE TABLE customer_address (
     ca_gmt_offset DOUBLE PRECISION,
     ca_location_type CHAR(20)
 )
+WITH (orientation=column, appendonly=true)
 ${CUSTOMER_ADDRESS_TABLESPACE}
 ;
 
@@ -552,6 +567,7 @@ CREATE TABLE customer_demographics (
     cd_dep_employed_count INTEGER,
     cd_dep_college_count INTEGER
 )
+WITH (orientation=column, appendonly=true)
 ${CUSTOMER_DEMOGRAPHICS_TABLESPACE}
 ;
 
@@ -585,6 +601,7 @@ CREATE TABLE date_dim (
     d_current_quarter CHAR(1),
     d_current_year CHAR(1)
 )
+WITH (orientation=column, appendonly=true)
 ${DATE_DIM_TABLESPACE}
 ;
 
@@ -595,6 +612,7 @@ CREATE TABLE household_demographics (
     hd_dep_count INTEGER,
     hd_vehicle_count INTEGER
 )
+WITH (orientation=column, appendonly=true)
 ${HOUSEHOLD_DEMOGRAPHICS_TABLESPACE}
 ;
 
@@ -622,6 +640,7 @@ CREATE TABLE item (
     i_manager_id INTEGER,
     i_product_name CHAR(50)
 )
+WITH (orientation=column, appendonly=true)
 ${ITEM_DEMOGRAPHICS}
 ;
 
@@ -630,6 +649,7 @@ CREATE TABLE income_band (
     ib_lower_bound INTEGER,
     ib_upper_bound INTEGER
 )
+WITH (orientation=column, appendonly=true)
 ${INCOME_BAND_TABLESPACE}
 ;
 
@@ -654,6 +674,7 @@ CREATE TABLE promotion (
     p_purpose CHAR(15),
     p_discount_active CHAR(1)
 )
+WITH (orientation=column, appendonly=true)
 ${PROMOTION_TABLESPACE}
 ;
 
@@ -662,6 +683,7 @@ CREATE TABLE reason (
     r_reason_id CHAR(16) NOT NULL,
     r_reason_desc CHAR(100)
 )
+WITH (orientation=column, appendonly=true)
 ${REASON_TABLESPACE}
 ;
 
@@ -673,6 +695,7 @@ CREATE TABLE ship_mode (
     sm_carrier CHAR(20),
     sm_contract CHAR(20)
 )
+WITH (orientation=column, appendonly=true)
 ${SHIP_MODE_TABLESPACE}
 ;
 
@@ -688,6 +711,7 @@ CREATE TABLE time_dim (
     t_sub_shift CHAR(20),
     t_meal_time CHAR(20)
 )
+WITH (orientation=column, appendonly=true)
 ${TIME_DIM_TABLESPACE}
 ;
 
@@ -710,6 +734,7 @@ CREATE TABLE s_purchase_lineitem (
     plin_coupon_amt DOUBLE PRECISION,
     plin_comment CHAR(100)
 )
+WITH (orientation=column, appendonly=true)
 ${S_PURCHASE_LINEITEM_TABLESPACE}
 ;
 
@@ -723,6 +748,7 @@ CREATE TABLE s_purchase (
     purc_clerk_id INTEGER,
     purc_comment CHAR(100)
 )
+WITH (orientation=column, appendonly=true)
 ${S_PURCHASE_TABLESPACE}
 ;
 
@@ -736,6 +762,7 @@ CREATE TABLE s_catalog_order (
     cord_call_center_id CHAR(16),
     cord_order_comments VARCHAR(100)
 )
+WITH (orientation=column, appendonly=true)
 ${S_CATALOG_ORDER_TABLESPACE}
 ;
 
@@ -749,6 +776,7 @@ CREATE TABLE s_web_order (
     word_web_site_id CHAR(16),
     word_order_comments CHAR(100)
 )
+WITH (orientation=column, appendonly=true)
 ${S_WEB_ORDER_TABLESPACE}
 ;
 
@@ -766,6 +794,7 @@ CREATE TABLE s_catalog_order_lineitem (
     clin_catalog_page_number INTEGER,
     clin_ship_cost DOUBLE PRECISION
 )
+WITH (orientation=column, appendonly=true)
 ${S_CATALOG_ORDER_LINEITEM_TABLESPACE}
 ;
 
@@ -782,6 +811,7 @@ CREATE TABLE s_web_order_lineitem (
     wlin_ship_cost DOUBLE PRECISION,
     wlin_web_page_id CHAR(16)
 )
+WITH (orientation=column, appendonly=true)
 ${S_WEB_ORDER_LINEITEM_TABLESPACE}
 ;
 
@@ -804,6 +834,7 @@ CREATE TABLE s_store_returns (
     sret_store_credit DOUBLE PRECISION,
     sret_reason_id CHAR(16)
 )
+WITH (orientation=column, appendonly=true)
 ${S_STORE_RETURNS_TABLESPACE}
 ;
 
@@ -829,6 +860,7 @@ CREATE TABLE s_catalog_returns (
     cret_catalog_page_id CHAR(16),
     cret_warehouse_id CHAR(16)
 )
+WITH (orientation=column, appendonly=true)
 ${S_CATALOG_RETURNS_TABLESPACE}
 ;
 
@@ -851,6 +883,7 @@ CREATE TABLE s_web_returns (
     wret_account_credit DOUBLE PRECISION,
     wret_reason_id CHAR(16)
 )
+WITH (orientation=column, appendonly=true)
 ${S_WEB_RETURNS_TABLESPACE}
 ;
 
@@ -860,6 +893,7 @@ CREATE TABLE s_inventory (
     invn_date CHAR(10) NOT NULL,
     invn_qty_on_hand INTEGER
 )
+WITH (orientation=column, appendonly=true)
 ${S_INVENTORY_TABLESPACE}
 ;
 
