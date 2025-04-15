@@ -6,6 +6,267 @@
 #
 # Copyright The DBT-7 Authors
 
-echo "Using pgsql version for ${0}..."
+usage()
+{
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) Greenplum Data Validator
 
-dbt7-pgsql-data-validation "${@}"
+Usage:
+  $(basename "${0}") [OPTION]
+
+Options:
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+@HOMEPAGE@
+EOF
+}
+
+banner()
+{
+	cat <<- __EOF__
+	---------------------------------------------------------------------------
+	${1}
+	---------------------------------------------------------------------------
+	__EOF__
+}
+
+check_cardinality()
+{
+	TABLENAME="${1}"
+
+	eval "${PSQL}" <<- __EOF__
+		COPY (SELECT '${TABLENAME}', count(*) FROM ${TABLENAME}) TO STDOUT
+	__EOF__
+}
+
+check_distribution()
+{
+	TABLENAME="${1}"
+
+	echo "${TABLENAME}"
+	eval "${PSQL}" <<- __EOF__
+		COPY (SELECT gp_segment_id, count(*) FROM ${TABLENAME} GROUP BY gp_segment_id ORDER BY gp_segment_id) TO STDOUT
+	__EOF__
+}
+
+clean_data()
+{
+	for FILE in "${1}" "${2}"; do
+		# Trim any trailing spaces from all column.
+		sed -i 's/[ ]*$//g' "${FILE}"
+		sed -i 's/[ ]*|/|/g' "${FILE}"
+		# Drop the fractional part of a number if all zeros, or trim any trailing
+		# zeros in the fractional part.
+		sed -i -E 's/([0-9]+\.[0-9]*[1-9])0+|\.[0]+/\1/g' "${FILE}"
+	done
+}
+
+validate_single_key_table()
+{
+	TABLENAME="${1}"
+	PRIMARY_KEY="${2}"
+
+	VALFILE="${VALDIR}/${TABLENAME}.vld"
+
+	A="${VALDIR}/${TABLENAME}.a"
+	B="${VALDIR}/${TABLENAME}.b"
+
+	cut -d "|" -f2- "${VALFILE}" | sort -t "|" -k 1,1n -n -u > "${A}"
+
+	KEYS="$(cut -d "|" -f 1 "${A}" | sort -t "|" -k 1 -n -u | xargs |
+			sed -e "s/ /,/g")"
+
+	eval "${PSQL}" > "${B}" <<- __EOF__
+		COPY (
+		          SELECT *
+		          FROM ${TABLENAME}
+		          WHERE ${PRIMARY_KEY} IN (${KEYS})
+		          ORDER BY 1
+		     )
+		TO STDOUT (DELIMITER '|', NULL '')
+	__EOF__
+
+	clean_data "${A}" "${B}"
+	banner "${TABLENAME}"
+	comm -3 --total --nocheck-order "${A}" "${B}"
+}
+
+validate_two_key_table()
+{
+	TABLENAME="${1}"
+	PRIMARY_KEY="${2}"
+	COLS="${3}"
+
+	VALFILE="${VALDIR}/${TABLENAME}.vld"
+
+	A="${VALDIR}/${TABLENAME}.a"
+	B="${VALDIR}/${TABLENAME}.b"
+
+	COL1="$(echo "${COLS}" | cut -d "," -f 1)"
+	COL2="$(echo "${COLS}" | cut -d "," -f 2)"
+
+	sort -t "|" -k "${COL1},${COL1}n" -k "${COL2},${COL2}n" -n -u \
+			"${VALFILE}" > "${A}"
+
+	KEYS="$(awk -F "|" "{print \"(\" \$"${COL1}" \",\" \$"${COL2}" \")\"}" "${A}" |
+			xargs | sed -e "s/ /,/g")"
+
+	eval "${PSQL}" > "${B}" <<- __EOF__
+		COPY (
+		          SELECT DISTINCT *
+		          FROM ${TABLENAME}
+                  WHERE (${PRIMARY_KEY}) = ANY (VALUES ${KEYS})
+		          ORDER BY ${PRIMARY_KEY}
+		     )
+		TO STDOUT (DELIMITER '|', NULL '')
+	__EOF__
+
+	clean_data "${A}" "${B}"
+	banner "${TABLENAME}"
+	comm -3 --total --nocheck-order "${A}" "${B}"
+}
+
+validate_three_key_table()
+{
+	TABLENAME="${1}"
+	PRIMARY_KEY="${2}"
+
+	VALFILE="${VALDIR}/${TABLENAME}.vld"
+
+	A="${VALDIR}/${TABLENAME}.a"
+	B="${VALDIR}/${TABLENAME}.b"
+
+	cut -d "|" -f2- "${VALFILE}" | sort -t "|" -k 1,1n -k2,2n -k3,3n -n -u \
+			> "${A}"
+
+	KEYS="$(awk -F "|" '{print "(" $1 "," $2 "," $3 ")"}' "${A}" | xargs |
+			sed -e "s/ /,/g")"
+
+	eval "${PSQL}" > "${B}" <<- __EOF__
+		COPY (
+		          SELECT DISTINCT *
+		          FROM ${TABLENAME}
+                  WHERE (${PRIMARY_KEY}) = ANY (VALUES ${KEYS})
+		          ORDER BY 1, 2, 3
+		     )
+		TO STDOUT (DELIMITER '|', NULL '')
+	__EOF__
+
+	clean_data "${A}" "${B}"
+	banner "${TABLENAME}"
+	comm -3 --total --nocheck-order "${A}" "${B}"
+}
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
+done
+
+if [ "${DS_DATA}" = "" ]; then
+	DS_DATA="/tmp/dbt7data"
+fi
+
+if [ "${DBT7DBNAME}" = "" ]; then
+	DBT7DBNAME="dbt7"
+fi
+
+PSQL="psql -v ON_ERROR_STOP=1 -X -d ${DBT7DBNAME}"
+VALDIR="${DS_DATA}/validation"
+
+cat <<- __EOF__
+===========================================================================
+database row counts clause 3.2.2
+===========================================================================
+__EOF__
+
+# This isn't strictly part of the data validation test, but easy to check at
+# the same time.
+for T in call_center catalog_page catalog_returns catalog_sales customer \
+		customer_address customer_demographics date_dim \
+		household_demographics income_band inventory item promotion reason \
+		ship_mode store store_returns store_sales time_dim warehouse \
+		web_page web_returns web_sales web_site; do
+	check_cardinality "${T}"
+done
+
+cat <<- __EOF__
+===========================================================================
+data validation clause 3.5 (comm output)
+===========================================================================
+__EOF__
+
+validate_single_key_table call_center cc_call_center_sk
+validate_single_key_table catalog_page cp_catalog_page_sk
+validate_two_key_table catalog_returns cr_item_sk,cr_order_number 3,17
+validate_two_key_table catalog_sales cs_item_sk,cs_order_number 16,18
+validate_single_key_table customer_address ca_address_sk
+validate_single_key_table customer_demographics cd_demo_sk
+validate_single_key_table customer c_customer_sk
+validate_single_key_table date_dim d_date_sk
+validate_single_key_table household_demographics hd_demo_sk
+validate_single_key_table income_band ib_income_band_sk
+validate_three_key_table inventory inv_date_sk,inv_item_sk,inv_warehouse_sk
+validate_single_key_table item i_item_sk
+validate_single_key_table promotion p_promo_sk
+validate_single_key_table reason r_reason_sk
+validate_single_key_table ship_mode sm_ship_mode_sk
+validate_single_key_table store s_store_sk
+validate_two_key_table store_returns sr_item_sk,sr_ticket_number 3,10
+validate_two_key_table store_sales ss_item_sk,ss_ticket_number 3,10
+validate_single_key_table time_dim t_time_sk
+validate_single_key_table warehouse w_warehouse_sk
+validate_single_key_table web_page wp_web_page_sk
+validate_two_key_table web_returns wr_item_sk,wr_order_number 3,14
+validate_two_key_table web_sales ws_item_sk,ws_order_number 4,18
+validate_single_key_table web_site web_site_sk
+
+# Check distribution of data
+
+banner "Segment Table Distribution"
+for T in call_center catalog_page catalog_returns catalog_sales customer \
+		customer_address customer_demographics date_dim \
+		household_demographics income_band inventory item promotion reason \
+		ship_mode store store_returns store_sales time_dim warehouse \
+		web_page web_returns web_sales web_site; do
+	check_distribution "${T}"
+done
+
+# Check size of pg_statistics
+
+banner "pg_statistic"
+eval "${PSQL}" <<- __EOF__
+	COPY (SELECT 'pg_statistic', pg_size_pretty(pg_table_size('pg_statistic'))) TO STDOUT
+__EOF__
+
+banner "Database Size"
+eval "${PSQL}" <<- __EOF__
+	COPY (SELECT * FROM gp_toolkit.gp_size_of_database ORDER BY sodddatname) TO STDOUT (HEADER)
+__EOF__
+
+banner "Table Size"
+eval "${PSQL}" <<- __EOF__
+	COPY (SELECT * FROM gp_toolkit.gp_size_of_table_and_indexes_disk ORDER BY sotaidschemaname, sotaidtablename) TO STDOUT (HEADER)
+__EOF__
+
+banner "Index Size"
+eval "${PSQL}" <<- __EOF__
+	COPY (SELECT * FROM gp_toolkit.gp_size_of_index ORDER BY soitableschemaname, soitablename, soiindexschemaname, soiindexname) TO STDOUT (HEADER)
+__EOF__

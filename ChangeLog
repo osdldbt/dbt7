@@ -3,6 +3,7 @@ vX.Y.Z (YYYY-MM-DD)
 - pgsql: fix unique index definition on s_purchase_lineitem
 - Add support for Greenplum
 - greenplum: create tables with column orientation and appendonly
+- greenplum: capture statistics, database, table and indexes sizes
 
 v0.7.2 (2025-04-09)
 
