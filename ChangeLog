@@ -4,6 +4,7 @@ vX.Y.Z (YYYY-MM-DD)
 - Add support for Greenplum
 - greenplum: create tables with column orientation and appendonly
 - greenplum: capture statistics, database, table and indexes sizes
+- greenplum: distribute each table by its primary key columns
 
 v0.7.2 (2025-04-09)
 
