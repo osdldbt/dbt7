@@ -149,7 +149,7 @@ for T in store_sales store_returns catalog_sales catalog_returns web_sales \
 done
 dbt7-pgsql-time-statistics -e -n TABLE
 dbt7-pgsql-time-statistics -s -n INDEX
-eval "dbt7-pgsql-create-indexes ${TABLESPACES_ARG}"
+eval "dbt7-${DATABASE}-create-indexes ${TABLESPACES_ARG}"
 dbt7-pgsql-time-statistics -e -n INDEX
 
 dbt7-pgsql-time-statistics -s -n ANALYZE

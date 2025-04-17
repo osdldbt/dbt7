@@ -245,7 +245,7 @@ if [ "${#}" -eq 0 ]; then
 	echo "for more information." 1>&2
 	exit 1
 fi
-DATABASE=${1}
+export DATABASE="${1}"
 shift
 
 if [ "${#}" -eq 0 ]; then
