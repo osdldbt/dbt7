@@ -944,6 +944,14 @@ EOF
 
 ${PSQL} <<- EOF &
 	CREATE UNIQUE INDEX pk_s_purchase_lineitem
+	ON s_purchase_lineitem (plin_purchase_id, plin_line_number)
+	WITH (fillfactor = 100)
+	${PK_S_PURCHASE_LINEITEM_TABLESPACE}
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_plin_purchase_id_plin_item_id
 	ON s_purchase_lineitem (plin_purchase_id, plin_item_id)
 	WITH (fillfactor = 100)
 	${PK_S_PURCHASE_LINEITEM_TABLESPACE}
