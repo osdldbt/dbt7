@@ -172,7 +172,7 @@ CREATE TABLE store_sales (
     ss_net_profit DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (ss_item_sk, ss_ticket_number)
+DISTRIBUTED BY (ss_sold_date_sk)
 ${STORE_SALES_TABLESPACE}
 ;
 
@@ -199,7 +199,7 @@ CREATE TABLE store_returns (
     sr_net_loss DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (sr_item_sk, sr_ticket_number)
+DISTRIBUTED BY (sr_returned_date_sk)
 ${STORE_RETURNS_TABLESPACE}
 ;
 
@@ -240,7 +240,7 @@ CREATE TABLE catalog_sales (
     cs_net_profit DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cs_item_sk, cs_order_number)
+DISTRIBUTED BY (cs_sold_date_sk)
 ${CATALOG_SALES_TABLESPACE}
 ;
 
@@ -274,7 +274,7 @@ CREATE TABLE catalog_returns (
     cr_net_loss DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cr_item_sk, cr_order_number)
+DISTRIBUTED BY (cr_returned_date_sk)
 ${CATALOG_RETURNS_TABLESPACE}
 ;
 
@@ -315,7 +315,7 @@ CREATE TABLE web_sales (
     ws_net_profit DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (ws_item_sk, ws_order_number)
+DISTRIBUTED BY (ws_sold_date_sk)
 ${WEB_SALES_TABLESPACE}
 ;
 
@@ -346,7 +346,7 @@ CREATE TABLE web_returns (
     wr_net_loss DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (wr_item_sk, wr_order_number)
+DISTRIBUTED BY (wr_returned_date_sk)
 ${WEB_RETURNS_TABLESPACE}
 ;
 
@@ -357,7 +357,7 @@ CREATE TABLE inventory (
     inv_quantity_on_hand INTEGER
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (inv_date_sk, inv_item_sk, inv_warehouse_sk)
+DISTRIBUTED BY (inv_date_sk)
 ${INVENTORY_TABLESPACE}
 ;
 
@@ -865,7 +865,7 @@ CREATE TABLE s_store_returns (
     sret_reason_id CHAR(16)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (sret_purchase_id, sret_line_number, sret_item_id)
+DISTRIBUTED BY (sret_return_date)
 ${S_STORE_RETURNS_TABLESPACE}
 ;
 
@@ -892,7 +892,7 @@ CREATE TABLE s_catalog_returns (
     cret_warehouse_id CHAR(16)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cret_order_id, cret_line_number, cret_item_id)
+DISTRIBUTED BY (cret_return_date)
 ${S_CATALOG_RETURNS_TABLESPACE}
 ;
 
@@ -916,7 +916,7 @@ CREATE TABLE s_web_returns (
     wret_reason_id CHAR(16)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (wret_order_id, wret_line_number, wret_item_id)
+DISTRIBUTED BY (wret_return_date)
 ${S_WEB_RETURNS_TABLESPACE}
 ;
 
