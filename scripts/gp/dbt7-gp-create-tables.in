@@ -393,7 +393,7 @@ CREATE TABLE store (
     s_tax_percentage DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (s_store_sk)
+DISTRIBUTED REPLICATED
 ${STORE_TABLESPACE}
 ;
 
@@ -431,7 +431,7 @@ CREATE TABLE call_center (
     cc_tax_percentage DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cc_call_center_sk)
+DISTRIBUTED REPLICATED
 ${CALL_CENTER_TABLESPACE}
 ;
 
@@ -447,7 +447,7 @@ CREATE TABLE catalog_page (
     cp_type VARCHAR(100)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cp_catalog_page_sk)
+DISTRIBUTED REPLICATED
 ${CATALOG_PAGE_TABLESPACE}
 ;
 
@@ -480,7 +480,7 @@ CREATE TABLE web_site (
     web_tax_percentage DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (web_site_sk)
+DISTRIBUTED REPLICATED
 ${WEB_SITE_TABLESPACE}
 ;
 
@@ -501,7 +501,7 @@ CREATE TABLE web_page (
     wp_max_ad_count INTEGER
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (wp_web_page_sk)
+DISTRIBUTED REPLICATED
 ${WEB_PAGE_TABLESPACE}
 ;
 
@@ -522,7 +522,7 @@ CREATE TABLE warehouse (
     w_gmt_offset DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (w_warehouse_sk)
+DISTRIBUTED REPLICATED
 ${WAREHOUSE_TABLESPACE}
 ;
 
@@ -547,7 +547,7 @@ CREATE TABLE customer (
     c_last_review_date_sk BIGINT
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (c_customer_sk)
+DISTRIBUTED REPLICATED
 ${CUSTOMER_TABLESPACE}
 ;
 
@@ -567,7 +567,7 @@ CREATE TABLE customer_address (
     ca_location_type CHAR(20)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (ca_address_sk)
+DISTRIBUTED REPLICATED
 ${CUSTOMER_ADDRESS_TABLESPACE}
 ;
 
@@ -583,7 +583,7 @@ CREATE TABLE customer_demographics (
     cd_dep_college_count INTEGER
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cd_demo_sk)
+DISTRIBUTED REPLICATED
 ${CUSTOMER_DEMOGRAPHICS_TABLESPACE}
 ;
 
@@ -630,7 +630,7 @@ CREATE TABLE household_demographics (
     hd_vehicle_count INTEGER
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (hd_demo_sk)
+DISTRIBUTED REPLICATED
 ${HOUSEHOLD_DEMOGRAPHICS_TABLESPACE}
 ;
 
@@ -659,7 +659,7 @@ CREATE TABLE item (
     i_product_name CHAR(50)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (i_item_sk)
+DISTRIBUTED REPLICATED
 ${ITEM_DEMOGRAPHICS}
 ;
 
@@ -669,7 +669,7 @@ CREATE TABLE income_band (
     ib_upper_bound INTEGER
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (ib_income_band_sk)
+DISTRIBUTED REPLICATED
 ${INCOME_BAND_TABLESPACE}
 ;
 
@@ -695,7 +695,7 @@ CREATE TABLE promotion (
     p_discount_active CHAR(1)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (p_promo_sk)
+DISTRIBUTED REPLICATED
 ${PROMOTION_TABLESPACE}
 ;
 
@@ -705,7 +705,7 @@ CREATE TABLE reason (
     r_reason_desc CHAR(100)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (r_reason_sk)
+DISTRIBUTED REPLICATED
 ${REASON_TABLESPACE}
 ;
 
@@ -718,7 +718,7 @@ CREATE TABLE ship_mode (
     sm_contract CHAR(20)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (sm_ship_mode_sk)
+DISTRIBUTED REPLICATED
 ${SHIP_MODE_TABLESPACE}
 ;
 
@@ -735,7 +735,7 @@ CREATE TABLE time_dim (
     t_meal_time CHAR(20)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (t_time_sk)
+DISTRIBUTED REPLICATED
 ${TIME_DIM_TABLESPACE}
 ;
 
@@ -759,7 +759,7 @@ CREATE TABLE s_purchase_lineitem (
     plin_comment CHAR(100)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (plin_purchase_id, plin_line_number)
+DISTRIBUTED REPLICATED
 ${S_PURCHASE_LINEITEM_TABLESPACE}
 ;
 
@@ -774,7 +774,7 @@ CREATE TABLE s_purchase (
     purc_comment CHAR(100)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (purc_purchase_id)
+DISTRIBUTED REPLICATED
 ${S_PURCHASE_TABLESPACE}
 ;
 
@@ -789,7 +789,7 @@ CREATE TABLE s_catalog_order (
     cord_order_comments VARCHAR(100)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (cord_order_id)
+DISTRIBUTED REPLICATED
 ${S_CATALOG_ORDER_TABLESPACE}
 ;
 
@@ -804,7 +804,7 @@ CREATE TABLE s_web_order (
     word_order_comments CHAR(100)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (word_order_id)
+DISTRIBUTED REPLICATED
 ${S_WEB_ORDER_TABLESPACE}
 ;
 
@@ -823,7 +823,7 @@ CREATE TABLE s_catalog_order_lineitem (
     clin_ship_cost DOUBLE PRECISION
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (clin_order_id, clin_line_number)
+DISTRIBUTED REPLICATED
 ${S_CATALOG_ORDER_LINEITEM_TABLESPACE}
 ;
 
@@ -841,7 +841,7 @@ CREATE TABLE s_web_order_lineitem (
     wlin_web_page_id CHAR(16)
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (wlin_order_id, wlin_line_number)
+DISTRIBUTED REPLICATED
 ${S_WEB_ORDER_LINEITEM_TABLESPACE}
 ;
 
@@ -927,7 +927,7 @@ CREATE TABLE s_inventory (
     invn_qty_on_hand INTEGER
 )
 WITH (orientation=column, appendonly=true)
-DISTRIBUTED BY (invn_warehouse_id, invn_item_id, invn_date)
+DISTRIBUTED REPLICATED
 ${S_INVENTORY_TABLESPACE}
 ;
 
