@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.7.3 (2025-05-30)
 
 - pgsql: fix unique index definition on s_purchase_lineitem
 - Add support for Greenplum
