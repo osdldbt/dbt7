@@ -1,0 +1,138 @@
+#!/bin/sh
+@SHELLOPTIONS@
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright The DBT-7 Authors
+
+DSHOME=""
+CHUNKS=1
+SCALE=1
+SEED=-1
+
+usage()
+{
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) dsdgen wrapper
+
+Usage:
+  $(basename "${0}") [OPTION] DIRECTORY
+
+Options:
+  --parallel=CHUNKS
+                   parallelize the load into CHUNKS parts,
+                   default ${CHUNKS} (no parallelism)
+  -s SCALE, --scale-factor=SCALE
+                   SCALE factor, roughly equivalient to GB (base 10) text data,
+                   default ${SCALE}
+  --seed=SEED      set RNDSEED for dsdgen, default unset
+  --tpcdstools=DSHOME
+                   DSHOME is the directory location of the TPC-DS Tools
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+DIRECTORY is the path to save flat files.
+
+@HOMEPAGE@
+EOF
+}
+
+if [ ! "${APPDIR}" = "" ]; then
+    DSHOME="${APPDIR}/opt/dsgen"
+fi
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(--parallel)
+		shift
+		CHUNKS="${1}"
+		;;
+	(--parallel=?*)
+		CHUNKS="${1#*--parallel=}"
+		;;
+	(-s | --scale-factor)
+		shift
+		SCALE="${1}"
+		;;
+	(--seed)
+		shift
+		SEED="${1}"
+		;;
+	(--seed=?*)
+		SEED="${1#*--seed=}"
+		;;
+	(--scale-factor=?*)
+		SCALE="${1#*--scale-factor=}"
+		;;
+   (--tpcdstools)
+		shift
+		DSHOME="${1}"
+		;;
+   (--tpcdstools=?*)
+		DSHOME="${1#*--tpcdstools=}"
+		;;
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
+done
+
+if [ "${#}" -eq 0 ]; then
+	printf "Specify which DIRECTORY to save flat files, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
+	exit 1
+fi
+DIRECTORY=${1}
+if [ -d "${DIRECTORY}" ]; then
+	echo "ERROR: Specify new flat file location, '${DIRECTORY}' already exists"
+	exit 1
+fi
+mkdir -p "${DIRECTORY}"
+
+if [ "${CHUNKS}" -gt 1 ]; then
+	DSGEN_ARGS="${DSGEN_ARGS} -PARALLEL ${CHUNKS}"
+fi
+
+if [ "${DSDISTRIBUTIONS}" = "" ]; then
+	DSDISTRIBUTIONS="${DSHOME}/tools/tpcds.idx"
+fi
+
+mkdir -p "${DIRECTORY}"
+echo "generating data in ${DIRECTORY}"
+
+if [ "${SEED}" -ge 0 ]; then
+	DSGEN_ARGS="${DSGEN_ARGS} -RNGSEED ${SEED}"
+fi
+
+# TODO: Figure out why chunked data generation produces data that fails the
+# data validation test.  Don't chunk data for reliable data generation.
+for I in $(seq 1 "${CHUNKS}"); do
+	if [ "${CHUNKS}" -gt 1 ]; then
+		LOOP_DSGEN_ARGS="${DSGEN_ARGS} -CHILD ${I}"
+	fi
+
+	eval "${DSHOME}/tools/dsdgen \
+			-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+			-DIR ${DIRECTORY} \
+			-SCALE ${SCALE} \
+			-TERMINATE N \
+			${LOOP_DSGEN_ARGS}" \
+			> "${DIRECTORY}/dsdgen-${I}.out" 2>&1 &
+done
+wait

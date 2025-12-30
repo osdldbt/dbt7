@@ -154,41 +154,23 @@ eval "${DSTOOLS}/dsdgen \
 
 # Generate database data if $DS_DATA does not exist
 if [ ! -d "$DS_DATA" ]; then
-	echo "generating data in ${DS_DATA}"
-
-	# Use a random seed for generating data
-	DGENSEED=`date +%-m%d%H%M%S`
-	echo "data generation seed: $DGENSEED"
-	mkdir -p $DS_DATA
-	# Hard code the sequence to 1 and don't use -PARALLEL command line argument
-	# until we can figure out why chunked data generation produces data that
-	# fails the data validation test.
-    for I in $(seq 1 1); do
-		"${DSTOOLS}/dsdgen" \
-				-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
-				-DIR $DS_DATA \
-				-SCALE $SCALE \
-				-TERMINATE N \
-				${DSGEN_ARGS} \
-				-CHILD $I \
-				-RNGSEED "${DGENSEED}" \
-				> "${OUTPUT_DIR}/dsdgen-${I}.out" 2>&1 &
-	done
-	wait
+	# TODO: Hard code to not chunk data generation until we can figure out why
+	# chunked data generation produces data that fails data validation.
+	dbt7-generate-data \
+			--tpcdstools="${DSHOME}" \
+			--scale-factor="${SCALE}" \
+			"${DS_DATA}"
 
 	VALDIR="${DS_DATA}/validation"
-	echo "generating data validate in ${VALDIR}"
-
-	# Determine number of processors for parallelism.
+	echo "generating validation data in ${VALDIR}"
 	mkdir -p "${VALDIR}"
 	eval "${DSTOOLS}/dsdgen \
 			-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
 			-DIR $VALDIR \
-			-SCALE 1 \
+			-SCALE ${SCALE} \
 			-TERMINATE N \
-			-RNGSEED $DGENSEED" \
 			-VALIDATE \
-			-VCOUNT 50 \
+			-VCOUNT 50"
 			2> /dev/null &
 else
 	echo "skipping data generation, directory exists: ${DS_DATA}"

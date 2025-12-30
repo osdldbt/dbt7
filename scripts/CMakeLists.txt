@@ -4,6 +4,7 @@ add_subdirectory (pgsql)
 set (SCRIPTS "")
 foreach (SCRIPT dbt7
                 dbt7-build-dsgen
+                dbt7-generate-data
                 dbt7-get-config
                 dbt7-load-test
                 dbt7-plot-results
