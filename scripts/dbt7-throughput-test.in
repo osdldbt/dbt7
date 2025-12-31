@@ -23,7 +23,7 @@ Options:
   -a DBMS          see DBMS options below
   -d DIALECT       dialect override
   -o PATH          path to save results
-  -i INPUT         input override, default $INPUT
+  -i INPUT         input override
   -n STREAMS       number of streams
   -r               restart database, if already running
   -s SCALE         scale factor, default $SCALE
@@ -189,13 +189,16 @@ echo $STREAMS > ${OUTPUT_DIR}/streams
 
 echo "**`date` throughput tests prep**"
 
-# If a seed file wasn't provided per spec, then don't specify one.
+# If a seed file wasn't provided per spec, then set to 1 since 0 will generate
+# the same queries between all the streams.
 SEED_FILE="${OUTPUT_DIR}/../seed"
 if [ -f "$SEED_FILE" ]; then
 	read SEED < $SEED_FILE
 	echo "Using generated seed file: $SEED"
-	RNGSEED_ARG="-RNGSEED $SEED"
+else
+	SEED=1
 fi
+RNGSEED_ARG="-RNGSEED ${SEED}"
 
 # Save dsdgen info.
 eval "${DSTOOLS}/dsdgen \
@@ -206,20 +209,14 @@ eval "${DSTOOLS}/dsdgen \
 		${RNGSEED_ARG}" \
 		> ${OUTPUT_DIR}/dsdgen.txt 2>&1 || exit 1
 
-# Generate the queries.  Clause 4.3.2
 TOTAL_STREAMS=$(( ($STREAMS * 2) + 1 ))
-eval "${DSTOOLS}/dsqgen \
-		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
-		-DIALECT $DIALECT \
-		-OUTPUT_DIR $OUTPUT_DIR \
-		-SCALE $SCALE \
-		-DIRECTORY $DSQUERY \
-		-STREAMS $TOTAL_STREAMS \
-		-LOG ${OUTPUT_DIR}/query-parameter.log \
-		$INPUT_ARG \
-		$TEMPLATE_ARG \
-		${RNGSEED_ARG}" \
-		> ${OUTPUT_DIR}/dsqgen.txt 2>&1 || exit 1
+dbt7-generate-queries \
+		--dialect="${DIALECT}" \
+		--scale-factor="${SCALE}" \
+		--streams=${TOTAL_STREAMS} \
+		--seed="${SEED}" \
+		"${DATABASE}" \
+		"${OUTPUT_DIR}" || exit 1
 
 # Determine number of processors for parallelism.
 CPUS=1

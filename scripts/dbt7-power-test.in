@@ -22,6 +22,7 @@ Usage:
 Options:
   -a DBMS          see DBMS options below
   -d DIALECT       dialect override
+  -i INPUT         INPUT templates
   -o PATH          path to save results
   -r               restart database, if already running
   -s SCALE         scale factor, default $SCALE
@@ -128,13 +129,15 @@ fi
 
 echo "**`date` power test prep**"
 
-# If a seed file wasn't provided per spec, then don't specify one.
+# If a seed file wasn't provided per spec, set to 0.
 SEED_FILE="${OUTPUT_DIR}/../seed"
 if [ -f "$SEED_FILE" ]; then
 	read SEED < $SEED_FILE
 	echo "Using generated seed file: $SEED"
-	RNGSEED_ARG="-RNGSEED $SEED"
+else
+	SEED=0
 fi
+RNGSEED_ARG="-RNGSEED ${SEED}"
 
 # Save dsdgen info.
 eval "${DSTOOLS}/dsdgen \
@@ -145,20 +148,13 @@ eval "${DSTOOLS}/dsdgen \
 		${RNGSEED_ARG}" \
 		> ${OUTPUT_DIR}/dsdgen.txt 2>&1 || exit 1
 
-# Generate the queries.  Clause 4.3.2
-eval "${DSTOOLS}/dsqgen \
-		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
-		-DIALECT $DIALECT \
-		-OUTPUT_DIR $OUTPUT_DIR \
-		-SCALE $SCALE \
-		-DIRECTORY $DSQUERY \
-		-STREAMS 1 \
-		-LOG ${OUTPUT_DIR}/query-pamaeter.log \
-		$INPUT_ARG \
-		$TEMPLATE_ARG \
-		${QUALIFY_ARG} \
-		${RNGSEED_ARG}" \
-		> ${OUTPUT_DIR}/dsqgen.txt 2>&1 || exit 1
+dbt7-generate-queries \
+		--dialect="${DIALECT}" \
+		--scale-factor="${SCALE}" \
+		--streams=1 \
+		--seed=${SEED} \
+		"${DATABASE}" \
+		"${OUTPUT_DIR}" || exit 1
 
 if [ $RESTART -eq 1 ] && [ $PRIVILEGED -eq 1 ]; then
 	dbt7-${DATABASE}-stop-db || exit 1

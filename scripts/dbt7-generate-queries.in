@@ -1,0 +1,169 @@
+#!/bin/bash
+@SHELLOPTIONS@
+#
+# This file is released under the terms of the Artistic License.
+# Please see the file LICENSE, included in this package, for details.
+#
+# Copyright The DBT-7 Authors
+
+INPUT=""
+SCALE=1
+SEED=0
+STREAMS=1
+QGEN_ARGS=""
+
+usage()
+{
+	cat << EOF
+$(basename "${0}") is the Database Test 7 (DBT-7) dsqgen wrapper
+
+Usage:
+  $(basename "${0}") [OPTION] DBMS DIRECTORY
+
+Options:
+  -d DIALECT, --dialect=DIALECT
+                   DIALECT override
+  -i INPUT, --input=INPUT
+                   INPUT templates
+  -s SCALE, --scale-factor=SCALE
+                   SCALE factor, default ${SCALE}
+  --seed=SEED      typically mmddhhmmsss (e.g. date +%m%d%H%M%S%3N) where 0
+                   makes all streams the same, default ${SEED}
+  --streams=STREAMS
+                   number of query STREAMS, default ${STREAMS}
+  --tpcdstools=DSHOME
+                   DSHOME is the directory location of the TPC-DS Tools
+  -V, --version    output version information, then exit
+  -?, --help       show this help, then exit
+
+DBMS options:
+  gp               Greenplum
+  pgsql            PostgreSQL
+
+DIRECTORY is the path to save flat files.
+
+@HOMEPAGE@
+EOF
+}
+
+if [ ! "${APPDIR}" = "" ]; then
+    DSHOME="${APPDIR}/opt/dsgen"
+fi
+
+# Custom argument handling for hopefully most portability.
+while [ "${#}" -gt 0 ] ; do
+	case "${1}" in
+	(-d | --dialect)
+		shift
+		DIALECT="${1}"
+		;;
+	(--dialect=?*)
+		DIALECT="${1#*--dialect=}"
+		;;
+	(-i | --input)
+		shift
+		INPUT="${1}"
+		;;
+	(--input=?*)
+		INPUT="${1#*--input=}"
+		;;
+	(-s | --scale-factor)
+		shift
+		SCALE="${1}"
+		;;
+	(--scale-factor=?*)
+		SCALE="${1#*--scale-factor=}"
+		;;
+	(--seed)
+		shift
+		SEED="${1}"
+		;;
+	(--seed=?*)
+		SEED="${1#*--seed=}"
+		;;
+	(--streams)
+		shift
+		STREAMS="${1}"
+		;;
+	(--streams=?*)
+		STREAMS="${1#*--streams=}"
+		;;
+   (--tpcdstools)
+		shift
+		DSHOME="${1}"
+		;;
+   (--tpcdstools=?*)
+		DSHOME="${1#*--tpcdstools=}"
+		;;
+	(-V | --version)
+		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
+		;;
+	(-\? | --help)
+		usage
+		exit 0
+		;;
+	(--* | -*)
+		echo "$(basename "${0}"): invalid option -- '${1}'"
+		echo "try \"$(basename "${0}") --help\" for more information."
+		exit 1
+		;;
+	(*)
+		break
+		;;
+	esac
+	shift
+done
+
+if [ "${#}" -eq 0 ]; then
+	printf "Specify which DBMS to test, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
+	exit 1
+fi
+DATABASE=${1}
+
+shift
+if [ "${#}" -eq 0 ]; then
+	printf "Specify which DIRECTORY to save queries, try \"%s -?\" " \
+			"$(basename "${0}")" 1>&2
+	echo "for more information." 1>&2
+	exit 1
+fi
+DIRECTORY=${1}
+if [ -d "${DIRECTORY}" ]; then
+	echo "ERROR: Specify new location, '${DIRECTORY}' already exists"
+	exit 1
+fi
+mkdir -p "${DIRECTORY}"
+
+if [ "${DIALECT}" = "" ]; then
+	DIALECT=${DATABASE}
+fi
+
+if [ "${INPUT}" = "" ]; then
+	INPUT="${DSHOME}/query_templates/templates-${DATABASE}.lst"
+fi
+QGEN_ARGS="${QGEN_ARGS} -INPUT ${INPUT}"
+
+if [ "${DSDISTRIBUTIONS}" = "" ]; then
+	DSDISTRIBUTIONS="${DSHOME}/tools/tpcds.idx"
+fi
+
+# If this is a scale factor of 1, perform query validation Clause 7.3.
+if [ "${SCALE}" -eq 1 ]; then
+    echo "generating power test queries for validation at scale factor is 1"
+	QGEN_ARGS="${QGEN_ARGS} -QUALIFY Y"
+fi
+
+# Generate the queries.  Clause 4.3.2
+eval "${DSHOME}/tools/dsqgen \
+		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+		-DIALECT ${DIALECT} \
+		-OUTPUT_DIR ${DIRECTORY} \
+		-SCALE ${SCALE} \
+		-DIRECTORY ${DSHOME}/query_templates \
+		-STREAMS ${STREAMS} \
+		-LOG ${DIRECTORY}/query-parameter.log \
+		-RNGSEED ${SEED} \
+		${QGEN_ARGS}" \
+		> "${DIRECTORY}/dsqgen.txt" 2>&1 || exit 1

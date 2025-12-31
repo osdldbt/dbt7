@@ -4,6 +4,8 @@ vX.Y.Z (YYYY-MM-DD)
   instead of creating conditionals to use PostgreSQL templates
 - Add generate-data script as a wrapper to dsdgen to facilitate testing data
   generation
+- Add generate-query script as a wrapper to dsqgen to facilitate testing query
+  generation
 
 v0.7.3 (2025-05-30)
 

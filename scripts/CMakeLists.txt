@@ -5,6 +5,7 @@ set (SCRIPTS "")
 foreach (SCRIPT dbt7
                 dbt7-build-dsgen
                 dbt7-generate-data
+                dbt7-generate-queries
                 dbt7-get-config
                 dbt7-load-test
                 dbt7-plot-results
