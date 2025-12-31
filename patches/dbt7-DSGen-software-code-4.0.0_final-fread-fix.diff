@@ -1,0 +1,31 @@
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dist.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
+@@ -313,7 +313,7 @@ load_dist(d_idx_t *di)
+ 			d->maximums[i] = 0;
+ 			for (j=0; j < di->length; j++)
+ 			{
+-				if (fread(&temp, 1, sizeof(int32_t), ifp) < 0)
++				if (fread(&temp, 1, sizeof(int32_t), ifp) != sizeof(int32_t))
+ 				{
+ 					fprintf(stderr, "Error: read of weights failed: ");
+ 					perror("load_dist()");
+@@ -350,7 +350,7 @@ load_dist(d_idx_t *di)
+ 		{
+ 			d->names = (char *)malloc(di->name_space);
+ 			MALLOC_CHECK(d->names);
+-			if (fread(d->names, 1, di->name_space * sizeof(char), ifp) < 0)
++			if (fread(d->names, 1, di->name_space * sizeof(char), ifp) != di->name_space * sizeof(char))
+ 			{
+ 				fprintf(stderr, "Error: read of names failed: ");
+ 				perror("load_dist()");
+@@ -362,7 +362,7 @@ load_dist(d_idx_t *di)
+ 		/* and finally the values themselves */
+ 		d->strings = (char *)malloc(sizeof(char) * di->str_space);
+ 		MALLOC_CHECK(d->strings);
+-		if (fread(d->strings, 1, di->str_space * sizeof(char), ifp) < 0)
++		if (fread(d->strings, 1, di->str_space * sizeof(char), ifp) != di->str_space * sizeof(char))
+ 		{
+ 			fprintf(stderr, "Error: read of strings failed: ");
+ 			perror("load_dist()");

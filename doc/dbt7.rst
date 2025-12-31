@@ -37,7 +37,7 @@ Required Software
 In addition to the database management system software, the following is also
 required:
 
-* cc
+* gcc
 * SQLite https://www.sqlite.org/index.html
 * lex
 * make

@@ -17,7 +17,7 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/makefile
  AIX_CFLAGS		= -q64 -O3 -D_LARGE_FILES
  HPUX_CFLAGS		= -O3 -Wall
 -LINUX_CFLAGS	= -g -Wall
-+LINUX_CFLAGS	= -g -Wall -Wno-unused-but-set-variable -Wno-misleading-indentation -Wno-unused-function
++LINUX_CFLAGS	= -g -Wall -std=gnu99 -O2 -pipe -fno-omit-frame-pointer -Wno-unused-but-set-variable -Wno-misleading-indentation -Wno-unused-function -Wno-format-overflow -Wno-format-truncation
  NCR_CFLAGS		= -g 
  SOLARIS_CFLAGS	= -O3 -Wall
  SOL86_CFLAGS	= -O3 

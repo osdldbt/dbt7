@@ -2,11 +2,12 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/config.h
 ===================================================================
 --- dbt7.orig/DSGen-software-code-4.0.0_final/tools/config.h
 +++ dbt7/DSGen-software-code-4.0.0_final/tools/config.h
-@@ -99,9 +99,10 @@
+@@ -99,9 +99,11 @@
  #endif /* INTERIX */
  
  #ifdef LINUX
 +#include <inttypes.h>
++#include <strings.h>
  #define SUPPORT_64BITS
  #define HUGE_TYPE	int64_t
 -#define HUGE_FORMAT	"%lld"
@@ -23,7 +24,7 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
  	while (kIndex > pMap->nMax)
  		pMap += 1;
 -	sprintf(r->szZip, "%05lld", kIndex);
-+	snprintf(r->szZip, sizeof(r->szZip), HUGE_FORMAT, kIndex);
++	snprintf(r->szZip, sizeof(r->szZip), "%05" PRId64, kIndex);
  	r->nGMTOffset = pMap->nOffset;
  	
  	return(r->nGMTOffset == -99?1:0);
@@ -57,7 +58,15 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/tdefs.c
 ===================================================================
 --- dbt7.orig/DSGen-software-code-4.0.0_final/tools/tdefs.c
 +++ dbt7/DSGen-software-code-4.0.0_final/tools/tdefs.c
-@@ -147,7 +147,7 @@ getTdefsByNumber(int nTable)
+@@ -36,6 +36,7 @@
+ #include "config.h"
+ #include "porting.h"
+ #include <stdio.h>
++#include <strings.h>
+ #include "tables.h"
+ #include "columns.h"
+ #include "genrand.h"
+@@ -147,7 +148,7 @@ getTdefsByNumber(int nTable)
  }
  */
  tdef *
@@ -66,3 +75,74 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/tdefs.c
  {
     if (nTable >= S_BRAND)
        return(&s_tdefs[nTable - S_BRAND]);
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
+@@ -85,9 +85,9 @@ mk_dbgen_version(void *pDest, ds_key_t k
+ 	time( &ltime );                 /* Get time in seconds */
+ 	pTimeStamp = localtime( &ltime );  /* Convert time to struct */
+ 	
+-	sprintf(r->szDate, "%4d-%02d-%02d", pTimeStamp->tm_year + 1900, pTimeStamp->tm_mon + 1, pTimeStamp->tm_mday);
+-	sprintf(r->szTime, "%02d:%02d:%02d", pTimeStamp->tm_hour, pTimeStamp->tm_min, pTimeStamp->tm_sec);
+-	sprintf (r->szVersion,"%d.%d.%d%s", VERSION, RELEASE, MODIFICATION, PATCH);
++	snprintf(r->szDate, 11, "%4d-%02d-%02d", pTimeStamp->tm_year + 1900, pTimeStamp->tm_mon + 1, pTimeStamp->tm_mday);
++	snprintf(r->szTime, 9, "%02d:%02d:%02d", pTimeStamp->tm_hour, pTimeStamp->tm_min, pTimeStamp->tm_sec);
++	snprintf (r->szVersion, RS_VERSION_LENGTH, "%d.%d.%d%s", VERSION, RELEASE, MODIFICATION, PATCH);
+ 	strcpy(r->szCmdLineArgs, g_szCommandLine);
+ 	
+ 	return(0);
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/build_support.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
+@@ -369,7 +369,7 @@ embed_string(char *szDest, char *szDist,
+ 
+ 	pick_distribution(&szWord, szDist, nValue, nWeight, nStream);
+ 	nPosition = genrand_integer(NULL, DIST_UNIFORM, 0, strlen(szDest) - strlen(szWord) - 1, 0, nStream);
+-	strncpy(&szDest[nPosition], szWord, strlen(szWord));
++	strncpy(&szDest[nPosition], szWord, nStream);
+ 
+ 	return(0);
+ }
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/genrand.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/genrand.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/genrand.c
+@@ -267,7 +267,7 @@ genrand_decimal (decimal_t * dest, int d
+                  decimal_t * mean, int stream)
+ {
+    int i;
+-   decimal_t res;
++   decimal_t res = {0};
+    double fres = 0.0;
+ 
+    if (min->precision < max->precision)
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/r_params.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+@@ -338,7 +338,7 @@ init_params(void)
+ 	{
+ 		params[options[i].index] = (char *)malloc(PARAM_MAX_LEN * sizeof(char));
+ 		MALLOC_CHECK(params[options[i].index]);
+-		strncpy(params[options[i].index], options[i].dflt, 80);
++		strncpy(params[options[i].index], options[i].dflt, PARAM_MAX_LEN - 1);
+ 		if (*options[i].dflt)
+ 			options[i].flags |= OPT_DFLT;
+ 	}
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/join.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/join.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/join.c
+@@ -305,9 +305,9 @@ web_join(int col, ds_key_t join_key)
+ 		nConcurrentSites = (int)get_rowcount(CONCURRENT_WEB_SITES);
+ 		dSiteOpen = strtodate(WEB_START_DATE);
+ 		nSiteDuration -= dSiteOpen->julian;
+-		free(dSiteOpen);
+ 		nSiteDuration *= nConcurrentSites;
+ 		nOffset = (dSiteClose->julian - dSiteOpen->julian) / (2 * nSiteDuration) ;
++		free(dSiteOpen);
+ 		init = 1;
+ 	}
+ 	

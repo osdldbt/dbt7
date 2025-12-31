@@ -7,6 +7,10 @@ vX.Y.Z (YYYY-MM-DD)
 - Add generate-query script as a wrapper to dsqgen to facilitate testing query
   generation
 - Update pgsqlea template to use VERBOSE and BUFFERS with EXPLAIN ANALYZE
+- Patch additional warnings and potential bugs in TPC-DS tools v4.0.0: build
+  with -O2, -std=gnu99, fix checks on fread() return values, fix printing Zip
+  with leading 0's, replace deprecated ftime() with gettimeofday(), free()
+  dSiteOpen after its last reference.
 
 v0.7.3 (2025-05-30)
 

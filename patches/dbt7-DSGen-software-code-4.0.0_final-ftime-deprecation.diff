@@ -1,0 +1,32 @@
+Index: dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+===================================================================
+--- dbt7.orig/DSGen-software-code-4.0.0_final/tools/driver.c
++++ dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+@@ -48,6 +48,7 @@
+ #else
+ #include <strings.h>
+ #endif
++#include <sys/time.h>
+ #include "config.h"
+ #include "date.h"
+ #include "decimal.h"
+@@ -395,7 +396,7 @@ main (int ac, char **av)
+ 		kFirstRow,
+ 		kRandomRow,
+ 		kValidateCount;
+-	struct timeb t;
++	struct timeval t;
+    tdef *pT;
+    table_func_t *pF;
+ 	
+@@ -523,8 +524,8 @@ main (int ac, char **av)
+ 
+ 		if (!is_set("RNGSEED"))
+ 		{
+-			ftime(&t);
+-			setSeed(VALIDATE_STREAM, t.millitm);
++			gettimeofday(&t, NULL);
++			setSeed(VALIDATE_STREAM, t.tv_usec / 1000);
+ 		} else {
+ 			setSeed(VALIDATE_STREAM, get_int("RNGSEED"));
+ 		}
