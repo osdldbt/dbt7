@@ -9,6 +9,7 @@
 INPUT=""
 SCALE=1
 SEED=0
+SPLIT=0
 STREAMS=1
 QGEN_ARGS=""
 
@@ -29,6 +30,7 @@ Options:
                    SCALE factor, default ${SCALE}
   --seed=SEED      typically mmddhhmmsss (e.g. date +%m%d%H%M%S%3N) where 0
                    makes all streams the same, default ${SEED}
+  --split          create a file per query, this not to spec
   --streams=STREAMS
                    number of query STREAMS, default ${STREAMS}
   --tpcdstools=DSHOME
@@ -62,10 +64,11 @@ while [ "${#}" -gt 0 ] ; do
 		;;
 	(-i | --input)
 		shift
-		INPUT="${1}"
+		INPUT=$(realpath "${1}")
 		;;
 	(--input=?*)
 		INPUT="${1#*--input=}"
+		INPUT="${INPUT/\~/${HOME}/}"
 		;;
 	(-s | --scale-factor)
 		shift
@@ -81,6 +84,9 @@ while [ "${#}" -gt 0 ] ; do
 	(--seed=?*)
 		SEED="${1#*--seed=}"
 		;;
+	(--split)
+		SPLIT=1
+		;;
 	(--streams)
 		shift
 		STREAMS="${1}"
@@ -90,10 +96,11 @@ while [ "${#}" -gt 0 ] ; do
 		;;
    (--tpcdstools)
 		shift
-		DSHOME="${1}"
+		DSHOME=$(realpath "${1}")
 		;;
    (--tpcdstools=?*)
 		DSHOME="${1#*--tpcdstools=}"
+		DSHOME="${DSHOME/\~/${HOME}/}"
 		;;
 	(-V | --version)
 		echo "$(basename "${0}") (Database Test 7) v@PROJECT_VERSION@"
@@ -130,10 +137,6 @@ if [ "${#}" -eq 0 ]; then
 	exit 1
 fi
 DIRECTORY=${1}
-if [ -d "${DIRECTORY}" ]; then
-	echo "ERROR: Specify new location, '${DIRECTORY}' already exists"
-	exit 1
-fi
 mkdir -p "${DIRECTORY}"
 
 if [ "${DIALECT}" = "" ]; then
@@ -155,15 +158,34 @@ if [ "${SCALE}" -eq 1 ]; then
 	QGEN_ARGS="${QGEN_ARGS} -QUALIFY Y"
 fi
 
-# Generate the queries.  Clause 4.3.2
-eval "${DSHOME}/tools/dsqgen \
-		-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
-		-DIALECT ${DIALECT} \
-		-OUTPUT_DIR ${DIRECTORY} \
-		-SCALE ${SCALE} \
-		-DIRECTORY ${DSHOME}/query_templates \
-		-STREAMS ${STREAMS} \
-		-LOG ${DIRECTORY}/query-parameter.log \
-		-RNGSEED ${SEED} \
-		${QGEN_ARGS}" \
-		> "${DIRECTORY}/dsqgen.txt" 2>&1 || exit 1
+if [ ${SPLIT} -eq 0 ]; then
+	# Generate the queries.  Clause 4.3.2
+	eval "${DSHOME}/tools/dsqgen \
+			-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+			-DIALECT ${DIALECT} \
+			-OUTPUT_DIR ${DIRECTORY} \
+			-SCALE ${SCALE} \
+			-DIRECTORY ${DSHOME}/query_templates \
+			-STREAMS ${STREAMS} \
+			-LOG ${DIRECTORY}/query-parameter.log \
+			${QGEN_ARGS}" \
+			> "${DIRECTORY}/dsqgen.txt" 2>&1 || exit 1
+else
+	# This is not to spec
+	while IFS= read -r TEMPLATE; do
+		NUMBER=$(echo "${TEMPLATE}" | grep -o '[0-9]\+')
+		eval "${DSHOME}/tools/dsqgen \
+				-DISTRIBUTIONS ${DSDISTRIBUTIONS} \
+				-DIALECT ${DIALECT} \
+				-OUTPUT_DIR ${DIRECTORY} \
+				-SCALE ${SCALE} \
+				-DIRECTORY ${DSHOME}/query_templates \
+				-STREAMS ${STREAMS} \
+				-LOG ${DIRECTORY}/query${NUMBER}-parameter.log \
+				-FILTER Y \
+				-TEMPLATE ${TEMPLATE} \
+				${QGEN_ARGS}" \
+				> "${DIRECTORY}/query${NUMBER}.sql" \
+				2> "${DIRECTORY}/dsqgen.txt" || exit 1
+	done < "${INPUT}"
+fi
