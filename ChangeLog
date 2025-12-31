@@ -6,6 +6,7 @@ vX.Y.Z (YYYY-MM-DD)
   generation
 - Add generate-query script as a wrapper to dsqgen to facilitate testing query
   generation
+- Update pgsqlea template to use VERBOSE and BUFFERS with EXPLAIN ANALYZE
 
 v0.7.3 (2025-05-30)
 

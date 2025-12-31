@@ -2164,7 +2164,7 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqlea.tpl
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
-+define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
++define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_buffers TO on; SET auto_explain.log_verbose TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
 Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql.lst
 ===================================================================
