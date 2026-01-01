@@ -11,6 +11,8 @@ vX.Y.Z (YYYY-MM-DD)
   with -O2, -std=gnu99, fix checks on fread() return values, fix printing Zip
   with leading 0's, replace deprecated ftime() with gettimeofday(), free()
   dSiteOpen after its last reference.
+- AppImage container updated to use debian archives for buster and new
+  appimagetool release location
 
 v0.7.3 (2025-05-30)
 
