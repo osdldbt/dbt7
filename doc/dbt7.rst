@@ -78,7 +78,10 @@ For example, to build the TPC-DS Tools, unzip the TPC-DS Tools zip file and run
 `dbt7-build-dbgen` against the resulting directory::
 
     unzip *-tpc-ds-tool.zip
-    dbt7-build-dsgen DSGen-software-code-3.2.0rc1
+    dbt7-build-dsgen DSGen-software-code-4.0.0_final
+
+For brevity, future references to the location of the TPC-DS tools will be
+`$DSHOME`.
 
 Quick Start
 -----------
@@ -86,7 +89,7 @@ Quick Start
 Once the TPC-DS Tools is built, only one command needs to be issued to run a
 complete test::
 
-    dbt7-run --tpchtools="TPC-DS V3.0.1" pgsql /tmp/results
+    dbt7-run --tpchtools=$DSHOME pgsql /tmp/results
 
 This will run the generate the data files for a 1 GB scale factor database
 load, power and throughput test, with 2 streams, against PostgreSQL and save
@@ -155,11 +158,11 @@ A database needs to be created first, but only needs to be loaded once if
 testing individual queries.  This can be done with the run script using the
 `--load` flag.  A PostgreSQL example::
 
-    dbt7 run --load pgsql load-results
+    dbt7 run --tpchtools=$DSHOME --load pgsql load-results
 
 Then any query can be tested.  For example running Query 4::
 
-    dbt7 run-query 55 pgsql
+    dbt7 run-query --tpchtools=$DSHOME 55 pgsql
 
 Here is an example of the output query output, the results, and the execution
 time::

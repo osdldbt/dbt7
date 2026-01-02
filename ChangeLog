@@ -13,6 +13,7 @@ vX.Y.Z (YYYY-MM-DD)
   dSiteOpen after its last reference.
 - AppImage container updated to use debian archives for buster and new
   appimagetool release location
+- Minor documentation updates to match recent usage changes
 
 v0.7.3 (2025-05-30)
 
