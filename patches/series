@@ -2,3 +2,4 @@ dbt7-DSGen-software-code-4.0.0_final.diff
 dbt7-DSGen-software-code-4.0.0_final-warnings.diff
 dbt7-DSGen-software-code-4.0.0_final-postgresql-queries.diff
 dbt7-DSGen-software-code-4.0.0_final-postgresql-queries-test.diff
+dbt7-DSGen-software-code-4.0.0_final-greenplum-queries.diff

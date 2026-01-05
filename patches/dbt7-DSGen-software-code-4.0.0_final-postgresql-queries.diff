@@ -2136,40 +2136,40 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query98.tpl
 +        ,i_item_desc
 +        ,revenueratio;
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/postgresql.tpl
+Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsql.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/postgresql.tpl
++++ dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsql.tpl
 @@ -0,0 +1,5 @@
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/postgresqle.tpl
+Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqle.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/postgresqle.tpl
++++ dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqle.tpl
 @@ -0,0 +1,5 @@
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/postgresqlea.tpl
+Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqlea.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/postgresqlea.tpl
++++ dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqlea.tpl
 @@ -0,0 +1,5 @@
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-postgresql.lst
+Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql.lst
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-postgresql.lst
++++ dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql.lst
 @@ -0,0 +1,99 @@
 +query1.tpl
 +../query_postgresql/query2.tpl

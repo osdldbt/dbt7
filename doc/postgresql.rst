@@ -14,13 +14,12 @@ Run a 1GB test (with `DBT7DMPREFIX` unset)::
 Run a 1GB test and capture `EXPLAIN` output query results::
 
     export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice;"
-    dbt7-run -d postgresqle pgsql /tmp/results
+    dbt7-run -d pgsqle pgsql /tmp/results
 
 Run a 1GB test and capture `EXPLAIN ANALYZE` output query::
 
     export DBT7DMPREFIX="LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_level TO notice;"
-    dbt7-run -d postgresqlea \
-            pgsql /tmp/results
+    dbt7-run -d pgsqlea pgsql /tmp/results
 
 Advanced PostgreSQL Usage
 -------------------------

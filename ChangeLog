@@ -1,3 +1,8 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- Simplify scripts by creating separate Greenplum query dialects and inputs
+  instead of creating conditionals to use PostgreSQL templates
+
 v0.7.3 (2025-05-30)
 
 - pgsql: fix unique index definition on s_purchase_lineitem

@@ -257,24 +257,10 @@ if [ "${#}" -eq 0 ]; then
 fi
 
 if [ "${DIALECT_ARG}" = "" ]; then
-	if [ "${DATABASE}"  = "gp" ] || [ "${DATABASE}"  = "pgsql" ]; then
-		DIALECT_ARG="-d postgresql"
-	else
-		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
-				"$(basename "${0}")" 1>&2
-		echo "for more information." 1>&2
-		exit 1
-	fi
+	DIALECT_ARG="-d ${DATABASE}"
 fi
 if [ "${INPUT_ARG}" = "" ]; then
-	if [ "${DATABASE}"  = "gp" ] || [ "${DATABASE}"  = "pgsql" ]; then
-		INPUT_ARG="-i ${DSQUERY}/templates-postgresql.lst"
-	else
-		printf "Unsupported DBMS '${DATABASE}', try \"%s -?\" " \
-				"$(basename "${0}")" 1>&2
-		echo "for more information." 1>&2
-		exit 1
-	fi
+	INPUT_ARG="-i ${DSQUERY}/templates-${DATABASE}.lst"
 fi
 
 OUTPUT_DIR=${1}

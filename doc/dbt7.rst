@@ -49,6 +49,7 @@ Supported Database Systems
 
 These are the currently supported database systems:
 
+* Greenplum
 * PostgreSQL
 
 Optional Software
@@ -130,13 +131,13 @@ The TPC-DS Tools contain the official set of query templates in the
 use in DBT-7 requires up to 3 steps:
 
 1. Create a list of the 99 query templates to be executed, e.g.
-   `templates-postgresql.tpl`
+   `templates-pgsql.tpl`
 2. Create new query template file for any modification needed from the official
    templates.  e.g. Copy `query23.tpl` to `query23postgresql.tpl`.  It is
    important to keep the query number in the filename for proper recording and
    analysis with the DBT-7 kit.
 3. Create a new dialect file that contains proper syntax for transaction
-   control statements, and limit handling.  e.g. `postgresql.tpl`
+   control statements, and limit handling.  e.g. `pgsql.tpl`
 
 Testing Individual Queries
 ==========================

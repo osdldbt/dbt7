@@ -586,10 +586,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql_test/query99.tpl
 +++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql_test/query99.tpl
 @@ -0,0 +1 @@
 +SELECT pg_sleep(1);
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-postgresql-test.lst
+Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql-test.lst
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-postgresql-test.lst
++++ dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql-test.lst
 @@ -0,0 +1,99 @@
 +../query_postgresql_test/query1.tpl
 +../query_postgresql_test/query2.tpl
