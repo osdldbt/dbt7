@@ -57,10 +57,8 @@ Optional Software
 
 * Docutils - **rst2html5** is used to generate HTML from the reStructuredText
   reports.
-* **sar**, **pidstat** - While the scripts assume this particular version of
-  **sar** and **pidstat** for Linux, it is possible to run on non-Linux based
-  operating systems with some modifications to the kit.
-* gnuplot - Used for generating plots for the HTML report
+* **sar**, **pidstat** - Used for collecting system and per process statistics.
+* gnuplot - Used for generating plots for the HTML report.
 * pandoc - Used only to generated PDF files from the HTML reports.
 
 ------------
@@ -73,6 +71,7 @@ Building TPC-DS Tools
 DBT-7 provides the script `dbt7-build-dsgen` to apply patches and compile the
 TPC-DS Tools.  The patches that are applied are minor code changes and query
 templates to make the TPC-DS Tools work with the databases supposed by DBT-7.
+These patches are in the `patches` subdirectory.
 
 For example, to build the TPC-DS Tools, unzip the TPC-DS Tools zip file and run
 `dbt7-build-dbgen` against the resulting directory::
@@ -111,10 +110,10 @@ If system and database stats are collected, the *dbt7-report* script can be run
 Advanced Usage
 --------------
 
-The *dbt7-run* script can be used to run any combination of a load test, power
-test, and throughput tests combined with the data maintenance tests.  But be
-aware that a load test must be run in order to create the database before a
-power or throughput tests can be run individually.
+The *dbt7-run* script can be used to run any combination of a Load Test, Power
+Test, and Throughput Test combined with the Data Maintenance Test.  But be
+aware that a Load Test must be run in order to create the database before a
+Power or Throughput Tests can be run individually.
 
 -----------------------------------------
 Database Management System Specific Notes
@@ -168,13 +167,13 @@ Here is an example of the output query output, the results, and the execution
 time::
 
     select  i_brand_id brand_id, i_brand brand,
- 	    sum(ss_ext_sales_price) ext_price
+             sum(ss_ext_sales_price) ext_price
      from date_dim, store_sales, item
      where d_date_sk = ss_sold_date_sk
- 	    and ss_item_sk = i_item_sk
- 	    and i_manager_id=36
- 	    and d_moy=12
- 	    and d_year=2001
+             and ss_item_sk = i_item_sk
+             and i_manager_id=36
+             and d_moy=12
+             and d_year=2001
      group by i_brand, i_brand_id
      order by ext_price desc, i_brand_id
     limit 100 ;
