@@ -176,7 +176,7 @@ if [ $# -eq 0 ]; then
 else
 	OUTDIR="${1}"
 	if [ -d "${OUTDIR}" ]; then
-		>&2 echo "Error: stopping to prevent overwriting existing directory"
+		echo "Error: stopping to prevent overwriting existing directory"
 		exit 1
 	fi
 	mkdir -p "${OUTDIR}"
@@ -192,7 +192,7 @@ if [ "${DSHOME}" = "" ]; then
 fi
 export DSHOME
 if [ ! -d "${DSHOME}" ]; then
-	>&2 echo "ERROR: DSHOME dir does not exist: ${DSHOME}"
+	echo "ERROR: DSHOME dir does not exist: ${DSHOME}"
 	exit 2
 fi
 export DSTOOLS="${DSHOME}/tools"

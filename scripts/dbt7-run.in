@@ -350,7 +350,7 @@ if [ $RUN_POWER_TEST -eq 1 ]; then
 			$PRIVILEGED_ARG \
 			${STATS_ARG}"
 	if [ $? -eq 1 ] ; then
-		2&> echo "Error: power test problem!"
+		echo "Error: power test problem!"
 		exit 1
 	fi
 fi
@@ -368,7 +368,7 @@ if [ ${RUN_THROUGHPUT_TEST} -eq 1 ]; then
 			$PROFILE_FLAG \
 			${STATS_ARG}"
 	if [ $? -eq 1 ] ; then
-		2&> echo "throughput test problem!"
+		echo "throughput test problem!"
 		exit 1
 	fi
 fi

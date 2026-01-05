@@ -116,13 +116,13 @@ while [ "${#}" -gt 0 ] ; do
 done
 
 if [ "x$DATABASE" = "x" ]; then
-	2&> echo "Error: Specify database management system with -a flag"
+	echo "Error: Specify database management system with -a flag"
 	usage
 	exit 1
 fi
 
 if [ "x$OUTPUT_DIR" = "x" ]; then
-	2&> echo "Error: Specify results directory with -o flag"
+	echo "Error: Specify results directory with -o flag"
 	usage
 	exit 1
 fi

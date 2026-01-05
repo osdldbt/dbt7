@@ -15,6 +15,7 @@ vX.Y.Z (YYYY-MM-DD)
   appimagetool release location
 - Minor documentation updates to match recent usage changes
 - Bump touchstone tools version from v0.9.1 to v0.9.2
+- Remove non-POSIX use of ">&2 echo"
 
 v0.7.3 (2025-05-30)
 

@@ -163,21 +163,21 @@ while [ "${#}" -gt 0 ] ; do
 done
 
 if [ "x${DATABASE}" = "x" ]; then
-	>&2 echo "Error: Specify database management system with -a flag"
+	echo "Error: Specify database management system with -a flag"
 	exit 1
 fi
 
 if [ "x${STREAMS}" = "x" ]; then
-	>&2 echo "Error: Specify the number of streams with -n flag"
+	echo "Error: Specify the number of streams with -n flag"
 	exit 1
 fi
 
 if [ "x${DSTOOLS}" = "x" ]; then
-	>&2 echo "Error: DSTOOLS environment variable not set"
+	echo "Error: DSTOOLS environment variable not set"
 	exit 1
 fi
 if [ ! -d $DSTOOLS ]; then
-	>&2 echo "Error: DSTOOLS dir does not exist: $DSTOOLS"
+	echo "Error: DSTOOLS dir does not exist: $DSTOOLS"
 	exit 2
 fi
 
