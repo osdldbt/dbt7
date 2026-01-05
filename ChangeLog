@@ -1,4 +1,4 @@
-vX.Y.Z (YYYY-MM-DD)
+v0.7.4 (2026-01-05)
 
 - Simplify scripts by creating separate Greenplum query dialects and inputs
   instead of creating conditionals to use PostgreSQL templates
