@@ -3,6 +3,11 @@ execute_process(
     OUTPUT_VARIABLE MANDATE
 )
 
+find_program(RST2MAN NAMES rst2man.py rst2man)
+if (NOT RST2MAN)
+    message(WARNING "rst2man not found, man pages not generated")
+endif (NOT RST2MAN)
+
 foreach (MANPAGE dbt7 dbt7-load-test dbt7-power-test dbt7-report dbt7-run
                  dbt7-throughput-test)
     configure_file(
@@ -11,7 +16,7 @@ foreach (MANPAGE dbt7 dbt7-load-test dbt7-power-test dbt7-report dbt7-run
     )
 
     execute_process(
-        COMMAND rst2man ${CMAKE_BINARY_DIR}/man/man1/${MANPAGE}.1.rst
+        COMMAND ${RST2MAN} ${CMAKE_BINARY_DIR}/man/man1/${MANPAGE}.1.rst
         OUTPUT_FILE ${CMAKE_BINARY_DIR}/man/man1/${MANPAGE}.1
     )
 endforeach(MANPAGE)
