@@ -2,6 +2,7 @@ vX.Y.Z (YYYY-MM-DD)
 
 - Update man page generation to now detect whether rst2man or rst2man.py is on
   the system instead of hardcoding one way or the other.
+- Bump touchstone tools version from v0.9.2 to v0.10.0
 
 v0.7.4 (2026-01-05)
 
