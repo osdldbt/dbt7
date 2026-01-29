@@ -406,6 +406,8 @@ if [ ${TABLESPACES} -eq 1 ]; then
 	EOF
 fi
 
+# Indexes on primary key and foreign key columns
+
 ${PSQL} <<- EOF &
 	CREATE UNIQUE INDEX pk_store_sales
 	ON store_sales (ss_item_sk, ss_ticket_number)
@@ -1099,6 +1101,1214 @@ ${PSQL} <<- EOF &
 	ON s_inventory (invn_date)
 	WITH (fillfactor = 100)
 	${I_INVN_DATE_TABLESPACE}
+	;
+EOF
+
+# Individual indexes on additional columns used in WHERE or ORDER BY clauses
+# TODO: Figure out which ones are actually needed.
+# TODO: Using tablespaces could still be useful in extreme cases.
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cc_county
+	ON call_center (cc_county)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cc_name
+	ON call_center (cc_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cc_manager
+	ON call_center (cc_manager)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cr_call_center_sk
+	ON catalog_returns (cr_call_center_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cr_item_sk
+	ON catalog_returns (cr_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cr_order_number
+	ON catalog_returns (cr_order_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cr_return_amount
+	ON catalog_returns (cr_return_amount)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cr_returning_addr_sk
+	ON catalog_returns (cr_returning_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cr_returning_customer_sk
+	ON catalog_returns (cr_returning_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_bill_cdemo_sk
+	ON catalog_sales (cs_bill_cdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_bill_hdemo_sk
+	ON catalog_sales (cs_bill_hdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_call_center_sk
+	ON catalog_sales (cs_call_center_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_bill_addr_sk
+	ON catalog_sales (cs_bill_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_bill_customer_sk
+	ON catalog_sales (cs_bill_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_catalog_page_sk
+	ON catalog_sales (cs_catalog_page_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_ext_discount_amt
+	ON catalog_sales (cs_ext_discount_amt)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_item_sk
+	ON catalog_sales (cs_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_net_paid
+	ON catalog_sales (cs_net_paid)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_promo_sk
+	ON catalog_sales (cs_promo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_ship_customer_sk
+	ON catalog_sales (cs_ship_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_net_profit
+	ON catalog_sales (cs_net_profit)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_order_number
+	ON catalog_sales (cs_order_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_quantity
+	ON catalog_sales (cs_quantity)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_sales_price
+	ON catalog_sales (cs_sales_price)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_ship_addr_sk
+	ON catalog_sales (cs_ship_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_ship_date_sk
+	ON catalog_sales (cs_ship_date_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_ship_mode_sk
+	ON catalog_sales (cs_ship_mode_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cs_sold_time_sk
+	ON catalog_sales (cs_sold_time_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_birth_country
+	ON customer (c_birth_country)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_current_addr_sk
+	ON customer (c_current_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_current_cdemo_sk
+	ON customer (c_current_cdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_current_hdemo_sk
+	ON customer (c_current_hdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_email_address
+	ON customer (c_email_address)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_first_name
+	ON customer (c_first_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_last_name
+	ON customer (c_last_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_login
+	ON customer (c_login)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_preferred_cust_flag
+	ON customer (c_preferred_cust_flag)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_first_sales_date_sk
+	ON customer (c_first_sales_date_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_salutation
+	ON customer (c_salutation)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_c_first_shipto_date_sk
+	ON customer (c_first_shipto_date_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_city
+	ON customer_address (ca_city)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_county
+	ON customer_address (ca_county)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_country
+	ON customer_address (ca_country)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_gmt_offset
+	ON customer_address (ca_gmt_offset)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_location_type
+	ON customer_address (ca_location_type)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_state
+	ON customer_address (ca_state)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_street_name
+	ON customer_address (ca_street_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_street_number
+	ON customer_address (ca_street_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_street_type
+	ON customer_address (ca_street_type)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_suite_number
+	ON customer_address (ca_suite_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ca_zip
+	ON customer_address (ca_zip)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_credit_rating
+	ON customer_demographics (cd_credit_rating)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_dep_college_count
+	ON customer_demographics (cd_dep_college_count)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_dep_count
+	ON customer_demographics (cd_dep_count)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_dep_employed_count
+	ON customer_demographics (cd_dep_employed_count)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_education_status
+	ON customer_demographics (cd_education_status)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_gender
+	ON customer_demographics (cd_gender)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_marital_status
+	ON customer_demographics (cd_marital_status)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_cd_purchase_estimate
+	ON customer_demographics (cd_purchase_estimate)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_dom
+	ON date_dim (d_dom)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_month_seq
+	ON date_dim (d_month_seq)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_moy
+	ON date_dim (d_moy)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_qoy
+	ON date_dim (d_qoy)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_quarter_name
+	ON date_dim (d_quarter_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_week_seq
+	ON date_dim (d_week_seq)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_d_year
+	ON date_dim (d_year)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_hd_buy_potential
+	ON household_demographics (hd_buy_potential)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_hd_dep_count
+	ON household_demographics (hd_dep_count)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_hd_income_band_sk
+	ON household_demographics (hd_income_band_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_hd_vehicle_count
+	ON household_demographics (hd_vehicle_count)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ib_lower_bound
+	ON income_band (ib_lower_bound)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ib_upper_bound
+	ON income_band (ib_upper_bound)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_inv_date_sk
+	ON inventory (inv_date_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_inv_item_sk
+	ON inventory (inv_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_inv_quantity_on_hand
+	ON inventory (inv_quantity_on_hand)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_inv_warehouse_sk
+	ON inventory (inv_warehouse_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_brand
+	ON item (i_brand)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_brand_id
+	ON item (i_brand_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_category
+	ON item (i_category)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_category_id
+	ON item (i_category_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_class
+	ON item (i_class)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_color
+	ON item (i_color)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_class_id
+	ON item (i_class_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_current_price
+	ON item (i_current_price)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_manager_id
+	ON item (i_manager_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_manufact
+	ON item (i_manufact)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_manufact_id
+	ON item (i_manufact_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_size
+	ON item (i_size)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_units
+	ON item (i_units)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_item_desc
+	ON item (i_item_desc)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_i_product_name
+	ON item (i_product_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_p_channel_dmail
+	ON promotion (p_channel_dmail)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_p_channel_email
+	ON promotion (p_channel_email)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_p_channel_event
+	ON promotion (p_channel_event)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_p_channel_tv
+	ON promotion (p_channel_tv)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_r_reason_desc
+	ON reason (r_reason_desc)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sm_carrier
+	ON ship_mode (sm_carrier)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sm_type
+	ON ship_mode (sm_type)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_city
+	ON store (s_city)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_company_id
+	ON store (s_company_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_company_name
+	ON store (s_company_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_county
+	ON store (s_county)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_gmt_offset
+	ON store (s_gmt_offset)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_market_id
+	ON store (s_market_id)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_number_employees
+	ON store (s_number_employees)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_state
+	ON store (s_state)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_store_name
+	ON store (s_store_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_street_name
+	ON store (s_street_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_street_number
+	ON store (s_street_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_street_type
+	ON store (s_street_type)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_suite_number
+	ON store (s_suite_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_s_zip
+	ON store (s_zip)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_cdemo_sk
+	ON store_returns (sr_cdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_customer_sk
+	ON store_returns (sr_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_item_sk
+	ON store_returns (sr_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_reason_sk
+	ON store_returns (sr_reason_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_return_amt
+	ON store_returns (sr_return_amt)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_store_sk
+	ON store_returns (sr_store_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_sr_ticket_number
+	ON store_returns (sr_ticket_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_addr_sk
+	ON store_sales (ss_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_customer_sk
+	ON store_sales (ss_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_cdemo_sk
+	ON store_sales (ss_cdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_hdemo_sk
+	ON store_sales (ss_hdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_item_sk
+	ON store_sales (ss_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_net_paid
+	ON store_sales (ss_net_paid)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_net_profit
+	ON store_sales (ss_net_profit)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_promo_sk
+	ON store_sales (ss_promo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_quantity
+	ON store_sales (ss_quantity)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_sales_price
+	ON store_sales (ss_sales_price)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_sold_time_sk
+	ON store_sales (ss_sold_time_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_store_sk
+	ON store_sales (ss_store_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ss_ticket_number
+	ON store_sales (ss_ticket_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_t_hour
+	ON time_dim (t_hour)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_t_meal_time
+	ON time_dim (t_meal_time)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_t_minute
+	ON time_dim (t_minute)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_w_city
+	ON warehouse (w_city)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_w_county
+	ON warehouse (w_county)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_w_country
+	ON warehouse (w_country)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_w_warehouse_sq_ft
+	ON warehouse (w_warehouse_sq_ft)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_w_state
+	ON warehouse (w_state)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_w_warehouse_name
+	ON warehouse (w_warehouse_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wp_char_count
+	ON web_page (wp_char_count)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_item_sk
+	ON web_returns (wr_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_order_number
+	ON web_returns (wr_order_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_reason_sk
+	ON web_returns (wr_reason_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_refunded_cdemo_sk
+	ON web_returns (wr_refunded_cdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_refunded_addr_sk
+	ON web_returns (wr_refunded_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_returning_cdemo_sk
+	ON web_returns (wr_returning_cdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_returning_addr_sk
+	ON web_returns (wr_returning_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_return_amt
+	ON web_returns (wr_return_amt)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_returning_customer_sk
+	ON web_returns (wr_returning_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_wr_web_page_sk
+	ON web_returns (wr_web_page_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_bill_addr_sk
+	ON web_sales (ws_bill_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_bill_customer_sk
+	ON web_sales (ws_bill_customer_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_item_sk
+	ON web_sales (ws_item_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_net_paid
+	ON web_sales (ws_net_paid)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_net_profit
+	ON web_sales (ws_net_profit)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_quantity
+	ON web_sales (ws_quantity)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_order_number
+	ON web_sales (ws_order_number)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_sales_price
+	ON web_sales (ws_sales_price)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_ship_addr_sk
+	ON web_sales (ws_ship_addr_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_ship_date_sk
+	ON web_sales (ws_ship_date_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_ship_hdemo_sk
+	ON web_sales (ws_ship_hdemo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_ship_mode_sk
+	ON web_sales (ws_ship_mode_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_sold_time_sk
+	ON web_sales (ws_sold_time_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_warehouse_sk
+	ON web_sales (ws_warehouse_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_web_page_sk
+	ON web_sales (ws_web_page_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_promo_sk
+	ON web_sales (ws_promo_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_ws_web_site_sk
+	ON web_sales (ws_web_site_sk)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_web_company_name
+	ON web_site (web_company_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_web_name
+	ON web_site (web_name)
+	WITH (fillfactor = 100)
+	;
+EOF
+
+${PSQL} <<- EOF &
+	CREATE INDEX i_web_site_id
+	ON web_site (web_site_id)
+	WITH (fillfactor = 100)
 	;
 EOF
 
