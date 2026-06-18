@@ -1,6 +1,7 @@
 vX.Y.Z (YYYY-MM-DD)
 
 - Add missing patch to pg_plan_advice support added in v0.7.6.
+- Use the first detected *-TPC-DS-Tool.zip when building an AppImage
 
 v0.7.6 (2026-03-22)
 
