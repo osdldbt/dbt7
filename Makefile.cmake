@@ -13,7 +13,7 @@ appimage:
 	else \
 		rm -rf builds/AppDir/opt/dsgen; \
 		mkdir -p builds/AppDir/opt; \
-		unzip -d builds/AppDir/opt "$(DSGEN)"; \
+		unzip -d builds/AppDir/opt "$(DSGEN)" -x __MACOSX/*; \
 		mv builds/AppDir/opt/DSGen* builds/AppDir/opt/dsgen; \
 		builds/AppDir/usr/bin/dbt7-build-dsgen --patch-dir=patches \
 				builds/AppDir/opt/dsgen; \
