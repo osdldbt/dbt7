@@ -20,6 +20,7 @@ RUN apt-get -qq -y update && \
                    file \
                    flex \
                    gcc \
+                   git \
                    gnupg2 \
                    libcairo2-dev \
                    libffi-dev \
@@ -144,7 +145,7 @@ RUN ./configure --silent --without-ldap --without-readline --without-zlib \
 RUN mkdir -p /usr/local/share/licenses/postgresql-${PGVER} && \
     cp -p COPYRIGHT /usr/local/share/licenses/postgresql-${PGVER}/
 
-ARG CMAKEVER="3.7.2"
+ARG CMAKEVER="3.14.7"
 RUN curl -o /tmp/cmake-${CMAKEVER}-linux-${ARCH}.tar.gz -SsOL \
          https://github.com/Kitware/CMake/releases/download/v${CMAKEVER}/cmake-${CMAKEVER}-linux-${ARCH}.tar.gz && \
     tar -C /usr --strip-components=1 \

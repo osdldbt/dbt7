@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5...3.10)
+cmake_minimum_required (VERSION 3.14...3.31)
 project (dbt7 NONE)
 
 set (PROJECT_VERSION_MAJOR 0)
@@ -16,6 +16,15 @@ set (
     HOMEPAGE
     "Database Test 7 (DBT-7) project page: https://github.com/osdldbt/dbt7"
 )
+
+include (FetchContent)
+FetchContent_Declare(
+    dsgen
+    GIT_REPOSITORY https://github.com/osdldbt/dsgen.git
+    GIT_TAG        4.0.0
+)
+FetchContent_MakeAvailable (dsgen)
+set (DSGEN_SOURCE_DIR ${dsgen_SOURCE_DIR})
 
 add_subdirectory (appimage)
 add_subdirectory (man)

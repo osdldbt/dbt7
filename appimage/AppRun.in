@@ -4,6 +4,7 @@
 usage() {
 	cat << EOF
 Database Test 7 (DBT-7) wrapped up in an AppImage.
+THE TPC SOFTWARE IS AVAILABLE WITHOUT CHARGE FROM TPC.
 
 Usage:
   $(basename "${ARGV0}") COMMAND [OPTION]

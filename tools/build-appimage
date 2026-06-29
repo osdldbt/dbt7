@@ -44,14 +44,6 @@ CONTAINER_DIR=$(readlink -f "$(dirname "$0")")
 CONTAINER_TAG="dbt7-appimage"
 TARGET="appimage"
 
-if [ "${DSGEN}" = "" ]; then
-	# Automatically detect and glob the first copy of TPC DS Tools zip file in
-	# the project root.
-	# shellcheck disable=SC2086
-	DSGEN=$(basename ${CONTAINER_DIR}/../*-TPC-DS-Tool.zip)
-	echo "Detected and building with ${DSGEN}"
-fi
-
 # Use the return code from `$CONTAINER_CMD inspect` to determine if the container
 # image needs to be created.
 if ! ${CONTAINER_CMD} inspect ${CONTAINER_TAG} > /dev/null 2>&1; then
@@ -72,7 +64,6 @@ eval ${CONTAINER_CMD} run \
 		-v "${CONTAINER_DIR}/..:/usr/local/src/dbt7:rw,Z" \
 		--env PKG_CONFIG_PATH="/usr/lib/pkgconfig" \
 		--env ARCH="$ARCH" \
-		--env DSGEN="${DSGEN}" \
 		-w /usr/local/src/dbt7 \
 		$CONTAINER_TAG \
 		make DBMS="${DBMS}" -f Makefile.cmake "${TARGET}"

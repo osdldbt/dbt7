@@ -1,6 +1,7 @@
 vX.Y.Z (YYYY-MM-DD)
 
 - AppImage: Add missing pango library for gnuplot
+- AppImage: Always include TPC-DS Tools per TPC EULA v2.2 clause 9.d.
 
 v0.7.7 (2026-06-25)
 

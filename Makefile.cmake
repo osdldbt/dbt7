@@ -8,20 +8,14 @@ default:
 appimage:
 	cmake -H. -Bbuilds/appimage -DCMAKE_INSTALL_PREFIX=/usr
 	cd builds/appimage && make install DESTDIR=../AppDir
-	if [ "$(DSGEN)" = "" ]; then \
-		cd builds/appimage && make DBMS= appimage; \
-	else \
-		rm -rf builds/AppDir/opt/dsgen; \
-		mkdir -p builds/AppDir/opt; \
-		unzip -d builds/AppDir/opt "$(DSGEN)" -x __MACOSX/*; \
-		mv builds/AppDir/opt/DSGen* builds/AppDir/opt/dsgen; \
-		builds/AppDir/usr/bin/dbt7-build-dsgen --patch-dir=patches \
-				builds/AppDir/opt/dsgen; \
-		sed -i -e "s#/usr#././#g" builds/AppDir/opt/dsgen/tools/dsdgen \
-				builds/AppDir/opt/dsgen/tools/dsqgen; \
-		export DBMS=$(DBMS); \
-		cd builds/appimage && make DBMS=$(DBMS) appimage; \
-	fi
+	rm -rf builds/AppDir/opt/dsgen
+	mkdir -p builds/AppDir/opt
+	cp -a builds/appimage/_deps/dsgen-src builds/AppDir/opt/dsgen
+	builds/AppDir/usr/bin/dbt7-build-dsgen --patch-dir=patches \
+			builds/AppDir/opt/dsgen
+	sed -i -e "s#/usr#././#g" builds/AppDir/opt/dsgen/tools/dsdgen \
+			builds/AppDir/opt/dsgen/tools/dsqgen
+	cd builds/appimage && make DBMS=$(DBMS) appimage
 
 clean:
 	-rm -rf builds
