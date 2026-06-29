@@ -7,6 +7,7 @@ usage()
 }
 
 CONTAINER_CMD=""
+CONTAINERFILE="appimage/Containerfile"
 USE_DOCKER=0
 
 while getopts "dh" opt; do
@@ -59,5 +60,5 @@ cd "${CONTAINER_DIR}/.." && \
 				${ISOLATION_FLAG} \
 				--build-arg ARCH="${ARCH}" \
 				-t $CONTAINER_TAG \
-				-f Containerfile.appimage \
+				-f ${CONTAINERFILE} \
 				.
