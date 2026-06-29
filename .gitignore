@@ -14,6 +14,7 @@ Testing
 
 !doc/Makefile
 doc/html
+doc/pdf
 
 # cpack
 _CPack_Packages/
