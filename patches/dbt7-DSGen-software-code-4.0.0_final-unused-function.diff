@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/tokenizer.l
+Index: dbt7/dsgen/tools/tokenizer.l
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/tokenizer.l
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/tokenizer.l
+--- dbt7.orig/dsgen/tools/tokenizer.l
++++ dbt7/dsgen/tools/tokenizer.l
 @@ -90,6 +90,7 @@ int yylook(void);
  %{ 
  /* macro definitions go here */ 

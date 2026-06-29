@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
+Index: dbt7/dsgen/tools/s_catalog_order.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
+--- dbt7.orig/dsgen/tools/s_catalog_order.c
++++ dbt7/dsgen/tools/s_catalog_order.c
 @@ -53,7 +53,7 @@
  struct S_CATALOG_ORDER_TBL g_s_catalog_order;
  struct S_CATALOG_ORDER_LINEITEM_TBL g_s_catalog_order_lineitem;
@@ -29,10 +29,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
     for (i=1; i < nLineitem; i++)
        mk_detail(&g_s_catalog_order_lineitem, i, 0);
     print_start(S_CATALOG_ORDER_LINEITEM);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
+Index: dbt7/dsgen/tools/s_catalog_order_lineitem.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
+--- dbt7.orig/dsgen/tools/s_catalog_order_lineitem.c
++++ dbt7/dsgen/tools/s_catalog_order_lineitem.c
 @@ -53,7 +53,7 @@
  
  extern struct S_CATALOG_ORDER_LINEITEM_TBL g_s_catalog_order_lineitem;
@@ -61,10 +61,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
  	r->kItemID = getFirstSK(r->kItemID);
  
  	r->kPromotionID = mk_join(S_CLIN_PROMOTION_ID, PROMOTION, 1);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_pline.c
+Index: dbt7/dsgen/tools/s_pline.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_pline.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_pline.c
+--- dbt7.orig/dsgen/tools/s_pline.c
++++ dbt7/dsgen/tools/s_pline.c
 @@ -51,7 +51,7 @@
  
  struct S_PURCHASE_LINEITEM_TBL g_s_pline;
@@ -94,10 +94,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_pline.c
     r->kItemID = getFirstSK(r->kItemID);
  
  	r->kPromotionID = mk_join(S_PLINE_PROMOTION_ID, PROMOTION, 1);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+Index: dbt7/dsgen/tools/s_purchase.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_purchase.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+--- dbt7.orig/dsgen/tools/s_purchase.c
++++ dbt7/dsgen/tools/s_purchase.c
 @@ -52,7 +52,7 @@
  struct S_PURCHASE_TBL g_s_purchase;
  struct S_PURCHASE_LINEITEM_TBL g_s_purchase_lineitem;
@@ -125,10 +125,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
     for (i=1; i < nLineitem; i++)
        mk_detail(i, 0);
     print_start(S_PURCHASE_LINEITEM);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
+Index: dbt7/dsgen/tools/s_catalog_page.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
+--- dbt7.orig/dsgen/tools/s_catalog_page.c
++++ dbt7/dsgen/tools/s_catalog_page.c
 @@ -48,7 +48,7 @@
  #include "validate.h"
  #include "parallel.h"
@@ -156,10 +156,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
  	else
  		r = pSrc;
  	
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
+Index: dbt7/dsgen/tools/s_warehouse.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
+--- dbt7.orig/dsgen/tools/s_warehouse.c
++++ dbt7/dsgen/tools/s_warehouse.c
 @@ -48,7 +48,7 @@
  #include "permute.h"
  #include "scaling.h"
@@ -187,10 +187,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
  	else
  		r = pSrc;
  	
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_site.c
+Index: dbt7/dsgen/tools/s_web_site.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_site.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_site.c
+--- dbt7.orig/dsgen/tools/s_web_site.c
++++ dbt7/dsgen/tools/s_web_site.c
 @@ -48,7 +48,7 @@
  #include "permute.h"
  #include "scd.h"
@@ -218,10 +218,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_site.c
  	else
  		r = pSrc;
  	
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+Index: dbt7/dsgen/tools/s_web_order.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+--- dbt7.orig/dsgen/tools/s_web_order.c
++++ dbt7/dsgen/tools/s_web_order.c
 @@ -53,7 +53,7 @@
  struct S_WEB_ORDER_TBL g_s_web_order;
  struct S_WEB_ORDER_LINEITEM_TBL g_s_web_order_lineitem;
@@ -249,10 +249,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
     for (i=1; i < nLineitem; i++)
        mk_detail(i, 0);
     print_start(S_WEB_ORDER_LINEITEM);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+Index: dbt7/dsgen/tools/s_web_order_lineitem.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+--- dbt7.orig/dsgen/tools/s_web_order_lineitem.c
++++ dbt7/dsgen/tools/s_web_order_lineitem.c
 @@ -53,7 +53,7 @@
  
  extern struct S_WEB_ORDER_LINEITEM_TBL g_s_web_order_lineitem;
@@ -279,10 +279,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
  	r->kItemID = getFirstSK(r->kItemID);
  
  	r->kPromotionID = mk_join(S_WLIN_PROMOTION_ID, PROMOTION, 1);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
+Index: dbt7/dsgen/tools/w_catalog_page.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
+--- dbt7.orig/dsgen/tools/w_catalog_page.c
++++ dbt7/dsgen/tools/w_catalog_page.c
 @@ -49,7 +49,7 @@
  #include "nulls.h"
  #include "tdefs.h"
@@ -292,10 +292,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
  
  /*
  * Routine: mk_catalog_page()
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+Index: dbt7/dsgen/tools/w_warehouse.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+--- dbt7.orig/dsgen/tools/w_warehouse.c
++++ dbt7/dsgen/tools/w_warehouse.c
 @@ -50,7 +50,7 @@
  #include "nulls.h"
  #include "tdefs.h"
@@ -305,10 +305,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
  
  /*
  * mk_warehouse
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+Index: dbt7/dsgen/tools/w_web_site.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_site.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+--- dbt7.orig/dsgen/tools/w_web_site.c
++++ dbt7/dsgen/tools/w_web_site.c
 @@ -56,7 +56,7 @@
  #include "tdefs.h"
  #include "scd.h"

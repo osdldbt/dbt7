@@ -1,0 +1,3 @@
+[submodule "dsgen"]
+	path = dsgen
+	url = https://github.com/osdldbt/dsgen.git

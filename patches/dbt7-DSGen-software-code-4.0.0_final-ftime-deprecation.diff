@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+Index: dbt7/dsgen/tools/driver.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/driver.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+--- dbt7.orig/dsgen/tools/driver.c
++++ dbt7/dsgen/tools/driver.c
 @@ -48,6 +48,7 @@
  #else
  #include <strings.h>

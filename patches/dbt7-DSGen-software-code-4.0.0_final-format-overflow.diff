@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/date.c
+Index: dbt7/dsgen/tools/date.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/date.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/date.c
+--- dbt7.orig/dsgen/tools/date.c
++++ dbt7/dsgen/tools/date.c
 @@ -355,9 +355,9 @@ date_t_op(date_t *dest, int op, date_t *
  		break;
  	case OP_SAME_LY:

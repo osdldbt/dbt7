@@ -69,25 +69,33 @@ Optional Software
 User's Guide
 ------------
 
-Building TPC-DS Tools
-=====================
+Before getting started: Building TPC-DS Tools
+=============================================
+
+The TPC-DS Tools source code (dsgen) is available as a git submodule from
+https://github.com/osdldbt/dsgen per TPC EULA v2.2 clause 9.d.  To clone the
+repository with the submodule populated::
+
+    git clone --recurse-submodules https://github.com/osdldbt/dbt7.git
+
+If the repository was already cloned without the submodule::
+
+    git submodule update --init
 
 DBT-7 provides the script `dbt7-build-dsgen` to apply patches and compile the
 TPC-DS Tools.  The patches that are applied are minor code changes, bug fixes,
-and query templates to make the TPC-DS Tools work with the databases supposed
-by DBT-7. These patches are in the `patches` subdirectory.
+and query templates to make the TPC-DS Tools work with the databases supported
+by DBT-7. These patches are in the `patches` subdirectory in compliance with
+the respective licences and thus needs to be built outside of the DBT-7 build
+system, which can be done with the aid of this script::
 
-For example, to build the TPC-DS Tools, unzip the TPC-DS Tools zip file and run
-`dbt7-build-dbgen` against the resulting directory::
-
-    unzip *-tpc-ds-tool.zip
-    dbt7-build-dsgen DSGen-software-code-4.0.0_final
+    dbt7-build-dsgen --patch-dir=patches dsgen
 
 For brevity, future references to the location of the TPC-DS tools will be
 `$DSHOME`.
 
 Quick Start
------------
+===========
 
 Once the TPC-DS Tools is built, only one command needs to be issued to run a
 complete test::
@@ -102,7 +110,7 @@ If all phases of the test complete successfully, the *Queries per Hour* score
 will be shown when the test completes.
 
 Reports
--------
+=======
 
 The *dbt7-run* script will generate a *summary.rst* text file can be reviewed
 for the execution times for each of the tests, query times for each of the
@@ -114,7 +122,7 @@ If system and database stats are collected with the `--stats` flag, the
 statistics.
 
 Advanced Usage
---------------
+==============
 
 The *dbt7-run* script can be used to run any combination of a Load Test, Power
 Test, and Throughput Test combined with the Data Maintenance Test.  But be

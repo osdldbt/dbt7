@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
+Index: dbt7/dsgen/tools/dbgen_version.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
+--- dbt7.orig/dsgen/tools/dbgen_version.c
++++ dbt7/dsgen/tools/dbgen_version.c
 @@ -150,7 +150,8 @@ ld_dbgen_version(void *pSrc)
  		r = &g_dbgen_version;
  	else
@@ -12,10 +12,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/dcomp.c
+Index: dbt7/dsgen/tools/dcomp.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dcomp.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/dcomp.c
+--- dbt7.orig/dsgen/tools/dcomp.c
++++ dbt7/dsgen/tools/dcomp.c
 @@ -261,6 +261,7 @@ int main(int argc, char* argv[])
  	d_idx_t *pIndexEntry;
  
@@ -24,10 +24,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/dcomp.c
  	if (!is_set("INPUT") || !is_set("OUTPUT"))
  		usage(NULL, "Must specify input and output file names");
  	if (!is_set("HEADER"))
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_brand.c
+Index: dbt7/dsgen/tools/s_brand.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_brand.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_brand.c
+--- dbt7.orig/dsgen/tools/s_brand.c
++++ dbt7/dsgen/tools/s_brand.c
 @@ -145,7 +145,8 @@ ld_s_brand(void *pSrc)
  		r = &g_s_brand;
  	else
@@ -38,10 +38,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_brand.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog.c
+Index: dbt7/dsgen/tools/s_catalog.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog.c
+--- dbt7.orig/dsgen/tools/s_catalog.c
++++ dbt7/dsgen/tools/s_catalog.c
 @@ -150,6 +150,7 @@ ld_s_catalog(void *pSrc)
  		r = &g_s_catalog;
  	else
@@ -50,10 +50,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
+Index: dbt7/dsgen/tools/s_catalog_order.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
+--- dbt7.orig/dsgen/tools/s_catalog_order.c
++++ dbt7/dsgen/tools/s_catalog_order.c
 @@ -203,7 +203,8 @@ ld_s_catalog_order(void *pSrc)
  		r = &g_s_catalog_order;
  	else
@@ -64,10 +64,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
+Index: dbt7/dsgen/tools/s_catalog_order_lineitem.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
+--- dbt7.orig/dsgen/tools/s_catalog_order_lineitem.c
++++ dbt7/dsgen/tools/s_catalog_order_lineitem.c
 @@ -191,7 +191,8 @@ ld_s_catalog_order_lineitem(void *pSrc)
  		r = &g_s_catalog_order_lineitem;
  	else
@@ -78,10 +78,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_order_lineitem.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
+Index: dbt7/dsgen/tools/s_catalog_page.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
+--- dbt7.orig/dsgen/tools/s_catalog_page.c
++++ dbt7/dsgen/tools/s_catalog_page.c
 @@ -120,7 +120,8 @@ ld_s_catalog_page(void *pSrc)
  		r = &g_s_catalog_page;
  	else
@@ -92,10 +92,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_page.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_promotional_item.c
+Index: dbt7/dsgen/tools/s_catalog_promotional_item.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_promotional_item.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_promotional_item.c
+--- dbt7.orig/dsgen/tools/s_catalog_promotional_item.c
++++ dbt7/dsgen/tools/s_catalog_promotional_item.c
 @@ -140,7 +140,8 @@ ld_s_catalog_promotional_item(void *pSrc
  		r = &g_s_catalog_promotional_item;
  	else
@@ -106,10 +106,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_promotional_item.c
  	return(0);
  
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_returns.c
+Index: dbt7/dsgen/tools/s_catalog_returns.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_catalog_returns.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_returns.c
+--- dbt7.orig/dsgen/tools/s_catalog_returns.c
++++ dbt7/dsgen/tools/s_catalog_returns.c
 @@ -177,7 +177,8 @@ ld_s_catalog_returns(void *pSrc)
  		r = &g_s_catalog_returns;
  	else
@@ -120,10 +120,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_catalog_returns.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_category.c
+Index: dbt7/dsgen/tools/s_category.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_category.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_category.c
+--- dbt7.orig/dsgen/tools/s_category.c
++++ dbt7/dsgen/tools/s_category.c
 @@ -140,7 +140,8 @@ ld_s_category(void *pSrc)
  		r = &g_s_category;
  	else
@@ -134,10 +134,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_category.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_class.c
+Index: dbt7/dsgen/tools/s_class.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_class.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_class.c
+--- dbt7.orig/dsgen/tools/s_class.c
++++ dbt7/dsgen/tools/s_class.c
 @@ -143,7 +143,8 @@ ld_s_class(void *pSrc)
  		r = &g_s_class;
  	else
@@ -148,10 +148,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_class.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_company.c
+Index: dbt7/dsgen/tools/s_company.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_company.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_company.c
+--- dbt7.orig/dsgen/tools/s_company.c
++++ dbt7/dsgen/tools/s_company.c
 @@ -139,7 +139,8 @@ ld_s_company(void *pSrc)
  		r = &g_s_company;
  	else
@@ -162,10 +162,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_company.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_customer.c
+Index: dbt7/dsgen/tools/s_customer.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_customer.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_customer.c
+--- dbt7.orig/dsgen/tools/s_customer.c
++++ dbt7/dsgen/tools/s_customer.c
 @@ -275,6 +275,7 @@ ld_s_customer (void *pSrc)
      r = &g_s_customer;
    else
@@ -174,10 +174,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_customer.c
  
    return (0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_customer_address.c
+Index: dbt7/dsgen/tools/s_customer_address.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_customer_address.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_customer_address.c
+--- dbt7.orig/dsgen/tools/s_customer_address.c
++++ dbt7/dsgen/tools/s_customer_address.c
 @@ -118,6 +118,7 @@ ld_s_customer_address(void *row)
  		r = &g_w_customer_address;
  	else
@@ -186,10 +186,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_customer_address.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_division.c
+Index: dbt7/dsgen/tools/s_division.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_division.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_division.c
+--- dbt7.orig/dsgen/tools/s_division.c
++++ dbt7/dsgen/tools/s_division.c
 @@ -141,7 +141,8 @@ ld_s_division(void *pSrc)
  		r = &g_s_division;
  	else
@@ -200,10 +200,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_division.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_inventory.c
+Index: dbt7/dsgen/tools/s_inventory.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_inventory.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_inventory.c
+--- dbt7.orig/dsgen/tools/s_inventory.c
++++ dbt7/dsgen/tools/s_inventory.c
 @@ -161,7 +161,8 @@ ld_s_inventory(void *pSrc)
  		r = &g_s_inventory;
  	else
@@ -214,10 +214,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_inventory.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_item.c
+Index: dbt7/dsgen/tools/s_item.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_item.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_item.c
+--- dbt7.orig/dsgen/tools/s_item.c
++++ dbt7/dsgen/tools/s_item.c
 @@ -151,7 +151,8 @@ ld_s_item(void *pSrc)
  		r = &g_w_item;
  	else
@@ -228,10 +228,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_item.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_manager.c
+Index: dbt7/dsgen/tools/s_manager.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_manager.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_manager.c
+--- dbt7.orig/dsgen/tools/s_manager.c
++++ dbt7/dsgen/tools/s_manager.c
 @@ -143,7 +143,8 @@ ld_s_manager(void *pSrc)
  		r = &g_s_manager;
  	else
@@ -242,10 +242,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_manager.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_manufacturer.c
+Index: dbt7/dsgen/tools/s_manufacturer.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_manufacturer.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_manufacturer.c
+--- dbt7.orig/dsgen/tools/s_manufacturer.c
++++ dbt7/dsgen/tools/s_manufacturer.c
 @@ -139,7 +139,8 @@ ld_s_manufacturer(void *pSrc)
  		r = &g_s_manufacturer;
  	else
@@ -256,10 +256,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_manufacturer.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_market.c
+Index: dbt7/dsgen/tools/s_market.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_market.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_market.c
+--- dbt7.orig/dsgen/tools/s_market.c
++++ dbt7/dsgen/tools/s_market.c
 @@ -144,7 +144,8 @@ ld_s_market(void *pSrc)
  		r = &g_s_market;
  	else
@@ -270,10 +270,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_market.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_pline.c
+Index: dbt7/dsgen/tools/s_pline.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_pline.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_pline.c
+--- dbt7.orig/dsgen/tools/s_pline.c
++++ dbt7/dsgen/tools/s_pline.c
 @@ -180,7 +180,8 @@ ld_s_pline(void *pSrc)
  		r = &g_s_pline;
  	else
@@ -284,10 +284,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_pline.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_product.c
+Index: dbt7/dsgen/tools/s_product.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_product.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_product.c
+--- dbt7.orig/dsgen/tools/s_product.c
++++ dbt7/dsgen/tools/s_product.c
 @@ -144,7 +144,8 @@ ld_s_product(void *pSrc)
  		r = &g_s_product;
  	else
@@ -298,10 +298,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_product.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_promotion.c
+Index: dbt7/dsgen/tools/s_promotion.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_promotion.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_promotion.c
+--- dbt7.orig/dsgen/tools/s_promotion.c
++++ dbt7/dsgen/tools/s_promotion.c
 @@ -160,7 +160,8 @@ ld_s_promotion(void *pSrc)
  		r = &g_w_promotion;
  	else
@@ -312,10 +312,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_promotion.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+Index: dbt7/dsgen/tools/s_purchase.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_purchase.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+--- dbt7.orig/dsgen/tools/s_purchase.c
++++ dbt7/dsgen/tools/s_purchase.c
 @@ -197,7 +197,8 @@ ld_s_purchase(void *pSrc)
  		r = &g_s_purchase;
  	else
@@ -326,10 +326,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_reason.c
+Index: dbt7/dsgen/tools/s_reason.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_reason.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_reason.c
+--- dbt7.orig/dsgen/tools/s_reason.c
++++ dbt7/dsgen/tools/s_reason.c
 @@ -140,7 +140,8 @@ ld_s_reason(void *pSrc)
  		r = &g_s_reason;
  	else
@@ -340,10 +340,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_reason.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_store.c
+Index: dbt7/dsgen/tools/s_store.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_store.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_store.c
+--- dbt7.orig/dsgen/tools/s_store.c
++++ dbt7/dsgen/tools/s_store.c
 @@ -149,7 +149,8 @@ ld_s_store(void *pSrc)
  		r = &g_w_store;
  	else
@@ -354,10 +354,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_store.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_store_promotional_item.c
+Index: dbt7/dsgen/tools/s_store_promotional_item.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_store_promotional_item.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_store_promotional_item.c
+--- dbt7.orig/dsgen/tools/s_store_promotional_item.c
++++ dbt7/dsgen/tools/s_store_promotional_item.c
 @@ -141,7 +141,8 @@ ld_s_store_promotional_item(void *pSrc)
  		r = &g_s_store_promotional_item;
  	else
@@ -368,10 +368,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_store_promotional_item.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_store_returns.c
+Index: dbt7/dsgen/tools/s_store_returns.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_store_returns.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_store_returns.c
+--- dbt7.orig/dsgen/tools/s_store_returns.c
++++ dbt7/dsgen/tools/s_store_returns.c
 @@ -170,7 +170,8 @@ ld_s_store_returns(void *pSrc)
  		r = &g_s_store_returns;
  	else
@@ -382,10 +382,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_store_returns.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_subcategory.c
+Index: dbt7/dsgen/tools/s_subcategory.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_subcategory.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_subcategory.c
+--- dbt7.orig/dsgen/tools/s_subcategory.c
++++ dbt7/dsgen/tools/s_subcategory.c
 @@ -144,7 +144,8 @@ ld_s_subcategory(void *pSrc)
  		r = &g_s_subcategory;
  	else
@@ -396,10 +396,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_subcategory.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_subclass.c
+Index: dbt7/dsgen/tools/s_subclass.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_subclass.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_subclass.c
+--- dbt7.orig/dsgen/tools/s_subclass.c
++++ dbt7/dsgen/tools/s_subclass.c
 @@ -144,7 +144,8 @@ ld_s_subclass(void *pSrc)
  		r = &g_s_subclass;
  	else
@@ -410,10 +410,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_subclass.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
+Index: dbt7/dsgen/tools/s_warehouse.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
+--- dbt7.orig/dsgen/tools/s_warehouse.c
++++ dbt7/dsgen/tools/s_warehouse.c
 @@ -139,7 +139,8 @@ ld_s_warehouse(void *pSrc)
  		r = &g_s_warehouse;
  	else
@@ -424,10 +424,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_warehouse.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+Index: dbt7/dsgen/tools/s_web_order.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+--- dbt7.orig/dsgen/tools/s_web_order.c
++++ dbt7/dsgen/tools/s_web_order.c
 @@ -209,7 +209,8 @@ ld_s_web_order(void *pSrc)
  		r = &g_s_web_order;
  	else
@@ -438,10 +438,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+Index: dbt7/dsgen/tools/s_web_order_lineitem.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+--- dbt7.orig/dsgen/tools/s_web_order_lineitem.c
++++ dbt7/dsgen/tools/s_web_order_lineitem.c
 @@ -188,7 +188,8 @@ ld_s_web_order_lineitem(void *pSrc)
  		r = &g_s_web_order_lineitem;
  	else
@@ -452,10 +452,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_page.c
+Index: dbt7/dsgen/tools/s_web_page.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_page.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_page.c
+--- dbt7.orig/dsgen/tools/s_web_page.c
++++ dbt7/dsgen/tools/s_web_page.c
 @@ -149,7 +149,8 @@ ld_s_web_page(void *pSrc)
  		r = &g_w_web_page;
  	else
@@ -466,10 +466,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_page.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_promotinal_item.c
+Index: dbt7/dsgen/tools/s_web_promotinal_item.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_promotinal_item.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_promotinal_item.c
+--- dbt7.orig/dsgen/tools/s_web_promotinal_item.c
++++ dbt7/dsgen/tools/s_web_promotinal_item.c
 @@ -143,7 +143,8 @@ ld_s_web_promotional_item(void *pSrc)
  		r = &g_s_web_promotional_item;
  	else
@@ -480,10 +480,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_promotinal_item.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_returns.c
+Index: dbt7/dsgen/tools/s_web_returns.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_returns.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_returns.c
+--- dbt7.orig/dsgen/tools/s_web_returns.c
++++ dbt7/dsgen/tools/s_web_returns.c
 @@ -182,7 +182,8 @@ ld_s_web_return(void *pSrc)
  		r = &g_s_web_returns;
  	else
@@ -494,10 +494,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_returns.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_site.c
+Index: dbt7/dsgen/tools/s_web_site.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_site.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_site.c
+--- dbt7.orig/dsgen/tools/s_web_site.c
++++ dbt7/dsgen/tools/s_web_site.c
 @@ -145,7 +145,8 @@ ld_s_web_site(void *pSrc)
  		r = &g_s_web_site;
  	else
@@ -508,10 +508,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_site.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
+Index: dbt7/dsgen/tools/s_zip_to_gmt.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
+--- dbt7.orig/dsgen/tools/s_zip_to_gmt.c
++++ dbt7/dsgen/tools/s_zip_to_gmt.c
 @@ -210,7 +210,8 @@ ld_s_zip(void *pSrc)
  		r = &g_s_zip;
  	else
@@ -522,10 +522,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_call_center.c
+Index: dbt7/dsgen/tools/w_call_center.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_call_center.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_call_center.c
+--- dbt7.orig/dsgen/tools/w_call_center.c
++++ dbt7/dsgen/tools/w_call_center.c
 @@ -118,6 +118,7 @@ mk_w_call_center (void* row, ds_key_t in
  		jDateEnd = dttoj(&dTemp);
  		nDateRange = jDateEnd - jDateStart + 1; 
@@ -534,10 +534,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_call_center.c
  		nScale = get_int("SCALE");
  		
  		/* these fields need to be handled as part of SCD code or further definition */
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_returns.c
+Index: dbt7/dsgen/tools/w_catalog_returns.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_catalog_returns.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_returns.c
+--- dbt7.orig/dsgen/tools/w_catalog_returns.c
++++ dbt7/dsgen/tools/w_catalog_returns.c
 @@ -245,6 +245,7 @@ ld_w_catalog_returns(void *row)
  		r = &g_w_catalog_returns;
  	else
@@ -546,10 +546,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_returns.c
  
  	return(0);
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_sales.c
+Index: dbt7/dsgen/tools/w_catalog_sales.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_catalog_sales.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_sales.c
+--- dbt7.orig/dsgen/tools/w_catalog_sales.c
++++ dbt7/dsgen/tools/w_catalog_sales.c
 @@ -182,6 +182,7 @@ mk_detail(void *row, int bPrint)
          strtodec (&dOne, "1.00");
          strtodec (&dOneHalf, "0.50");
@@ -566,10 +566,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_sales.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_customer.c
+Index: dbt7/dsgen/tools/w_customer.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_customer.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_customer.c
+--- dbt7.orig/dsgen/tools/w_customer.c
++++ dbt7/dsgen/tools/w_customer.c
 @@ -91,6 +91,7 @@ mk_w_customer (void * row, ds_key_t inde
  	if (!bInit)
  	{			
@@ -586,10 +586,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_customer.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_customer_address.c
+Index: dbt7/dsgen/tools/w_customer_address.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_customer_address.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_customer_address.c
+--- dbt7.orig/dsgen/tools/w_customer_address.c
++++ dbt7/dsgen/tools/w_customer_address.c
 @@ -151,6 +151,7 @@ ld_w_customer_address(void *row)
  		r = &g_w_customer_address;
  	else
@@ -598,10 +598,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_customer_address.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_customer_demographics.c
+Index: dbt7/dsgen/tools/w_customer_demographics.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_customer_demographics.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_customer_demographics.c
+--- dbt7.orig/dsgen/tools/w_customer_demographics.c
++++ dbt7/dsgen/tools/w_customer_demographics.c
 @@ -150,6 +150,7 @@ ld_w_customer_demographics(void *row)
  		r = &g_w_customer_demographics;
  	else
@@ -610,10 +610,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_customer_demographics.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_datetbl.c
+Index: dbt7/dsgen/tools/w_datetbl.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_datetbl.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_datetbl.c
+--- dbt7.orig/dsgen/tools/w_datetbl.c
++++ dbt7/dsgen/tools/w_datetbl.c
 @@ -229,7 +229,8 @@ ld_w_date(void *pSrc)
  		r = &g_w_date;
  	else
@@ -624,10 +624,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_datetbl.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_household_demographics.c
+Index: dbt7/dsgen/tools/w_household_demographics.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_household_demographics.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_household_demographics.c
+--- dbt7.orig/dsgen/tools/w_household_demographics.c
++++ dbt7/dsgen/tools/w_household_demographics.c
 @@ -147,7 +147,8 @@ ld_w_household_demographics(void *pSrc)
  		r = &g_w_household_demographics;
  	else
@@ -638,10 +638,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_household_demographics.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_income_band.c
+Index: dbt7/dsgen/tools/w_income_band.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_income_band.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_income_band.c
+--- dbt7.orig/dsgen/tools/w_income_band.c
++++ dbt7/dsgen/tools/w_income_band.c
 @@ -133,7 +133,8 @@ ld_w_income_band(void *pSrc)
  		r = &g_w_income_band;
  	else
@@ -652,10 +652,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_income_band.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_inventory.c
+Index: dbt7/dsgen/tools/w_inventory.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_inventory.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_inventory.c
+--- dbt7.orig/dsgen/tools/w_inventory.c
++++ dbt7/dsgen/tools/w_inventory.c
 @@ -172,7 +172,8 @@ ld_w_inventory(void *pSrc)
  		r = &g_w_inventory;
  	else
@@ -666,10 +666,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_inventory.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_item.c
+Index: dbt7/dsgen/tools/w_item.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_item.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_item.c
+--- dbt7.orig/dsgen/tools/w_item.c
++++ dbt7/dsgen/tools/w_item.c
 @@ -297,7 +297,8 @@ ld_w_item(void *pSrc)
  		r = &g_w_item;
  	else
@@ -680,10 +680,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_item.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_promotion.c
+Index: dbt7/dsgen/tools/w_promotion.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_promotion.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_promotion.c
+--- dbt7.orig/dsgen/tools/w_promotion.c
++++ dbt7/dsgen/tools/w_promotion.c
 @@ -93,6 +93,7 @@ mk_w_promotion(void *pDest, ds_key_t ind
  	r->p_promo_sk = index;
  	mk_bkey(&r->p_promo_id[0], index, P_PROMO_ID);
@@ -702,10 +702,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_promotion.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_reason.c
+Index: dbt7/dsgen/tools/w_reason.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_reason.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_reason.c
+--- dbt7.orig/dsgen/tools/w_reason.c
++++ dbt7/dsgen/tools/w_reason.c
 @@ -135,7 +135,8 @@ ld_w_reason(void *pSrc)
  		r = &g_w_reason;
  	else
@@ -716,10 +716,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_reason.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_ship_mode.c
+Index: dbt7/dsgen/tools/w_ship_mode.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_ship_mode.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_ship_mode.c
+--- dbt7.orig/dsgen/tools/w_ship_mode.c
++++ dbt7/dsgen/tools/w_ship_mode.c
 @@ -153,7 +153,8 @@ ld_w_ship_mode(void *pSrc)
  		r = &g_w_ship_mode;
  	else
@@ -730,10 +730,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_ship_mode.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_store.c
+Index: dbt7/dsgen/tools/w_store.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_store.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_store.c
+--- dbt7.orig/dsgen/tools/w_store.c
++++ dbt7/dsgen/tools/w_store.c
 @@ -304,7 +304,8 @@ ld_w_store(void *pSrc)
  		r = &g_w_store;
  	else
@@ -744,10 +744,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_store.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_store_returns.c
+Index: dbt7/dsgen/tools/w_store_returns.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_store_returns.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_store_returns.c
+--- dbt7.orig/dsgen/tools/w_store_returns.c
++++ dbt7/dsgen/tools/w_store_returns.c
 @@ -199,7 +199,8 @@ ld_w_store_returns(void *pSrc)
  		r = &g_w_store_returns;
  	else
@@ -758,10 +758,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_store_returns.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_store_sales.c
+Index: dbt7/dsgen/tools/w_store_sales.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_store_sales.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_store_sales.c
+--- dbt7.orig/dsgen/tools/w_store_sales.c
++++ dbt7/dsgen/tools/w_store_sales.c
 @@ -85,6 +85,7 @@ mk_master (void *row, ds_key_t index)
        strtodec (&dMin, "1.00");
        strtodec (&dMax, "100000.00");
@@ -780,10 +780,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_store_sales.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_timetbl.c
+Index: dbt7/dsgen/tools/w_timetbl.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_timetbl.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_timetbl.c
+--- dbt7.orig/dsgen/tools/w_timetbl.c
++++ dbt7/dsgen/tools/w_timetbl.c
 @@ -150,7 +150,8 @@ ld_w_time(void *pSrc)
  		r = &g_w_time;
  	else
@@ -794,10 +794,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_timetbl.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+Index: dbt7/dsgen/tools/w_warehouse.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+--- dbt7.orig/dsgen/tools/w_warehouse.c
++++ dbt7/dsgen/tools/w_warehouse.c
 @@ -160,7 +160,8 @@ ld_w_warehouse(void *pSrc)
  		r = &g_w_warehouse;
  	else
@@ -808,10 +808,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_page.c
+Index: dbt7/dsgen/tools/w_web_page.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_page.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_page.c
+--- dbt7.orig/dsgen/tools/w_web_page.c
++++ dbt7/dsgen/tools/w_web_page.c
 @@ -109,6 +109,7 @@ mk_w_web_page (void * row, ds_key_t inde
  		/* set up for the SCD handling */
  		nConcurrent = (int)get_rowcount(CONCURRENT_WEB_SITES);
@@ -830,10 +830,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_page.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_returns.c
+Index: dbt7/dsgen/tools/w_web_returns.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_returns.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_returns.c
+--- dbt7.orig/dsgen/tools/w_web_returns.c
++++ dbt7/dsgen/tools/w_web_returns.c
 @@ -220,7 +220,8 @@ ld_w_web_returns(void *pSrc)
  		r = &g_w_web_returns;
  	else
@@ -844,10 +844,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_returns.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_sales.c
+Index: dbt7/dsgen/tools/w_web_sales.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_sales.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_sales.c
+--- dbt7.orig/dsgen/tools/w_web_sales.c
++++ dbt7/dsgen/tools/w_web_sales.c
 @@ -318,7 +318,8 @@ ld_w_web_sales(void *pSrc)
  		r = &g_w_web_sales;
  	else
@@ -858,10 +858,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_sales.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+Index: dbt7/dsgen/tools/w_web_site.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_site.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+--- dbt7.orig/dsgen/tools/w_web_site.c
++++ dbt7/dsgen/tools/w_web_site.c
 @@ -102,6 +102,7 @@ mk_w_web_site (void *row, ds_key_t index
  		/* setup invariant values */
  		sprintf(szTemp, "%d-%d-%d", CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY);
@@ -880,10 +880,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
  	return(0);
  }
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/validate.c
+Index: dbt7/dsgen/tools/validate.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/validate.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/validate.c
+--- dbt7.orig/dsgen/tools/validate.c
++++ dbt7/dsgen/tools/validate.c
 @@ -93,6 +93,7 @@ validateGeneric(int nTable, ds_key_t kRo
  	if (pT->flags & FL_PARENT)
     {
@@ -892,10 +892,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/validate.c
  		row_skip(pT->nParam, kRow - 1);
     }
     pTF->builder(NULL, kRow);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/scd.c
+Index: dbt7/dsgen/tools/scd.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/scd.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/scd.c
+--- dbt7.orig/dsgen/tools/scd.c
++++ dbt7/dsgen/tools/scd.c
 @@ -176,6 +176,7 @@ scd_join(int tbl, int col, ds_key_t jDat
  		strtodt(&dtTemp, DATA_END_DATE);
  		jMaximumDataDate = dtTemp.julian;

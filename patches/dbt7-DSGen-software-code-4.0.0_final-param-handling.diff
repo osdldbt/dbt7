@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+Index: dbt7/dsgen/tools/r_params.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/r_params.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+--- dbt7.orig/dsgen/tools/r_params.c
++++ dbt7/dsgen/tools/r_params.c
 @@ -46,7 +46,7 @@
  #include "tdefs.h"
  #include "release.h"
@@ -67,10 +67,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.h
+Index: dbt7/dsgen/tools/dbgen_version.h
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dbgen_version.h
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.h
+--- dbt7.orig/dsgen/tools/dbgen_version.h
++++ dbt7/dsgen/tools/dbgen_version.h
 @@ -37,7 +37,7 @@
  #define DBGEN_VERSION_H
  
@@ -80,10 +80,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.h
  
  struct DBGEN_VERSION_TBL {
  	char		szVersion[RS_VERSION_LENGTH + 1];
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+Index: dbt7/dsgen/tools/driver.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/driver.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+--- dbt7.orig/dsgen/tools/driver.c
++++ dbt7/dsgen/tools/driver.c
 @@ -74,7 +74,7 @@
  extern int optind, opterr;
  extern char *optarg;

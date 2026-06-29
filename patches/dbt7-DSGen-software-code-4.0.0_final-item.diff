@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
+Index: dbt7/dsgen/tools/build_support.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/build_support.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
+--- dbt7.orig/dsgen/tools/build_support.c
++++ dbt7/dsgen/tools/build_support.c
 @@ -369,7 +369,7 @@ embed_string(char *szDest, char *szDist,
  
  	pick_distribution(&szWord, szDist, nValue, nWeight, nStream);

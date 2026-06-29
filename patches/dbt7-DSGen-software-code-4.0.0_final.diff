@@ -1,17 +1,17 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/netezza.tpl
+Index: dbt7/dsgen/query_templates/netezza.tpl
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/query_templates/netezza.tpl
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/netezza.tpl
+--- dbt7.orig/dsgen/query_templates/netezza.tpl
++++ dbt7/dsgen/query_templates/netezza.tpl
 @@ -35,3 +35,5 @@
  define __LIMITA = "";
  define __LIMITB = "";
  define __LIMITC = "limit %d";
 +define _BEGIN = "-- start query " + [_QUERY] + " in stream " + [_STREAM] + " using template " + [_TEMPLATE];
 +define _END = "-- end query " + [_QUERY] + " in stream " + [_STREAM] + " using template " + [_TEMPLATE];
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/makefile
+Index: dbt7/dsgen/tools/makefile
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/makefile
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/makefile
+--- dbt7.orig/dsgen/tools/makefile
++++ dbt7/dsgen/tools/makefile
 @@ -55,11 +55,11 @@ CC		= $($(OS)_CC)
  # CFLAGS
  AIX_CFLAGS		= -q64 -O3 -D_LARGE_FILES
@@ -26,10 +26,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/makefile
  CFLAGS			= $(BASE_CFLAGS) -D$(OS) $($(OS)_CFLAGS)
  # EXE
  AIX_EXE	= 
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+Index: dbt7/dsgen/tools/s_purchase.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_purchase.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
+--- dbt7.orig/dsgen/tools/s_purchase.c
++++ dbt7/dsgen/tools/s_purchase.c
 @@ -52,7 +52,7 @@
  struct S_PURCHASE_TBL g_s_purchase;
  struct S_PURCHASE_LINEITEM_TBL g_s_purchase_lineitem;
@@ -39,10 +39,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_purchase.c
  
  /*
  * Routine: 
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+Index: dbt7/dsgen/tools/s_web_order.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
+--- dbt7.orig/dsgen/tools/s_web_order.c
++++ dbt7/dsgen/tools/s_web_order.c
 @@ -53,7 +53,7 @@
  struct S_WEB_ORDER_TBL g_s_web_order;
  struct S_WEB_ORDER_LINEITEM_TBL g_s_web_order_lineitem;
@@ -52,10 +52,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order.c
  
  	/* now build/print the lineitems for this order */
  	/* for each lineitem, randomly determine if it is to be returned */
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+Index: dbt7/dsgen/tools/s_web_order_lineitem.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
+--- dbt7.orig/dsgen/tools/s_web_order_lineitem.c
++++ dbt7/dsgen/tools/s_web_order_lineitem.c
 @@ -51,7 +51,7 @@
  #include "scaling.h"
  #include "scd.h"
@@ -65,10 +65,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_web_order_lineitem.c
  extern struct S_WEB_ORDER_TBL g_s_web_order;
  extern int nItemIndex;
  
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
+Index: dbt7/dsgen/tools/w_catalog_page.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
+--- dbt7.orig/dsgen/tools/w_catalog_page.c
++++ dbt7/dsgen/tools/w_catalog_page.c
 @@ -49,7 +49,7 @@
  #include "nulls.h"
  #include "tdefs.h"
@@ -78,10 +78,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_catalog_page.c
  
  /*
  * Routine: mk_catalog_page()
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+Index: dbt7/dsgen/tools/w_warehouse.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
+--- dbt7.orig/dsgen/tools/w_warehouse.c
++++ dbt7/dsgen/tools/w_warehouse.c
 @@ -50,7 +50,7 @@
  #include "nulls.h"
  #include "tdefs.h"
@@ -91,10 +91,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_warehouse.c
  
  /*
  * mk_warehouse
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+Index: dbt7/dsgen/tools/w_web_site.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_site.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+--- dbt7.orig/dsgen/tools/w_web_site.c
++++ dbt7/dsgen/tools/w_web_site.c
 @@ -56,7 +56,7 @@
  #include "tdefs.h"
  #include "scd.h"

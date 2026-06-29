@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
+Index: dbt7/dsgen/tools/dist.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dist.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
+--- dbt7.orig/dsgen/tools/dist.c
++++ dbt7/dsgen/tools/dist.c
 @@ -237,10 +237,8 @@ find_dist(char *name)
  	if (id != NULL)	/* found a valid distribution */
  		if (id->flags != FL_LOADED)	 /* but it needs to be loaded */
@@ -15,10 +15,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
  }
  
  /*
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+Index: dbt7/dsgen/tools/r_params.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/r_params.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+--- dbt7.orig/dsgen/tools/r_params.c
++++ dbt7/dsgen/tools/r_params.c
 @@ -776,7 +776,7 @@ print_params(void)
  			}
  		}
@@ -28,10 +28,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
  }
  
  /*
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+Index: dbt7/dsgen/tools/w_web_site.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/w_web_site.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
+--- dbt7.orig/dsgen/tools/w_web_site.c
++++ dbt7/dsgen/tools/w_web_site.c
 @@ -120,8 +120,8 @@ mk_w_web_site (void *row, ds_key_t index
  	{
  		r->web_open_date = mk_join(WEB_OPEN_DATE, DATE, index);
@@ -43,10 +43,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/w_web_site.c
  		sprintf(r->web_name, "site_%d", (int)(index / 6));
  		bFirstRecord = 1;
  	}
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+Index: dbt7/dsgen/tools/driver.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/driver.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
+--- dbt7.orig/dsgen/tools/driver.c
++++ dbt7/dsgen/tools/driver.c
 @@ -319,12 +319,14 @@ gen_tbl (int tabid, ds_key_t kFirstRow,
  		
  		/* not all rows that are built should be printed. Use return code to deterine output */
@@ -62,10 +62,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/driver.c
  	}
  	if (bIsVerbose)
  			fprintf(stderr, "Done    \n");	
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/list.c
+Index: dbt7/dsgen/tools/list.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/list.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/list.c
+--- dbt7.orig/dsgen/tools/list.c
++++ dbt7/dsgen/tools/list.c
 @@ -293,8 +293,8 @@ findList(list_t *pList, void *pData)
  			return(pNode);
  		}

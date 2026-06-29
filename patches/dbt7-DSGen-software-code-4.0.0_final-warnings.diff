@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/config.h
+Index: dbt7/dsgen/tools/config.h
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/config.h
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/config.h
+--- dbt7.orig/dsgen/tools/config.h
++++ dbt7/dsgen/tools/config.h
 @@ -99,9 +99,11 @@
  #endif /* INTERIX */
  
@@ -15,10 +15,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/config.h
  #define HUGE_COUNT	1
  #define USE_STRING_H
  #define USE_VALUES_H
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
+Index: dbt7/dsgen/tools/s_zip_to_gmt.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
+--- dbt7.orig/dsgen/tools/s_zip_to_gmt.c
++++ dbt7/dsgen/tools/s_zip_to_gmt.c
 @@ -149,7 +149,7 @@ mk_s_zip(void *pDest, ds_key_t kIndex)
  	pMap = &arGMTOffset[0];
  	while (kIndex > pMap->nMax)
@@ -28,10 +28,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/s_zip_to_gmt.c
  	r->nGMTOffset = pMap->nOffset;
  	
  	return(r->nGMTOffset == -99?1:0);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/date.c
+Index: dbt7/dsgen/tools/date.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/date.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/date.c
+--- dbt7.orig/dsgen/tools/date.c
++++ dbt7/dsgen/tools/date.c
 @@ -563,7 +563,7 @@ day_number(date_t *d)
   * TODO: None
   */
@@ -41,10 +41,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/date.c
  {
  	date_t dTemp;
  	int nDay;
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/tdef_functions.c
+Index: dbt7/dsgen/tools/tdef_functions.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/tdef_functions.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/tdef_functions.c
+--- dbt7.orig/dsgen/tools/tdef_functions.c
++++ dbt7/dsgen/tools/tdef_functions.c
 @@ -171,7 +171,7 @@ table_func_t s_tdef_funcs[] = {
  };
  
@@ -54,10 +54,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/tdef_functions.c
  {
     if (nTable >= S_BRAND)
        return(&s_tdef_funcs[nTable - S_BRAND]);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/tdefs.c
+Index: dbt7/dsgen/tools/tdefs.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/tdefs.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/tdefs.c
+--- dbt7.orig/dsgen/tools/tdefs.c
++++ dbt7/dsgen/tools/tdefs.c
 @@ -36,6 +36,7 @@
  #include "config.h"
  #include "porting.h"
@@ -75,10 +75,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/tdefs.c
  {
     if (nTable >= S_BRAND)
        return(&s_tdefs[nTable - S_BRAND]);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
+Index: dbt7/dsgen/tools/dbgen_version.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
+--- dbt7.orig/dsgen/tools/dbgen_version.c
++++ dbt7/dsgen/tools/dbgen_version.c
 @@ -85,9 +85,9 @@ mk_dbgen_version(void *pDest, ds_key_t k
  	time( &ltime );                 /* Get time in seconds */
  	pTimeStamp = localtime( &ltime );  /* Convert time to struct */
@@ -92,10 +92,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/dbgen_version.c
  	strcpy(r->szCmdLineArgs, g_szCommandLine);
  	
  	return(0);
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
+Index: dbt7/dsgen/tools/build_support.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/build_support.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
+--- dbt7.orig/dsgen/tools/build_support.c
++++ dbt7/dsgen/tools/build_support.c
 @@ -369,7 +369,7 @@ embed_string(char *szDest, char *szDist,
  
  	pick_distribution(&szWord, szDist, nValue, nWeight, nStream);
@@ -105,10 +105,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/build_support.c
  
  	return(0);
  }
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/genrand.c
+Index: dbt7/dsgen/tools/genrand.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/genrand.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/genrand.c
+--- dbt7.orig/dsgen/tools/genrand.c
++++ dbt7/dsgen/tools/genrand.c
 @@ -267,7 +267,7 @@ genrand_decimal (decimal_t * dest, int d
                   decimal_t * mean, int stream)
  {
@@ -118,10 +118,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/genrand.c
     double fres = 0.0;
  
     if (min->precision < max->precision)
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+Index: dbt7/dsgen/tools/r_params.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/r_params.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
+--- dbt7.orig/dsgen/tools/r_params.c
++++ dbt7/dsgen/tools/r_params.c
 @@ -338,7 +338,7 @@ init_params(void)
  	{
  		params[options[i].index] = (char *)malloc(PARAM_MAX_LEN * sizeof(char));
@@ -131,10 +131,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/r_params.c
  		if (*options[i].dflt)
  			options[i].flags |= OPT_DFLT;
  	}
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/join.c
+Index: dbt7/dsgen/tools/join.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/join.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/join.c
+--- dbt7.orig/dsgen/tools/join.c
++++ dbt7/dsgen/tools/join.c
 @@ -301,13 +301,13 @@ web_join(int col, ds_key_t join_key)
  	{
  		dSiteClose = strtodate(WEB_END_DATE);
@@ -151,10 +151,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/tools/join.c
  		init = 1;
  	}
  	
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/print.c
+Index: dbt7/dsgen/tools/print.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/print.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/print.c
+--- dbt7.orig/dsgen/tools/print.c
++++ dbt7/dsgen/tools/print.c
 @@ -201,7 +201,7 @@ print_delete (int * val)
        exit(-1);
  	}

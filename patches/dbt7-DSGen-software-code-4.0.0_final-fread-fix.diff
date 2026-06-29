@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
+Index: dbt7/dsgen/tools/dist.c
 ===================================================================
---- dbt7.orig/DSGen-software-code-4.0.0_final/tools/dist.c
-+++ dbt7/DSGen-software-code-4.0.0_final/tools/dist.c
+--- dbt7.orig/dsgen/tools/dist.c
++++ dbt7/dsgen/tools/dist.c
 @@ -313,7 +313,7 @@ load_dist(d_idx_t *di)
  			d->maximums[i] = 0;
  			for (j=0; j < di->length; j++)

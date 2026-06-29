@@ -1,7 +1,7 @@
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query12.tpl
+Index: dbt7/dsgen/query_postgresql/query12.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query12.tpl
++++ dbt7/dsgen/query_postgresql/query12.tpl
 @@ -0,0 +1,72 @@
 +--
 +-- Legal Notice 
@@ -75,10 +75,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query12.tpl
 +        ,revenueratio
 +[_LIMITC];
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query14.tpl
+Index: dbt7/dsgen/query_postgresql/query14.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query14.tpl
++++ dbt7/dsgen/query_postgresql/query14.tpl
 @@ -0,0 +1,247 @@
 +--
 +-- Legal Notice 
@@ -327,10 +327,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query14.tpl
 + order by this_year.channel, this_year.i_brand_id, this_year.i_class_id, this_year.i_category_id
 + [_LIMITC];
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query16.tpl
+Index: dbt7/dsgen/query_postgresql/query16.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query16.tpl
++++ dbt7/dsgen/query_postgresql/query16.tpl
 @@ -0,0 +1,76 @@
 +--
 +-- Legal Notice 
@@ -408,10 +408,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query16.tpl
 +[_LIMITC];
 +
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query2.tpl
+Index: dbt7/dsgen/query_postgresql/query2.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query2.tpl
++++ dbt7/dsgen/query_postgresql/query2.tpl
 @@ -0,0 +1,94 @@
 +--
 +-- Legal Notice 
@@ -507,10 +507,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query2.tpl
 +        d_year = [YEAR]+1) z
 + where d_week_seq1=d_week_seq2-53
 + order by d_week_seq1;
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query20.tpl
+Index: dbt7/dsgen/query_postgresql/query20.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query20.tpl
++++ dbt7/dsgen/query_postgresql/query20.tpl
 @@ -0,0 +1,67 @@
 +--
 +-- Legal Notice 
@@ -579,10 +579,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query20.tpl
 +         ,revenueratio
 +[_LIMITC];
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query21.tpl
+Index: dbt7/dsgen/query_postgresql/query21.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query21.tpl
++++ dbt7/dsgen/query_postgresql/query21.tpl
 @@ -0,0 +1,65 @@
 +--
 +-- Legal Notice 
@@ -649,10 +649,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query21.tpl
 + order by w_warehouse_name
 +         ,i_item_id
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query23.tpl
+Index: dbt7/dsgen/query_postgresql/query23.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query23.tpl
++++ dbt7/dsgen/query_postgresql/query23.tpl
 @@ -0,0 +1,144 @@
 +--
 +-- Legal Notice 
@@ -798,10 +798,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query23.tpl
 +       group by c_last_name,c_first_name) y 
 +     order by c_last_name,c_first_name,sales
 +  [_LIMITC];
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query32.tpl
+Index: dbt7/dsgen/query_postgresql/query32.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query32.tpl
++++ dbt7/dsgen/query_postgresql/query32.tpl
 @@ -0,0 +1,65 @@
 +--
 +-- Legal Notice 
@@ -868,10 +868,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query32.tpl
 +      ) 
 +[_LIMITC]; 
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query37.tpl
+Index: dbt7/dsgen/query_postgresql/query37.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query37.tpl
++++ dbt7/dsgen/query_postgresql/query37.tpl
 @@ -0,0 +1,57 @@
 +--
 +-- Legal Notice 
@@ -930,10 +930,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query37.tpl
 + 
 + 
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query40.tpl
+Index: dbt7/dsgen/query_postgresql/query40.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query40.tpl
++++ dbt7/dsgen/query_postgresql/query40.tpl
 @@ -0,0 +1,63 @@
 +--
 +-- Legal Notice 
@@ -998,10 +998,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query40.tpl
 +    w_state,i_item_id
 + order by w_state,i_item_id
 +[_LIMITC];
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query49.tpl
+Index: dbt7/dsgen/query_postgresql/query49.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query49.tpl
++++ dbt7/dsgen/query_postgresql/query49.tpl
 @@ -0,0 +1,164 @@
 +--
 +-- Legal Notice 
@@ -1167,10 +1167,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query49.tpl
 + ) query49
 + order by 1,4,5,2
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query5.tpl
+Index: dbt7/dsgen/query_postgresql/query5.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query5.tpl
++++ dbt7/dsgen/query_postgresql/query5.tpl
 @@ -0,0 +1,165 @@
 +--
 +-- Legal Notice 
@@ -1337,10 +1337,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query5.tpl
 + [_LIMITC];
 + 
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query70.tpl
+Index: dbt7/dsgen/query_postgresql/query70.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query70.tpl
++++ dbt7/dsgen/query_postgresql/query70.tpl
 @@ -0,0 +1,77 @@
 +--
 +-- Legal Notice 
@@ -1419,10 +1419,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query70.tpl
 +  ,rank_within_parent
 + [_LIMITC];
 + 
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query77.tpl
+Index: dbt7/dsgen/query_postgresql/query77.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query77.tpl
++++ dbt7/dsgen/query_postgresql/query77.tpl
 @@ -0,0 +1,145 @@
 +--
 +-- Legal Notice 
@@ -1569,10 +1569,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query77.tpl
 + [_LIMITC];
 + 
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query80.tpl
+Index: dbt7/dsgen/query_postgresql/query80.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query80.tpl
++++ dbt7/dsgen/query_postgresql/query80.tpl
 @@ -0,0 +1,131 @@
 +--
 +-- Legal Notice 
@@ -1705,10 +1705,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query80.tpl
 + order by channel
 +         ,id
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query82.tpl
+Index: dbt7/dsgen/query_postgresql/query82.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query82.tpl
++++ dbt7/dsgen/query_postgresql/query82.tpl
 @@ -0,0 +1,56 @@
 +--
 +-- Legal Notice 
@@ -1766,10 +1766,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query82.tpl
 + [_LIMITC];
 + 
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query86.tpl
+Index: dbt7/dsgen/query_postgresql/query86.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query86.tpl
++++ dbt7/dsgen/query_postgresql/query86.tpl
 @@ -0,0 +1,69 @@
 +--
 +-- Legal Notice 
@@ -1840,10 +1840,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query86.tpl
 +   case when lochierarchy = 0 then i_category end,
 +   rank_within_parent 
 + [_LIMITC];
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query92.tpl
+Index: dbt7/dsgen/query_postgresql/query92.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query92.tpl
++++ dbt7/dsgen/query_postgresql/query92.tpl
 @@ -0,0 +1,68 @@
 +--
 +-- Legal Notice 
@@ -1913,10 +1913,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query92.tpl
 +order by sum(ws_ext_discount_amt)
 +[_LIMITC]; 
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query94.tpl
+Index: dbt7/dsgen/query_postgresql/query94.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query94.tpl
++++ dbt7/dsgen/query_postgresql/query94.tpl
 @@ -0,0 +1,67 @@
 +--
 +-- Legal Notice 
@@ -1985,10 +1985,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query94.tpl
 +order by count(distinct ws_order_number)
 +[_LIMITC];
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query95.tpl
+Index: dbt7/dsgen/query_postgresql/query95.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query95.tpl
++++ dbt7/dsgen/query_postgresql/query95.tpl
 @@ -0,0 +1,71 @@
 +--
 +-- Legal Notice 
@@ -2061,10 +2061,10 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query95.tpl
 +[_LIMITC];
 +
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query98.tpl
+Index: dbt7/dsgen/query_postgresql/query98.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query98.tpl
++++ dbt7/dsgen/query_postgresql/query98.tpl
 @@ -0,0 +1,70 @@
 +--
 +-- Legal Notice 
@@ -2136,40 +2136,40 @@ Index: dbt7/DSGen-software-code-4.0.0_final/query_postgresql/query98.tpl
 +        ,i_item_desc
 +        ,revenueratio;
 +
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsql.tpl
+Index: dbt7/dsgen/query_templates/pgsql.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsql.tpl
++++ dbt7/dsgen/query_templates/pgsql.tpl
 @@ -0,0 +1,5 @@
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqle.tpl
+Index: dbt7/dsgen/query_templates/pgsqle.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqle.tpl
++++ dbt7/dsgen/query_templates/pgsqle.tpl
 @@ -0,0 +1,5 @@
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqlea.tpl
+Index: dbt7/dsgen/query_templates/pgsqlea.tpl
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/pgsqlea.tpl
++++ dbt7/dsgen/query_templates/pgsqlea.tpl
 @@ -0,0 +1,5 @@
 +define __LIMITA = "";
 +define __LIMITB = "";
 +define __LIMITC = "limit %d";
 +define _BEGIN = "LOAD 'auto_explain'; SET auto_explain.log_min_duration TO 0; SET auto_explain.log_analyze TO on; SET auto_explain.log_buffers TO on; SET auto_explain.log_verbose TO on; SET auto_explain.log_level TO notice; INSERT INTO time_statistics (template, s_time, stream, query, seed) VALUES ('"+ [_TEMPLATE] + "', TRANSACTION_TIMESTAMP(), " + [_STREAM] + ", " + [_QUERY] + ", " + [_SEED] + ");";
 +define _END = "UPDATE time_statistics SET e_time = TRANSACTION_TIMESTAMP() WHERE template = '" + [_TEMPLATE] + "' AND stream = " + [_STREAM] + ";";
-Index: dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql.lst
+Index: dbt7/dsgen/query_templates/templates-pgsql.lst
 ===================================================================
 --- /dev/null
-+++ dbt7/DSGen-software-code-4.0.0_final/query_templates/templates-pgsql.lst
++++ dbt7/dsgen/query_templates/templates-pgsql.lst
 @@ -0,0 +1,99 @@
 +query1.tpl
 +../query_postgresql/query2.tpl
