@@ -26,7 +26,9 @@ RUN apt-get -qq -y update && \
                    libfribidi-dev \
                    libgraphite2-dev \
                    libharfbuzz-dev \
+                   libpango1.0-dev \
                    libssl-dev \
+                   pkg-config \
                    make \
                    patch \
                    perl \
@@ -171,6 +173,18 @@ RUN ./configure --quiet --silent --prefix=/usr/local && \
 RUN mkdir -p /usr/local/share/licenses/sqlite-autoconf-${SQLITE3VER} && \
     cp -p tea/license.terms \
        /usr/local/share/licenses/sqlite-autoconf-${SQLITE3VER}/
+
+ARG PANGOVER="1.42"
+ARG PANGOMINORVER="4"
+RUN curl -o /tmp/pango-${PANGOVER}.${PANGOMINORVER}.tar.xz -SsOL \
+         https://download.gnome.org/sources/pango/${PANGOVER}/pango-${PANGOVER}.${PANGOMINORVER}.tar.xz && \
+    tar -C /usr/local/src -xf /tmp/pango-${PANGOVER}.${PANGOMINORVER}.tar.xz
+WORKDIR /usr/local/src/pango-${PANGOVER}.${PANGOMINORVER}
+RUN ./configure --quiet --silent --prefix=/usr/local && \
+    make -s -j $(nproc) install && \
+    ldconfig
+RUN mkdir -p /usr/local/share/licenses/pango-${PANGOVER}.${PANGOMINORVER} && \
+cp -p COPYING /usr/local/share/licenses/pango-${PANGOVER}.${PANGOMINORVER}/
 
 ARG GNUPLOTVER="5.4.6"
 RUN wget -O /tmp/gnuplot-${GNUPLOTVER}.tar.gz -q --no-check-certificate \

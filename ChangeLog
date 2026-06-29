@@ -1,3 +1,7 @@
+vX.Y.Z (YYYY-MM-DD)
+
+- AppImage: Add missing pango library for gnuplot
+
 v0.7.7 (2026-06-25)
 
 - Add missing patch to pg_plan_advice support added in v0.7.6.
